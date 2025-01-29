@@ -1,0 +1,125 @@
+.create-account{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: radial-gradient(circle, rgba(185,241,120,1) 0%, rgba(22,26,29,1) 0%);
+    position: relative;
+}
+
+.login{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.login-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.new-account{
+    background-color: white;
+    height: 500px;
+    width: 300px;
+    border-radius: 30px;
+    padding: 30px;
+    text-align: center;
+}
+
+.user-input{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-textbox, 
+.password-textbox,
+.name-textbox,
+.username-textbox{
+    width: 90%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 2%;
+}
+
+.title{
+    font-family: "DM Serif Text";
+    font-size: 30px;
+}
+
+.tp{
+    color:#b6b6b6;
+}
+
+.sign-up{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.horizontal-line{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    display: flex;
+}
+
+.line1{
+    width: 30%;
+}
+
+.line2{
+    width: 30%;
+}
+
+.gmail{
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-page{
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    height: 20px;
+    width: 300px;
+    border-radius: 30px;
+    padding: 30px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.account-question{
+    margin-top: 0;
+}
+
+.go-back{
+    color:#b6b6b6;
+}
+
+.go-back:hover{
+    color:#464646;
+    cursor: pointer;
+}
+
+
