@@ -1,0 +1,65 @@
+.viewAllPosts-ui{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(185,241,120,1) 0%, rgba(22,26,29,1) 0%);
+    position: relative;
+}
+
+.viewAllPosts-page{
+    background-color: white;
+    height: 500px;
+    width: 300px;
+    border-radius: 30px;
+    padding: 30px;
+    text-align: center;
+}
+
+.viewAllPages-header{
+    background: white;
+    width: 500px;
+    height: 80px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    /* float: left; */
+    
+}
+
+#logoImage {
+    width: auto;
+    height: 70px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    float: middle;
+    padding: 5px;
+}
+
+.headerButtons {
+    /* float: right; */
+    background: blue;
+    display: flex;
+    justify-content: space-between;
+}
+
+.addPostButton {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.searchButton {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.profileButton {
+    margin-left: 10px;
+    margin-right: 10px;
+}
