@@ -4,3 +4,11 @@
     margin-left: 10px;
     margin-right: 10px;
 }
+
+.search-bar {
+    width: 300px;
+}
+
+.new-post-button {
+    margin-right: 15px;
+}
