@@ -21,15 +21,36 @@
         </aside>
 
         <div class="main">
-            <p class="title-tag"> Edit profile</p>
+            <p class="title-tag"> <strong>Edit profile</strong></p>
 
             <div class="change-profile-div">
-                <img src="IMG_1852.JPG" class="sample-pic">
+                <img src="myImage.jpg" class="sample-pic">
 
                 <div>
                     <p class="username"><span class="user-id"><strong>Jedidiah_30</strong><br>Jed</p>
                 </div>
+
+                <button class="change-photo"> Change photo</button>
+                
             </div>
+
+            <div class="bio-div">
+                <p class="bio-tag">Bio</p>
+                
+                <input type="text" id="bio" placeholder="Bio" class="bio-textbox">
+            </div>
+
+            <div class="gender-div">
+                <p class="gender-tag">Gender</p>
+
+                <select name="gender" id="genders" class="drop-box">
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                </select>
+            </div>
+
+            <button class="save-changes">Save changes</button>
         </div>
     </body>
 </html>
