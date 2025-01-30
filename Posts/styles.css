@@ -33,3 +33,7 @@
     background-color: transparent !important;
     border-color: #dee2e6 !important;
 }
+
+.p-comment {
+    white-space: pre-line;
+}
