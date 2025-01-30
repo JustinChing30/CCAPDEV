@@ -11,4 +11,25 @@
 
 .new-post-button {
     margin-right: 15px;
+    background-color: #91f3aa;
+    color: #000;
+    border: 2px solid #1f943c;
+    text-align: center;
+}
+
+.new-post-button:hover {
+    background-color: #42d667;
+}
+
+.form-control-search:focus {
+    box-shadow: none;
+    border-color: #dee2e6;
+}
+
+.btn-search,
+.btn-search:hover,
+.btn-search:focus,
+.btn-search:active {
+    background-color: transparent !important;
+    border-color: #dee2e6 !important;
 }
