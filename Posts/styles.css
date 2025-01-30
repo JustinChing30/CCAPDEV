@@ -37,3 +37,7 @@
 .p-comment {
     white-space: pre-line;
 }
+
+.h5-sides {
+    white-space: nowrap;
+}
