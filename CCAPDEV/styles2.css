@@ -1,0 +1,55 @@
+body{
+    background-color: #e1e1e1;;
+}
+
+.title, .title-tag{
+    font-family: "DM Serif Text";
+    font-size: 20px;
+    margin-left: 20px;
+}
+
+.main{
+    align-items: center;
+}
+
+.side-panel{
+    width: 250px;
+    height: 100%;
+    background-color: white;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+.side-panel-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.main{
+    display: flex; 
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: start;
+    margin-left: 370px;
+    background-color: white;
+}
+
+.change-profile-div{
+    display: flex;
+    margin-top: 50px;
+    align-items: center;
+    border-radius: 30px;
+    margin-left: 20px;
+}
+
+.sample-pic{
+    height: 100px;
+    width: 100px;
+    border-radius: 150px;
+}
+
+.username{
+    margin-left: 30px;
+    font-size: 20px;
+}
