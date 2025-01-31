@@ -1,6 +1,8 @@
 .vertical-line-divider {
     border-left: 1px solid #c7c8c9;
-    min-height: 100%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
     margin-left: 10px;
     margin-right: 10px;
 }
