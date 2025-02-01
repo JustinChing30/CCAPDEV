@@ -54,3 +54,31 @@
 .name {
     margin-top: 20px;
 }
+
+.like-button {
+    border: 0px;
+    background-color: transparent;
+    margin-right: 5px;
+    font-size: 30px !important;
+    transition: transform 0.1s ease;
+}
+
+.like-button:hover {
+    transform: scale(1.2);
+    color: #a8f1b2;
+}
+
+.comments {
+    width: 75%;
+    margin: auto;
+}
+
+.comments-bg {
+    background-color: #e4e4e4;
+}
+
+.main-post {
+    background-color: #9fffdf;
+    width: 80%;
+    margin: auto;
+}
