@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Edit profile</title>
-
+        
         <link rel="stylesheet" href="styles2.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -10,21 +10,30 @@
     </head>
 
     <body>
-        <aside class="side-panel">
-            <div class="side-panel-content">
-                <div>
-                    <p class="title">
-                        <strong>ForUM</strong>
-                    </p>
+        <header>
+            <div class="header-top">
+                <button class="new-post-button"> New Post </button>
+                
+                <div class="search-container"> 
+                    <input type="text" id="search" placeholder="Search" class="search-textbox">
+
+                    <button class="secondary-button"> 🔍</button>
+                </div>
+
+                <div class="profile-image-div"> 
+                    <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGl0dGxlJTIwY2F0fGVufDB8fDB8fHww" class="sample-pic-header">
+                    <p >Jedidiah_30</p>
                 </div>
             </div>
-        </aside>
+        </header>
 
         <div class="main">
-            <p class="title-tag"> <strong>Edit profile</strong></p>
+            <div class="title-tag-div">
+                <p class="title-tag">Edit Profile</p>
+            </div>
 
             <div class="change-profile-div">
-                <img src="myImage.jpg" class="sample-pic">
+                <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGl0dGxlJTIwY2F0fGVufDB8fDB8fHww" class="sample-pic">
 
                 <div>
                     <p class="username"><span class="user-id"><strong>Jedidiah_30</strong><br>Jed</p>
@@ -55,11 +64,9 @@
                 </select>
             </div>
 
-            <div>
-
+            <div class="save-changes-div">
+                <button class="save-changes">Save changes</button>
             </div>
-
-            <button class="save-changes">Save changes</button>
         </div>
     </body>
 </html>
