@@ -55,7 +55,7 @@
           <!-- Post -->
           <div class="col-12">
             <div class="border p-3 rounded-3 main-post">
-              <h3 class="mb-1">Thoughts on this?</h3>
+              <h3 class="mb-1"><b>Important question</b></h3>
               <span class="badge rounded-pill bg-primary">CCAPDEV</span>
               <h5>Justin332</h5>
               <p class="p-comment">
@@ -65,6 +65,7 @@
               </p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                <button class="material-symbols-outlined reply-button" type="button">reply</button>
              </div>
             </div>
           </div>
@@ -77,6 +78,7 @@
               <p class="p-comment">Definitely try out Bootstrap. It's pretty simple to use for beginners.</p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                <button class="material-symbols-outlined reply-button" type="button">reply</button>
              </div>
             </div>
           </div>
@@ -88,6 +90,7 @@
               <p class="p-comment">I agree with <b>@Sam1</b>.</p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                <button class="material-symbols-outlined reply-button" type="button">reply</button>
              </div>
             </div>
           </div>
@@ -99,6 +102,7 @@
               <p class="p-comment">Third comment!</p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                <button class="material-symbols-outlined reply-button" type="button">reply</button>
              </div>
             </div>
           </div>
@@ -110,6 +114,7 @@
               <p class="p-comment">Hello.</p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                <button class="material-symbols-outlined reply-button" type="button">reply</button>
              </div>
             </div>
           </div>
@@ -121,17 +126,20 @@
               <p class="p-comment">Hello, <b>@NewUser55111</b>, welcome to the forum.</p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                <button class="material-symbols-outlined reply-button" type="button">reply</button>
              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>          
+    </div>
+
+    <!-- Overlay for new post -->
     <div class="overlay" id="NewPostOverlay">
       <div class="actual-overlay">
         <div class="d-flex position-relative mb-2">
           <h2 class="mx-auto">Create a new post</h2>
-          <button id="close" class="btn btn-danger position-absolute end-0">Close</button>
+          <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
         <textarea placeholder="Write..." rows="15" id="new-post-text">
         </textarea>
@@ -141,6 +149,23 @@
        </div>
       </div>
     </div>
+
+    <!-- Overlay for new comment/reply -->
+    <div class="overlay" id="ReplyOverlay">
+      <div class="actual-overlay">
+        <div class="d-flex position-relative mb-2">
+          <h2 class="mx-auto">Reply to post</h2>
+          <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
+        </div>
+        <textarea placeholder="Write..." rows="15" id="new-reply-text">
+        </textarea>
+        <br>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-success">Post</button>
+       </div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
