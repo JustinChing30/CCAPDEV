@@ -35,7 +35,7 @@
 .btn-search:hover,
 .btn-search:focus,
 .btn-search:active {
-    background-color: transparent !important;
+    background-color: white !important;
     border-color: #dee2e6 !important;
 }
 
@@ -50,6 +50,11 @@
 
 .pfp {
     margin-right: 10px;
+    border: 2px solid white;
+}
+
+.pfp:hover {
+    box-shadow: 0 0 5px 1px rgb(241, 255, 192);
 }
 
 .name {
@@ -122,4 +127,11 @@ textarea {
   width: 100%;
   resize: none;
   margin-bottom: 10px;
+}
+
+.header-area {
+    background-color: #5a5a5a;
+    padding: 10px;
+    margin-bottom: 20px;
+    color: white;
 }
