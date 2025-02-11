@@ -3,39 +3,21 @@ body{
 }
 
 .title, .title-tag, .bio-tag,
-.gender-tag{
+.github-tag,.gender-tag{
     font-family: "DM Serif Text";
     font-size: 20px;
     margin-left: 20px;
 }
 
 .main{
-    align-items: center;
-}
-
-.side-panel{
-    width: 250px;
-    height: 100%;
-    background-color: white;
-    top: 0;
-    left: 0;
-    position: fixed;
-    box-shadow: 7px 1px 7px 0px rgba(0,0,0,0.75);
-    -webkit-box-shadow: 7px 1px 7px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 7px 1px 7px 0px rgba(0,0,0,0.75);
-}
-
-.side-panel-content{
     display: flex;
     flex-direction: column;
-}
-
-.main{
-    display: flex; 
-    flex-direction: column;
     align-items: flex-start;
-    justify-content: start;
-    margin-left: 550px;
+    justify-content: flex-start;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto; /* Center horizontally */
+    padding: 20px;
     background-color: white;
 }
 
@@ -73,8 +55,33 @@ body{
     margin-right: 15px;
 }
 
+.sample-pic-header{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 20px;
+    border-radius: 25px;
+}
+
 .bio-div{
-    margin-top: 20
+    margin-top: 20px
+}
+
+.github-div{
+    margin-top: 20px;
+}
+
+.gender-div{
+    margin-top: 20px;
+}
+
+.github-textbox{
+    margin-left: 20px;
+    width: 569px;
+    padding: 25px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 .bio-textbox{
@@ -95,15 +102,78 @@ body{
     border-radius: 10px;
 }
 
-.save-changes{
-    margin-top: 50px;
+.save-changes {
     padding: 10px;
+    margin-top: 20px;
+    margin-left: 519px;
     font-size: 16px;
     background-color: #333;
     color: white;
     border: none;
     border-radius: 5px;
-    cursor: pointer;   
-    margin-left: 505px;
+    cursor: pointer;
+}
+
+.header-top{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    height: 60px;
+    width: 100%;
+}
+
+.profile-image-div{
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.new-post-button{
     margin-right: 15px;
+    padding: 8px;
+    background-color: #91f3aa;
+    color: #000;
+    border: 2px solid #1f943c;
+    text-align: center;
+    border-radius: 10px;
+    height: 45px;
+}
+
+.search-textbox{
+    width: 85%;
+    height: 40px;
+    padding-right: 45px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-textbox::placeholder{
+    padding-left: 10px;
+}
+
+.secondary-button{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    height: 30px;
+    width: 30px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+}
+
+.search-container{    
+    position: relative;
+    width: 300px;
+}
+
+.save-changes-div{
+    margin-top: 20px;
 }
