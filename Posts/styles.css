@@ -54,7 +54,7 @@
 }
 
 .pfp:hover {
-    box-shadow: 0 0 5px 1px rgb(241, 255, 192);
+    box-shadow: 0 0 5px 1px #f1ffc0;
 }
 
 .name {
