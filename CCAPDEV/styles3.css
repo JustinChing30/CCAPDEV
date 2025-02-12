@@ -173,7 +173,16 @@ body{
     align-items: center;
 }
 
-.subject-tag{
+.title-post{
+    margin-top: 5px;
+    color: rgb(255, 255, 255);
+}
+
+.post-tag{
+    color: rgb(255, 255, 255)
+}
+
+.subject-tag1{
     background-color: red;
     width: 74px;
     border-radius: 14px;
@@ -181,13 +190,36 @@ body{
     color: white;
 }
 
-.post1{
+.subject-tag2{
+    background-color: rgb(127, 167, 104);
+    width: 74px;
+    border-radius: 14px;
+    padding: 5px;
+    color: white;
+}
+
+.subject-tag3{
+    background-color: rgb(84, 177, 235);
+    width: 74px;
+    border-radius: 14px;
+    padding: 5px;
+    color: white;
+}
+
+.post1, .post2, .post3{
     display: flex;
     justify-content: center;
     flex-direction: column;
-    background-color: lightblue;
-    border-radius: 5px;
+    background-color: #5a5a5a;
+    border-radius: 10px;
     width: 70%;
     margin: 10px 0;
     padding: 20px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
+
+.post1:hover, .post2:hover, .post3:hover {
+    background-color: #333;
+    transform: scale(1.02); 
+    cursor: pointer;
 }
