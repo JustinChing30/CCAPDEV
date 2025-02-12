@@ -2,34 +2,165 @@
 <html>
     <head>
         <title>ForUm View All Pages</title>
-        <link rel="stylesheet" href="viewAllPosts.css">
+        <link rel ="stylesheet" href = "viewAllPosts.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=DM+Serif+Text:ital@0;1&family=Play:wght@400;700&display=swap" rel="stylesheet">
-    </head>
-    <body class="viewAllPosts-ui">
-        <div class="viewAllPosts">
-            <header>
-                <div class="viewAllPages-header">
-                    <div class="logo">
-                        <img src="Resources/graySquare.jpeg" id="logoImage">
-                    </div>
-                    <div class="headerButtons">
-                        <div class="addPostButton">
-                            <h1>+</h1>
-                        </div>
-                        <div class="searchPostButton">
-                            <h1>S</h1>
-                        </div>
-                        <div class="profileButton">
-                            <h1>P</h1>
-                        </div>
-                    </div>
-                </div>
-            </header>
-            <div class="posts">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-            </div>
+    </head>
+
+
+    <body>
+      <!--- search bar-->
+        <div class="header">
+            <nav class="navbar navbar-expand-lg navbar-light bg-dark">
+                <div class="container-fluid">
+
+                <a class ="navbar-brand ">FORUM</a>
+                    
+                 <form class = "d-flex justify-content">
+
+                    <button class ="btn btn-outline-light" type= "button">New Post</button>
+                    
+                    <div class = "input-group">
+
+                        <span class = "input-group-text border-end-0 bg-light">🔍</span>
+                        <input class = "form-control form-control border-end-0 bg-light" type ="search" placeholder="Search" aria-label="Search">
+                        
+                        <button class ="btn btn-outline-dark bg-light" type ="button">🎙️</button>
+                    </div>
+                   
+                 </form>
+                  
+                </div>
+              </nav>
         </div>
+
+        
+         <!--- filters-->
+        <div class="d-flex bd-highlight mb-3">
+
+
+              <div class ="p-2 bd-highligh">
+                <h4><span class="tag label label-success">
+                <span>CCAPDEV</span>
+                <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-dark"></i></a> 
+              </span>
+            </h4>
+          </div>
+           
+            <div class ="p-2 bd-highligh">
+              <h4><span class="tag label label-success">
+                <span>CCPROG1</span>
+                <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-dark"></i></a> 
+              </span>
+            </h4>
+          </div>
+          
+            <div class="p-2 bd-highligh">
+              <h4><span class="tag label label-success">
+                <span>CCINFOM</span>
+                <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-dark"></i></a> 
+              </span>
+            </h4>
+          </div>
+          
+
+          <div class="ms-auto p-2 bd-highlight">
+            <div class="dropdown justify-content-end">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Filter
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+            </div>
+
+      </div>
+
+      <!--- Posts -->
+      <div class="col-12 p-3">
+        <div class="border p-3 rounded-3 bg-light">
+            <h3 class="mb-1">Thoughts on this?</h3>
+            <span class="badge rounded-pill bg-primary">CCAPDEV</span>
+            <h5>Justin332</h5>
+            <p class="p-comment">Any tips on how to make a simple website for our CCAPDEV project?
+
+                It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?</p>
+            </p>
+        </div>
+    </div>
+
+    <div class="col-12 p-3">
+      <div class="border p-3 rounded-3 bg-light">
+          <h3 class="mb-1">Thoughts on this?</h3>
+          <span class="badge rounded-pill bg-primary">CCAPDEV</span>
+          <h5>Justin332</h5>
+          <p class="p-comment">Any tips on how to make a simple website for our CCAPDEV project?
+
+              It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?</p>
+          </p>
+      </div>
+  </div>
+
+
+  <div class="col-12 p-3">
+    <div class="border p-3 rounded-3 bg-light">
+        <h3 class="mb-1">Thoughts on this?</h3>
+        <span class="badge rounded-pill bg-primary">CCAPDEV</span>
+        <h5>Justin332</h5>
+        <p class="p-comment">Any tips on how to make a simple website for our CCAPDEV project?
+
+            It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?</p>
+        </p>
+    </div>
+</div>
+
+
+<div class="col-12 p-3">
+  <div class="border p-3 rounded-3 bg-light">
+      <h3 class="mb-1">Thoughts on this?</h3>
+      <span class="badge rounded-pill bg-primary">CCAPDEV</span>
+      <h5>Justin332</h5>
+      <p class="p-comment">Any tips on how to make a simple website for our CCAPDEV project?
+
+          It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?</p>
+      </p>
+  </div>
+</div>
+
+<div class="col-12 p-3">
+  <div class="border p-3 rounded-3 bg-light">
+      <h3 class="mb-1">Thoughts on this?</h3>
+      <span class="badge rounded-pill bg-primary">CCAPDEV</span>
+      <h5>Justin332</h5>
+      <p class="p-comment">Any tips on how to make a simple website for our CCAPDEV project?
+
+          It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?</p>
+      </p>
+  </div>
+</div>
+
+<div class="col-12 p-3">
+  <div class="border p-3 rounded-3 bg-light">
+      <h3 class="mb-1">Thoughts on this?</h3>
+      <span class="badge rounded-pill bg-primary">CCAPDEV</span>
+      <h5>Justin332</h5>
+      <p class="p-comment">Any tips on how to make a simple website for our CCAPDEV project?
+
+          It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?</p>
+      </p>
+  </div>
+</div>
+
+
     </body>
+
+
 </html>
+
