@@ -1,16 +1,21 @@
 .vertical-line-divider {
     border-left: 1px solid #c7c8c9;
-    min-height: 100%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
     margin-left: 10px;
     margin-right: 10px;
 }
 
 .search-bar {
     width: 250px;
+    height: 40px;
+    margin-right: 15px;
 }
 
 .new-post-button {
     margin-right: 15px;
+    padding: 8px;
     background-color: #91f3aa;
     color: #000;
     border: 2px solid #1f943c;
@@ -30,14 +35,148 @@
 .btn-search:hover,
 .btn-search:focus,
 .btn-search:active {
-    background-color: transparent !important;
+    background-color: white !important;
     border-color: #dee2e6 !important;
 }
 
 .p-comment {
     white-space: pre-line;
+    margin-bottom: 2px;
 }
 
 .h5-sides {
     white-space: nowrap;
+}
+
+.pfp-topright {
+    width: 50px;
+    height: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    margin-right: 10px;
+    overflow: hidden;
+    border: 2px solid white;
+    position: relative;
+}
+
+.pfp-topright:hover {
+    box-shadow: 0 0 5px 1px #f1ffc0;
+}
+
+.pfp-topright img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pfp-comment {
+    width: 35px;
+    height: 35px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    margin-top: 4px;
+    margin-right: 8px;
+    margin-bottom: 4px;
+    overflow: hidden;
+    border: 2px solid white;
+    position: relative;
+}
+
+.pfp-comment:hover {
+    box-shadow: 0 0 5px 1px #f1ffc0;
+}
+
+.pfp-comment img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.name {
+    margin-top: 20px;
+}
+
+.like-button {
+    border: 0px;
+    background-color: transparent;
+    margin-right: 5px;
+    font-size: 30px !important;
+    transition: transform 0.1s ease;
+}
+
+.like-button:hover {
+    transform: scale(1.2);
+    color: #85b88b;
+}
+
+.reply-button {
+    border: 0px;
+    background-color: transparent;
+    margin-right: 5px;
+    font-size: 30px !important;
+    transition: transform 0.1s ease;
+}
+
+.reply-button:hover {
+    transform: scale(1.2);
+    color: #1a428b;
+}
+
+.comments {
+    width: 75%;
+    margin: auto;
+}
+
+.comments-bg {
+    background-color: #e4e4e4;
+}
+
+.main-post {
+    background-color: #9fe1ff;
+    width: 80%;
+    margin: auto;
+}
+
+.overlay {
+    position: fixed; 
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #00000080;
+    display: none; /* Keeps new post overlay hidden before pressing the "New Post" button */
+    justify-content: center; 
+    align-items: center;
+    z-index: 9999; /* This fixes the search button not getting dimmed idk why that one is on top */
+}
+
+.actual-overlay {
+    background: rgb(255, 255, 255);
+    padding: 20px;
+    border-radius: 25px;
+    width: 1000px;
+    height: 510px;
+    text-align: center;
+}
+
+textarea {
+  width: 100%;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+.header-area {
+    background-color: #5a5a5a;
+    padding: 10px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.comment-name {
+    margin-top: 5px;
 }

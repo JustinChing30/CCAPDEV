@@ -1,0 +1,113 @@
+.header-top{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    height: 60px;
+    width: 100%;
+}
+
+.profile-image-div{
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.sample-pic{
+    height: 65px;
+    width: 65px;
+    border-radius: 150px;
+    margin-left: 15px;
+}
+
+.sample-pic-header{
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 20px;
+    border-radius: 25px;
+}
+
+.sample-pic-profile{
+    width: 150px;
+    height: 150px;
+    border-radius: 300px;
+    margin-right: 60px;
+}
+
+.new-post-button{
+    margin-right: 15px;
+    padding: 8px;
+    background-color: #91f3aa;
+    color: #000;
+    border: 2px solid #1f943c;
+    text-align: center;
+    border-radius: 10px;
+    height: 45px;
+}
+
+.search-container{    
+    position: relative;
+    width: 300px;
+}
+
+.search-textbox{
+    width: 85%;
+    height: 40px;
+    padding-right: 45px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-textbox::placeholder{
+    padding-left: 10px;
+}
+
+.secondary-button{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    height: 30px;
+    width: 30px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    color: #888;
+}
+
+.top-div{
+    display: flex;
+    margin-top: 25px;
+    justify-content: center;
+    align-items: center;
+}
+
+.top-action-div{
+    height: 30px;
+    align-items: center;
+    display: flex;
+}
+
+.profile-username{
+    font-family: "DM Serif Text";
+    font-size: 25px;
+    margin-right: 20px;
+}
+
+.edit-profile-button{
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;   
+}
+
+.bio-tag, .github-tag{
+    font-family: "DM Serif Text";
+}
