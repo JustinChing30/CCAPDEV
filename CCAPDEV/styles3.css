@@ -166,3 +166,28 @@ body{
 .horizontal-line{
     width: 70%;
 }
+
+.div-posts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subject-tag{
+    background-color: red;
+    width: 74px;
+    border-radius: 14px;
+    padding: 5px;
+    color: white;
+}
+
+.post1{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: lightblue;
+    border-radius: 5px;
+    width: 70%;
+    margin: 10px 0;
+    padding: 20px;
+}
