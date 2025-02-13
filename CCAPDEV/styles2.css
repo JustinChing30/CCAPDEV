@@ -1,4 +1,6 @@
 body{
+    margin: 0;
+    padding: 0;
     background-color: #ffffff;;
 }
 
@@ -14,9 +16,9 @@ body{
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
-    width: 90%;
-    max-width: 800px;
-    margin: 0 auto; /* Center horizontally */
+    width: 80%;
+    max-width: 650px;
+    margin: auto; 
     padding: 20px;
     background-color: white;
 }
@@ -58,9 +60,17 @@ body{
 .sample-pic-header{
     width: 50px;
     height: 50px;
+    aspect-ratio: 1;
     margin-right: 10px;
     margin-left: 20px;
-    border-radius: 25px;
+    border-radius: 30px;
+    border: 2px solid white;
+
+}
+
+.sample-pic-header:hover {
+    box-shadow: 0 0 5px 1px #f1ffc0;
+    cursor: pointer;
 }
 
 .bio-div{
@@ -119,11 +129,12 @@ body{
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 10px 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #ccc;
-    height: 60px;
+    padding: 10px;
+    margin-bottom: 20px;
+    height: 50px;
     width: 100%;
+    color: white;
+    background-color: #5a5a5a;
 }
 
 .profile-image-div{
@@ -138,17 +149,24 @@ body{
     background-color: #91f3aa;
     color: #000;
     border: 2px solid #1f943c;
+    font-size: 15px;
     text-align: center;
-    border-radius: 10px;
+    border-radius: 8px;
     height: 45px;
 }
 
+.new-post-button:hover {
+    background-color: #42d667;
+    cursor: pointer;
+}
+
 .search-textbox{
-    width: 85%;
+    width: 250px;
     height: 40px;
     padding-right: 45px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px;
+    margin-right: 15px;
     font-size: 16px;
 }
 
