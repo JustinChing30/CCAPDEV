@@ -223,3 +223,62 @@ body{
     transform: scale(1.02); 
     cursor: pointer;
 }
+
+.div-comments{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.comment-1{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #5a5a5a;
+    border-radius: 10px;
+    width: 70%;
+    margin: 10px 0;
+    padding: 20px;
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.comment-subject-tag1{
+    background-color: rgb(127, 167, 104);
+    width: 74px;
+    border-radius: 14px;
+    padding: 5px;
+    color: white;
+}
+
+.title-post1{
+    color: white;
+    margin-left: 15px;
+    font-size: 20px;
+}
+
+.header-comment1{
+    display: flex;
+    align-items: center;
+    height: 37px;
+}
+
+.date-comment1{
+    color: white;
+    font-size: 15px;
+}
+
+.comment{
+    color: white;
+}
+
+.actions{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.bi-star, .bi-chat, .bi-share{
+    color: white;
+    font-size: 30px;
+}

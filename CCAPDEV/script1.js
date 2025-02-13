@@ -6,17 +6,21 @@ const divPosts = document.querySelector(".div-posts");
 const divComments = document.querySelector(".div-comments");
 const divLikes = document.querySelector(".div-likes");
 
+const originalPost = divPosts.innerHTML;
 
-divPosts = addEventListener("click", () => {
-    divPosts.style.display = "block";
+divPosts.addEventListener("click", () => {
+    divPosts.style.display = "flex";
     divComments.style.display = "none";
     divLikes.style.display = "none";
+
+    divPosts.innerHTML = originalPost;
+
 });
 
 commentsButton.addEventListener("click", () => {
 
     divPosts.style.display = "none";
-    divComments.style.display = "block";
+    divComments.style.display = "flex";
     divLikes.style.display = "none";
 
     divComments.innerHTML = "";
