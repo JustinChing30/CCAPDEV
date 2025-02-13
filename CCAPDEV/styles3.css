@@ -334,3 +334,7 @@ body{
     display: flex;
     flex-direction: column;
 }
+
+.post-link {
+    text-decoration: none;
+}
