@@ -180,3 +180,8 @@ textarea {
 .comment-name {
     margin-top: 5px;
 }
+
+.home {
+    text-decoration: none;
+    color: white;
+}
