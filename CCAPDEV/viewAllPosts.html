@@ -26,7 +26,7 @@
           </a>
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <button class="btn btn-outline-success new-Post" type="submit">New Post</button>
+              <button class="btn btn-outline-success new-Post" type="submit" id="newPost">New Post</button>
 
               <li class="nav-item">             
                 <form class="d-flex">
@@ -181,9 +181,25 @@
             </div>
           </div>
   </div>
+  <!-- Overlay for new post -->
+  <div class="overlay" id="NewPostOverlay">
+    <div class="actual-overlay">
+      <div class="d-flex position-relative mb-2">
+        <h2 class="mx-auto">Create a new post</h2>
+        <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
+      </div>
+      <textarea placeholder="Write..." rows="15" id="new-post-text">
+      </textarea>
+      <br>
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-success">Post</button>
+     </div>
+    </div>
+  </div>
 </div>
 
-
+  <!-- This way for now, but this should probably be adjusted to be on script1.js to make this more cohesive -->
+  <script src="../Posts/script.js"></script>
     </body>
 
 
