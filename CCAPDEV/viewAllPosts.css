@@ -9,6 +9,10 @@
   position: relative;
 }
 
+.user-name{
+  color: white;
+}
+
 .pfp-account:hover {
   box-shadow: 0 0 5px 1px #f1ffc0;
 }
