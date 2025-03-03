@@ -2,6 +2,7 @@ const newPostBtn = document.getElementById("newPost"); // Button to open new pos
 const newPostOverlay = document.getElementById("NewPostOverlay"); // Button to close new post overlay
 
 const newposttextarea = document.getElementById("new-post-text");
+const newposttitlearea = document.getElementById("new-post-title");
 
 const replyButtons = document.querySelectorAll(".reply-button");
 const replyOverlay = document.getElementById("ReplyOverlay");
@@ -13,6 +14,7 @@ const closeButtons = document.querySelectorAll(".close-button");
 newPostBtn.addEventListener("click", () => {
   newPostOverlay.style.display = "flex";
   newposttextarea.value = '';
+  newposttitlearea.value = '';
 });
 
 // Close new post overlay by clicking outside of the box
@@ -20,6 +22,7 @@ newPostOverlay.addEventListener("click", (e) => {
   if (e.target === newPostOverlay) {
     newPostOverlay.style.display = "none";
     newposttextarea.value = '';
+    newposttitlearea.value = '';
   }
 });
 
@@ -28,6 +31,7 @@ replyButtons.forEach((button) => {
   button.addEventListener("click", () => {
     replyOverlay.style.display = "flex";
     newposttextarea.value = '';
+    newposttitlearea.value = '';
   });
 });
 
@@ -36,6 +40,7 @@ replyOverlay.addEventListener("click", (e) => {
   if (e.target === replyOverlay) {
     replyOverlay.style.display = "none";
     newreplytextarea.value = '';
+    newposttitlearea.value = '';
   }
 });
 
@@ -46,6 +51,7 @@ closeButtons.forEach((button) => {
     document.getElementById("ReplyOverlay").style.display = "none";
     
     document.getElementById("new-post-text").value = '';
+    document.getElementById("new-post-title").value = '';
     document.getElementById("new-reply-text").value = '';
   });
 });
