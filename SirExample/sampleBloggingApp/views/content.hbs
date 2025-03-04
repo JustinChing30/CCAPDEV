@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Sample DB Page</title>
+    </head>
+
+    <body>
+        {{#each posts}}
+            <h1>{{this.title}}</h1> <br>
+            <h3>{{this.description}}</h3> <br>
+            <img src='{{this.image}}' height="240px" width="240px"/> <br>
+            <p>{{this.content}}<p> <br>
+            <br>
+            <hr>
+        {{/each}}
+
+        <a href="/">Back to home</a>
+    </body>
+</html>

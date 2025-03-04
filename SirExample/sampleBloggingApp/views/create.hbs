@@ -1,0 +1,20 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Create post</title>
+</head>
+<body>
+    <h1>Good morning {{userData.name}}</h1><br>
+    <form action="/submit-post" method="post" 
+    enctype="multipart/form-data">
+        Title: <br> <input name="title" type="text" /> <br />
+        Description: <br> <input name="description" type="text" /> <br />
+        Content: <br> <textarea name="content" rows="10" cols="30">
+        </textarea> <br />
+        <input type="file" name="image"/> <br /> 
+        <input type="submit" />
+    </form>
+    <br>
+    <a href="/view-post">View posts made!</a><br>
+    <a href="/">Return home</a>
+</body>
+</html>

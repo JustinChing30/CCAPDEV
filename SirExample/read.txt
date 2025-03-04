@@ -1,0 +1,3 @@
+this has the images/posts + user database stuff
+
+but it also has all the login stuff too, which i dont think we need yet
