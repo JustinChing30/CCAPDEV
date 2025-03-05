@@ -72,13 +72,22 @@ app.get("/editprofile.html", (req, res) => {
 app.post("/viewPost/:objectid", async(req, res) => { // objectid is a parameter here
     const { objectid } = req.params;
 
-    const requestedPost = await Post.find({_id:objectid});
+    const requestedPost = await Post.findById(objectid).lean();
     const comments = await Comment.find();
     const commentsRender = comments.map(i => i.toObject());
 
-    res.render('Posts/post' + objectid, { data: { post: requestedPost, comments: commentsRender} });
+    const consolidatedData = {
+        postTitle: requestedPost.title,
+        postTag: requestedPost.tag,
+        postContent: requestedPost.content,
+        comments: commentsRender,
+        postID: requestedPost._id
+    }
+
+    res.render('Posts/post' + objectid, { data: consolidatedData });
 });
 
+// Create a Post
 app.post("/create-post", async(req, res) => {
     const title = req.body.newPostTitle;
     const content = req.body.newPostText;
@@ -116,6 +125,35 @@ app.post("/create-post", async(req, res) => {
 
     res.redirect("/"); // sends it back to view all posts
 });
+
+// Create a Comment
+app.post("/createComment/:objectid", async(req, res) => {
+    const { objectid } = req.params;
+    const content = req.body.newReplyText;
+    
+    await Comment.create({
+        content: content,
+        userID: 2,
+        username: "CommentMaker"
+    })
+    
+
+    console.log(objectid);
+
+    const requestedPost = await Post.findById(objectid).lean();
+    const comments = await Comment.find();
+    const commentsRender = comments.map(i => i.toObject());
+
+    const consolidatedData = {
+        postTitle: requestedPost.title,
+        postTag: requestedPost.tag,
+        postContent: requestedPost.content,
+        comments: commentsRender,
+        postID: requestedPost._id
+    }
+
+    res.render('Posts/post' + objectid, { data: consolidatedData });
+})
 
 // Start the server
 const PORT = 3000;

@@ -64,8 +64,8 @@
           <!-- Post -->
           <div class="col-12">
             <div class="border p-3 rounded-3 main-post">
-              <h3 class="mb-1"><b>{{post.title}}</b></h3>
-              <span class="badge rounded-pill bg-success">{{post.tag}}</span>
+              <h3 class="mb-1"><b>{{data.postTitle}}</b></h3>
+              <span class="badge rounded-pill bg-success">{{data.postTag}}</span>
               <div class="d-flex align-items-center">
                 <div
                 class="rounded-circle overflow-hidden pfp-comment"
@@ -79,7 +79,7 @@
                 <h5 class="comment-name">Justin332</h5>
               </div>
               <p class="p-comment">
-                {{post.content}}
+                {{data.postContent}}
               </p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
@@ -88,7 +88,7 @@
             </div>
           </div>
 
-          {{#each comment}}
+          {{#each data.comments}}
             <!-- Comment 1 -->
             <div class="col-12 p-1 comments">
               <div class="p-3 rounded-3 comments-bg">
@@ -138,11 +138,13 @@
           <h2 class="mx-auto">Reply to post</h2>
           <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
-        <textarea placeholder="Write..." rows="15" id="new-reply-text">
-        </textarea>
-        <br>
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-success">Post</button>
+        <form action="/createComment/{{data.postID}}" method="POST">
+          <textarea placeholder="Write..." rows="15" id="newReplyText" name="newReplyText">
+          </textarea>
+          <br>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-success">Post</button>
+        </form>
        </div>
       </div>
     </div>
