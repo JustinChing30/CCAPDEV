@@ -1,8 +1,8 @@
 const newPostBtn = document.getElementById("newPost"); // Button to open new post overlay
 const newPostOverlay = document.getElementById("NewPostOverlay"); // Button to close new post overlay
 
-const newposttextarea = document.getElementById("new-post-text");
-const newposttitlearea = document.getElementById("new-post-title");
+const newposttextarea = document.getElementById("newPostText");
+const newposttitlearea = document.getElementById("newPostTitle");
 
 const closeButtons = document.querySelectorAll(".close-button");
 
