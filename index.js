@@ -16,6 +16,7 @@ const fileUpload = require('express-fileupload')
 
 /* Initialize our post */
 const Post = require("./database/models/Post");
+const Comment = require("./database/models/Comment");
 const path = require('path') // our path directory
 
 app.use(express.json()) // use json
@@ -50,6 +51,7 @@ app.get("/viewallposts", (req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/viewAllPosts.html");
 });
 
+// View Profile Menus
 app.get("/viewprofile.html", (req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/viewprofile.html")
 });
@@ -66,10 +68,28 @@ app.get("/editprofile.html", (req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/editprofile.html");
 });
 
+// View Specific Posts
+app.post("/viewPost/:objectid", async(req, res) => { // objectid is a parameter here
+    const { objectid } = req.params;
+
+    const requestedPost = await Post.find({_id:objectid});
+    const comments = await Comment.find();
+    const commentsRender = comments.map(i => i.toObject());
+
+    res.render('Posts/post' + objectid, { data: { post: requestedPost, comments: commentsRender} });
+});
+
 app.post("/create-post", async(req, res) => {
     const title = req.body.newPostTitle;
     const content = req.body.newPostText;
     let objectID = "";
+    let fileContent = "";
+
+    // Read template file
+    const pathToFileTemplate = path.join(__dirname, 'pt.txt');
+    fs.readFile(pathToFileTemplate, function(err, data) {
+        fileContent = data.toString('utf8');
+    })
 
     await Post.create({
         title: title, // Title
@@ -81,11 +101,12 @@ app.post("/create-post", async(req, res) => {
             objectID = result._id.toString();
         })
 
+
     // write to a new file with the objectID set and place it in Posts folder
     const fileName = "post" + objectID + ".hbs";
-    const pathToFile = path.join(__dirname, "/CCAPDEV/Posts",fileName);
+    const pathToFile = path.join(__dirname, "/views/Posts",fileName);
 
-    fs.appendFile(pathToFile, 'Content', function (err) {
+    fs.appendFile(pathToFile, fileContent, function (err) {
         if (err) {
             throw err;
         }

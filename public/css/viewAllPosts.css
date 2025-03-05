@@ -32,7 +32,14 @@
   background: #e0e0e0;
 }
 
-.post-link {
-  text-decoration: none;
+.post-link-button {
+  background: none;
+  border: none;
   color: black;
+  cursor: pointer;
+  display: inline;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
 }
