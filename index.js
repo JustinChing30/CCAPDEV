@@ -6,6 +6,8 @@ const app = express();
 const hbs = require('hbs');
 app.set('view engine','hbs');
 
+const fs = require('fs');
+
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/apdevDB');
 
@@ -67,13 +69,29 @@ app.get("/editprofile.html", (req, res) => {
 app.post("/create-post", async(req, res) => {
     const title = req.body.newPostTitle;
     const content = req.body.newPostText;
+    let objectID = "";
 
     await Post.create({
         title: title, // Title
         tag: "CCAPDEV", // The post tag (CCAPDEV, CCINFOM, etc.)
         content: content, // Post content
         userID: 1
-    });
+    })
+        .then(result => {
+            objectID = result._id.toString();
+        })
+
+    // write to a new file with the objectID set and place it in Posts folder
+    const fileName = "post" + objectID + ".hbs";
+    const pathToFile = path.join(__dirname, "/CCAPDEV/Posts",fileName);
+
+    fs.appendFile(pathToFile, 'Content', function (err) {
+        if (err) {
+            throw err;
+        }
+
+        console.log("File created!");
+    })
 
     res.redirect("/"); // sends it back to view all posts
 });
