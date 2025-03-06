@@ -40,8 +40,7 @@
 
             <div class="action-divs">
                 <div class="top-action-div">
-                    <p class="profile-username">{{data.user.username}}</p>
-                    <button class="edit-profile-button" onclick="window.location.href='/editProfile'">Edit Profile</button>
+                    <p class="profile-username">{{userData.username}}</p>
                 </div>
 
                 <p class="bio-tag">📕 Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
@@ -60,27 +59,54 @@
 
         <hr class="horizontal-line">
 
-        <div class="div-posts">
-            
-            {{#each data.posts}}
-                <div class="profilePost"> 
-                    <a class="post-link" type="submit" href="/viewPost/{{this._id}}">
-                    <h1 class="title-post">{{this.title}}</h1>
-                    <span class="subject-tag1">{{this.tag}}</span>
-                    <p class="post-tag">{{this.content}}</p>
-
-                    <div class="actions">
-                        <i class="bi bi-star"></i>
-
-                        <i class="bi bi-chat"></i>
-
-                        <i class="bi bi-share"></i>
-                    </div>
-                    </a>           
-                    </form>
+        <div class="div-likes">
+            <div class="comment-1">
+                <div class="header-comment1">
+                    <span class="comment-subject-tag1">CCPROG1</span>
+                    <p class="title-post1">&#x2022 Tips to survive CCPROG1 &#x2022 <span style="color: aquamarine">Justin332</span></p>
                 </div>
-            {{/each}}
-        </div>
+                     
+                <p class="date-comment1">commented 2 mo. ago</p>
 
+                <p class="comment">1. listen to teacher 2. listen to teacher</p>
+
+                <div class="actions">
+                    <i class="bi bi-star-fill"></i>
+
+                    <i class="bi bi-chat"></i>
+
+                    <i class="bi bi-share"></i>
+
+                </div>          
+            </div>
+
+            <div class="sample-liked-post">
+                <a class="post-link" href="/CCAPDEV/Posts/post1.html">
+                <div class="header-liked-post">
+                    <h1 class="post-header">Important Question</h1>
+                    <span class="subject-tag1">CCAPDEV</span>
+                </div>
+
+                <div class="user-div">
+                    <img src="https://plus.unsplash.com/premium_photo-1722859221349-26353eae4744?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZG9nfGVufDB8fDB8fHww" class="icon"/>
+                    <p style="color: white;">Justin332</p>
+                </div>
+                <p class="post-tag">Any tips on how to make a simple website for our CCAPDEV project? It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?
+
+                    Extra text.
+                </p>
+
+                <div class="actions">
+                    <i class="bi bi-star-fill"></i>
+
+                    <i class="bi bi-chat"></i>
+
+                    <i class="bi bi-share"></i>
+
+                </div>     
+            </a>
+            </div>
+        </div>
+        
     </body>
 </html>
