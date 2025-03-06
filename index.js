@@ -292,7 +292,7 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
     const pathToFile = path.join(__dirname, "/views/Posts",fileName);
 
     console.log("fileContent: \n\n" + fileContent)
-    fs.appendFile(pathToFile, fileContent, function (err) {
+    fs.appendFileSync(pathToFile, fileContent, function (err) {
         if (err) {
             throw err;
         }
