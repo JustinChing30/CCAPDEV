@@ -335,31 +335,34 @@ app.post("/createComment/:objectid", async(req, res) => {
 
 // Like a post
 app.post("/like/:postId", isAuthenticated, async (req, res) => {
+    console.log("Here!");
     const userData = req.session.user;
 
     const postId = req.params.postId;
     const userId = userData._id;
 
-        const post = await Post.findById(postId);
+    const post = await Post.findById(postId);
 
-        if (!post) {
-            return res.status(404).json({ message: "Post not found" });
-        }
+    if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+    }
 
-        const hasLiked = post.likes.some((id) => id.equals(userId)); // check if logged user already liked that post
+    const hasLiked = post.likes.some((id) => id.equals(userId)); // check if logged user already liked that post
+    // the .some() is an array method that returns true if the id is in the array of likes, i.e. the user has liked it
+    // the (id) variable is like an index (kunwari int i = 0; i < likes.size; i++) that goes through each user that has liked the
+    // post and does the id.equals method to the userId 
 
-        // Toggle like
-        if (hasLiked) {
-            await Post.findByIdAndUpdate(postId, { $pull: { likes: userId } });
-            return res.json({ liked: false });
-        } else {
-            await Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } });
-            return res.json({ liked: true });
-        }
+    // Toggle like
+    if (hasLiked) {
+        await Post.findByIdAndUpdate(postId, { $pull: { likes: userId } });
+        return res.json({ liked: false });
+    } else {
+        await Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } });
+        return res.json({ liked: true });
+    }
 
-        await post.save();
-        res.status(200).json({ liked: !hasLiked });
-
+    await post.save();
+    res.status(200).json({ liked: !hasLiked });
 });
 
 // Start the server

@@ -8,7 +8,7 @@ const PostSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "user_schema" // references the _id of the User
     },
-    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] // an array of likes
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user_schema" }] // an array of likes
 }, { versionKey: false})
 
 const Post = mongoose.model('post_schema', PostSchema) // mongoose.model(<Collectionname>, <CollectionSchema>)
