@@ -154,38 +154,50 @@ app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     res.render('viewAllPosts',{ data: consolidatedData }); 
 });
 
-// View Profile Menus
-app.get("/viewprofile", isAuthenticated, async(req, res) => {
+// View Profile
+app.get("/viewProfile", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
-    const postsBuffer = await Post.find({userID: userData.userID});
 
-    const consolidatedData = {
-        user: userData,
-        posts: postsBuffer
+    try {
+        // Convert userID to ObjectId
+        const postsBuffer = await Post.find({ userID: new mongoose.Types.ObjectId(userData.userID) });
+
+        const consolidatedData = {
+            user: userData,
+            posts: postsBuffer
+        };
+
+        res.render("viewProfile", { data: consolidatedData });
+
+    } catch (error) {
+        console.error("Error fetching profile data:", error);
+        res.status(500).send("Internal Server Error");
     }
-
-    res.render("viewProfile", { data: consolidatedData });
 });
 
-app.get("/viewprofile1", isAuthenticated, async(req, res) => {
+app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
-    const commentsBuffer = await Comment.find({commenterID: userData.userID})
-    .populate({
-        
-    })
 
-    const consolidatedData = {
-        user: userData,
-        posts: commentsBuffer
+    try {
+        const commentsBuffer = await Comment.find({ commenterID: new mongoose.Types.ObjectId(userData.userID) });
+
+        const consolidatedData = {
+            user: userData,
+            posts: commentsBuffer
+        };
+
+        res.render("viewProfile1", { data: consolidatedData });
+
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+        res.status(500).send("Internal Server Error");
     }
-
-    res.render("viewProfile1", { data: consolidatedData });
 });
 
-app.get("/viewprofile2", isAuthenticated, (req, res) => {
+// View Profile 2 (Basic Info)
+app.get("/viewProfile2", isAuthenticated, (req, res) => {
     const userData = req.session.user;
-
-    res.render("viewProfile2", {userData});
+    res.render("viewProfile2", { userData });
 });
 
 app.get("/editProfile", isAuthenticated, async(req, res) => {
