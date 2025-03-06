@@ -39,21 +39,25 @@ app.use(
 const users = [{
     username: "Nate",
     password: "Admin",
+    nickname: "Nathaniel",
     userID: 1
 },
 {
     username: "Justin",
     password: "Admin",
+    nickname: "Jastin",
     userID: 2
 } ,
 {
     username: "Jed",
     password: "Admin",
+    nickname: "Jedidayah",
     userID: 3
 },
 {
     username: "Steven",
     password: "Admin",
+    nickname: "Tikoy",
     userID: 4
 }]
 
@@ -184,8 +188,11 @@ app.get("/viewprofile2", isAuthenticated, (req, res) => {
     res.render("viewProfile2", {userData});
 });
 
-app.get("/editprofile.html", (req, res) => {
-    res.sendFile(__dirname + "/CCAPDEV/editprofile.html");
+app.get("/editProfile", isAuthenticated, async(req, res) => {
+    const userData = req.session.user;
+
+    res.render("editProfile", {userData});
+
 });
 
 // View Specific Posts
@@ -275,27 +282,22 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
 });
 
 // Create a Comment
-app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
-    const userData = req.session.user;
-
+app.post("/createComment/:objectid", async(req, res) => {
     const { objectid } = req.params;
     const content = req.body.newReplyText;
-
+    
     await Comment.create({
         content: content,
-        commenterID: userData.userID,
-        commenterName: userData.username,
-        postID: objectid
+        userID: 2,
+        username: "CommentMaker"
     })
-        .then(result => {
-            console.log(result);
-        })
     
+
+    console.log(objectid);
 
     const requestedPost = await Post.findById(objectid).lean();
     const comments = await Comment.find();
     const commentsRender = comments.map(i => i.toObject());
-
 
     const consolidatedData = {
         postTitle: requestedPost.title,
@@ -305,7 +307,7 @@ app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
         postID: requestedPost._id
     }
 
-    res.render('Posts/post' + objectid, { data: consolidatedData }); // stay in the current post
+    res.render('Posts/post' + objectid, { data: consolidatedData });
 })
 
 // Start the server

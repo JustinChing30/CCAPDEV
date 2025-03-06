@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
     password: String, // Password
     contact: String,
     bio: String,
-    profilePic: String // temporary, just to fill out deets
+    profilePic: Image,
+    nickname: String
 })
 
 const User = mongoose.model('User', UserSchema)
