@@ -153,7 +153,8 @@ app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
     console.log(userData);
 
-    const posts = await Post.find(); // array of mongodb objects
+    const posts = await Post.find() // array of mongodb objects
+    .populate("userID");
     const postsRender = posts.map(i => i.toObject()); // make it into normal js objects
 
     const consolidatedData = {
