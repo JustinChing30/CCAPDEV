@@ -61,3 +61,22 @@ window.onclick = function(event) {
       closeModal();
   }
 };
+
+profileButton.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (profileDropdown.style.visibility === "visible") {
+    profileDropdown.style.opacity = "0";
+    profileDropdown.style.visibility = "hidden";
+  } else {
+    profileDropdown.style.opacity = "1";
+    profileDropdown.style.visibility = "visible";
+  }
+});
+
+// Close dropdown when clicking outside of it
+document.addEventListener("click", (e) => {
+  if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+    profileDropdown.style.opacity = "0";
+    profileDropdown.style.visibility = "hidden";
+  }
+});

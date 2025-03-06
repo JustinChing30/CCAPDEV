@@ -187,14 +187,17 @@ textarea {
 }
 
 .profile-dropdown {
-    display: none;
     position: absolute;
-    right: 10px;
-    top: 60px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
     padding: 10px;
-    min-width: 150px;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
     z-index: 1000;
+    width: 150px;
 }

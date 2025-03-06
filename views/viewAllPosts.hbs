@@ -46,7 +46,7 @@
         </div>
 
         <!-- Profile picture and username -->
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center position-relative">
           <div
             class="rounded-circle overflow-hidden pfp-topright"
           >
@@ -55,11 +55,11 @@
               src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGl0dGxlJTIwY2F0fGVufDB8fDB8fHww"
             />
           </button>
-            <div id="profileDropdown" class="profile-dropdown">
+          </div>
+              <div id="profileDropdown" class="profile-dropdown">
               <a href="/viewProfile">View Profile</a>
               <a href="/logout">Logout</a>
             </div>
-          </div>
           
           <p class="mb-0 ms-1">{{data.user.username}}</p>
         </div>
