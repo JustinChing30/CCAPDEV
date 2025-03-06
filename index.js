@@ -189,6 +189,7 @@ app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
 
     try {
+        console.log(mongoose.modelNames());
         const commentsBuffer = await Comment.find({commenterID: userData._id})
         .populate({
             path: "postID",

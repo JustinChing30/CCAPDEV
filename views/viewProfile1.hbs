@@ -24,7 +24,7 @@
 
                 <div class="profile-image-div"> 
                     <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGl0dGxlJTIwY2F0fGVufDB8fDB8fHww" class="sample-pic-header">
-                    <p >{{userData.username}}</p>
+                    <p >{{data.user.username}}</p>
                 </div>
             </div>
         </header>
@@ -34,7 +34,7 @@
 
             <div class="action-divs">
                 <div class="top-action-div">
-                    <p class="profile-username">{{userData.username}}</p>
+                    <p class="profile-username">{{data.user.username}}</p>
                     <button class="edit-profile-button" onclick="window.location.href='editprofile.html'">Edit Profile</button>
                 </div>
 
@@ -55,16 +55,16 @@
         <hr class="horizontal-line">
 
         <div class="div-comments">
-            {{#each comments}}
+            {{#each data.comments}}
                 <div class="comment-1">
                     <div class="header-comment1">
-                        <span class="comment-subject-tag1">CCPROG1</span>
-                        <p class="title-post1">&#x2022 Tips to survive CCPROG1 &#x2022 <span style="color: aquamarine">Justin332</span></p>
+                        <span class="comment-subject-tag1">{{this.postID.tag}}</span>
+                        <p class="title-post1">&#x2022 {{this.postID.title}} &#x2022 <span style="color: aquamarine">{{this.postID.userID.username}}</span></p>
                     </div>
                         
                     <p class="date-comment1">commented 2 mo. ago</p>
 
-                    <p class="comment">{{comments.content}}</p>
+                    <p class="comment">{{this.content}}</p>
 
                     <div class="actions">
                         <i class="bi bi-star"></i>
