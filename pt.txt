@@ -64,8 +64,8 @@
           <!-- Post -->
           <div class="col-12">
             <div class="border p-3 rounded-3 main-post">
-              <h3 class="mb-1"><b>{{data.postTitle}}</b></h3>
-              <span class="badge rounded-pill bg-success">{{data.postTag}}</span>
+              <h3 class="mb-1"><b>{{data.post.title}}</b></h3>
+              <span class="badge rounded-pill bg-success">{{data.post.tag}}</span>
               <div class="d-flex align-items-center">
                 <div
                 class="rounded-circle overflow-hidden pfp-comment"
@@ -76,10 +76,10 @@
                 />
               </a>
               </div>
-                <h5 class="comment-name">{{data.postUsername}}</h5>
+                <h5 class="comment-name">{{data.post.username}}</h5>
               </div>
               <p class="p-comment">
-                {{data.postContent}}
+                {{data.post.content}}
               </p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
@@ -100,7 +100,7 @@
                     src="https://plus.unsplash.com/premium_photo-1673967831980-1d377baaded2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2F0c3xlbnwwfHwwfHx8MA%3D%3D"
                   />
                 </div>
-                  <h5 class="comment-name">{{this.commenterName}}</h5>
+                  <h5 class="comment-name">{{this.commenterID.username}}</h5>
                 </div>
                 <p class="p-comment">{{this.content}}</p>
                 <div class="d-flex justify-content-end">
@@ -138,7 +138,7 @@
           <h2 class="mx-auto">Reply to post</h2>
           <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
-        <form action="/createComment/{{data.postID}}" method="POST">
+        <form action="/createComment/{{data.post._id}}" method="POST">
           <textarea placeholder="Write..." rows="15" id="newReplyText" name="newReplyText">
           </textarea>
           <br>

@@ -17,8 +17,8 @@ const fileUpload = require('express-fileupload')
 /* Initialize our post */
 const Post = require("./database/models/Post");
 const Comment = require("./database/models/Comment");
-const path = require('path'); // our path directory
 const User = require("./database/models/User");
+const path = require('path'); // our path directory
 
 app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
@@ -36,7 +36,7 @@ app.use(
 );
 
 // Insert details on users here
-const users = [{
+/* const users = [{
     username: "Nate",
     password: "Admin",
     nickname: "Nathaniel",
@@ -59,7 +59,7 @@ const users = [{
     password: "Admin",
     nickname: "Tikoy",
     userID: 4
-}]
+}] */
 
 app.use(cookieParser());
 
@@ -92,13 +92,15 @@ app.get("/login", (req, res) => {
     }
 })
 
-app.post("/login", express.urlencoded({ extended: true }), (req, res) => {
+app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
     const { username, password } = req.body;
     let accountFound = false;
 
+    const users = await User.find().lean(); // list of users
+
     // Check if the provided credentials are valid
     for (let i = 0; i < users.length; i++) {
-        if (username === users[i].username && password === "Admin") {
+        if (username === users[i].username && password === users[i].password) {
             accountFound = true;
             req.session.user = users[i];
             res.cookie("sessionId", req.sessionID);
@@ -139,6 +141,14 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
     }
 })
 
+app.get("/logout", (req, res) => {
+    // Destroy the session and redirect to the login page
+    req.session.destroy(() => {
+        res.clearCookie("sessionId");
+        res.redirect("/");
+    });
+})
+
 app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
     console.log(userData);
@@ -160,7 +170,7 @@ app.get("/viewProfile", isAuthenticated, async(req, res) => {
 
     try {
         // Convert userID to ObjectId
-        const postsBuffer = await Post.find({ userID: new mongoose.Types.ObjectId(userData.userID) });
+        const postsBuffer = await Post.find({ userID: userData._id });
 
         const consolidatedData = {
             user: userData,
@@ -179,15 +189,18 @@ app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
 
     try {
-        const commentsBuffer = await Comment.find({ commenterID: new mongoose.Types.ObjectId(userData.userID) });
+        const commentsBuffer = await Comment.find({commenterID: userData._id})
+        .populate({
+            path: "postID",
+            populate: { path: "userID", select: "username"}
+        })
 
         const consolidatedData = {
             user: userData,
-            posts: commentsBuffer
-        };
+            comments: commentsBuffer
+        }
 
         res.render("viewProfile1", { data: consolidatedData });
-
     } catch (error) {
         console.error("Error fetching comments:", error);
         res.status(500).send("Internal Server Error");
@@ -213,17 +226,14 @@ app.post("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objecti
 
     const userData = req.session.user
 
-    const requestedPost = await Post.findById(objectid).lean(); // .lean() converts mongoose document into plain JS object
-    const comments = await Comment.find({postID: objectid}); // only pass comments associated with this post
-    const commentsRender = comments.map(i => i.toObject()); // convert all comments to JS objects
+    const requestedPost = await Post.findById(objectid).lean();
+    const comments = await Comment.find({postID: objectid})
+    .populate("commenterID");
+    const commentsRender = comments.map(i => i.toObject());
 
     const consolidatedData = {
-        postTitle: requestedPost.title,
-        postTag: requestedPost.tag,
-        postContent: requestedPost.content,
+        post: requestedPost,
         comments: commentsRender,
-        postID: requestedPost._id,
-        postUsername: requestedPost.username,
         user: userData
     }
 
@@ -266,8 +276,7 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
         title: title, // Title
         tag: randomizedTag, // The post tag (CCAPDEV, CCINFOM, etc.)
         content: content, // Post content
-        userID: userData.userID,
-        username: userData.username
+        userID: userData._id,
     })
         .then(result => {
             objectID = result._id.toString();
@@ -295,28 +304,28 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
 
 // Create a Comment
 app.post("/createComment/:objectid", async(req, res) => {
+    const userData = req.session.user;
     const { objectid } = req.params;
     const content = req.body.newReplyText;
     
     await Comment.create({
         content: content,
-        userID: 2,
-        username: "CommentMaker"
+        commenterID: userData._id,
+        postID: objectid
     })
     
 
     console.log(objectid);
 
     const requestedPost = await Post.findById(objectid).lean();
-    const comments = await Comment.find();
+    const comments = await Comment.find({postID: objectid})
+    .populate("commenterID");
     const commentsRender = comments.map(i => i.toObject());
 
     const consolidatedData = {
-        postTitle: requestedPost.title,
-        postTag: requestedPost.tag,
-        postContent: requestedPost.content,
+        post: requestedPost,
         comments: commentsRender,
-        postID: requestedPost._id
+        user: userData
     }
 
     res.render('Posts/post' + objectid, { data: consolidatedData });
