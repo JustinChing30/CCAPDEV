@@ -31,3 +31,31 @@ closeButtons.forEach((button) => {
     document.getElementById("new-post-title").value = '';
   });
 });
+
+// Open the modal when clicking "Change Photo"
+function openModal() {
+  document.getElementById("changePhotoModal").style.display = "flex";
+}
+
+// Close the modal when clicking "Cancel" or outside the modal
+function closeModal() {
+  document.getElementById("changePhotoModal").style.display = "none";
+}
+
+// Trigger file input when clicking "Upload Photo"
+function triggerFileInput() {
+  document.getElementById("profilePicInput").click();
+}
+
+// Ensure the modal does NOT appear automatically when the page loads
+window.onload = function() {
+  document.getElementById("changePhotoModal").style.display = "none"; // Ensures the modal is hidden initially
+};
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+  let modal = document.getElementById("changePhotoModal");
+  if (event.target === modal) {
+      closeModal();
+  }
+};
