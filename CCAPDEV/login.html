@@ -19,12 +19,13 @@
                 </header>                
                 <main>
                     <div class="user-pass">
-                            
-                        <input type="text" id="name" placeholder="Enter username" class="username-textbox">
-    
-                        <input type="text" id="pass" placeholder="Enter password" class="password-textbox">
+                        <form action="/login" method="POST">
+                            <input type="text" id="username" name="username" placeholder="Enter username" class="username-textbox">
         
-                        <button class="login-button"> Login </button>
+                            <input type="text" id="password" name="password" placeholder="Enter password" class="password-textbox">
+            
+                            <button class="login-button" type="submit"> Login </button>
+                        </form>
                     </div>
                 </main>
 

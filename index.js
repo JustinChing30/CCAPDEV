@@ -26,48 +26,135 @@ app.use(fileUpload()) // for fileuploads
 
 /***********End export *******************/
 
-/* app.use(
+app.use(
     session({
         secret: "secret-key",
         resave: false,
         saveUninitialized: false,
     })
-); */
+);
 
 // Insert details on users here
+const users = [{
+    username: "Nate",
+    password: "Admin",
+    userID: 1
+},
+{
+    username: "Justin",
+    password: "Admin",
+    userID: 2
+} ,
+{
+    username: "Jed",
+    password: "Admin",
+    userID: 3
+},
+{
+    username: "Steven",
+    password: "Admin",
+    userID: 4
+}]
 
 app.use(cookieParser());
 
 // insert authentication here
+const isAuthenticated = (req, res, next) => {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect("/login");
+    }
+};
 
 app.get("/", async(req, res) => {
-    /* const posts = await Post.find(); // array of mongodb objects
-    const postsRender = posts.map(i => i.toObject()); // make it into normal js objects
-
-    res.render('viewAllPosts',{posts: postsRender}); */
-
-    res.sendFile(__dirname + "/CCAPDEV/login.html");
+    if (req.session.user) { // if they are logged into an account
+        res.redirect("/viewAllPosts"); 
+    }
+    else {
+        res.redirect("/login");
+    }
 });
+
+app.get("/login", (req, res) => {
+    if (req.session.user) {
+        res.redirect("/viewAllPosts");
+        // console.log("if condition");
+    }
+    else{
+        res.sendFile(__dirname + "/CCAPDEV/login.html");
+        // console.log("else condition");
+    }
+})
+
+app.post("/login", express.urlencoded({ extended: true }), (req, res) => {
+    const { username, password } = req.body;
+    let accountFound = false;
+
+    // Check if the provided credentials are valid
+    for (let i = 0; i < users.length; i++) {
+        if (username === users[i].username && password === "Admin") {
+            accountFound = true;
+            req.session.user = users[i];
+            res.cookie("sessionId", req.sessionID);
+
+            res.redirect("/viewAllPosts");
+        }
+    }
+
+    if (!accountFound) {
+        res.redirect("/");
+    }
+})
 
 app.get("/signUp", async(req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/signUp.html");
-})
+});
 
-app.get("/viewallposts", (req, res) => {
-    res.sendFile(__dirname + "/CCAPDEV/viewAllPosts.html");
+app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
+    const userData = req.session.user;
+    console.log(userData);
+
+    const posts = await Post.find(); // array of mongodb objects
+    const postsRender = posts.map(i => i.toObject()); // make it into normal js objects
+
+    const consolidatedData = {
+        user: userData,
+        posts: postsRender
+    }
+
+    res.render('viewAllPosts',{ data: consolidatedData }); 
 });
 
 // View Profile Menus
-app.get("/viewprofile.html", (req, res) => {
-    res.sendFile(__dirname + "/CCAPDEV/viewprofile.html")
+app.get("/viewprofile", isAuthenticated, async(req, res) => {
+    const userData = req.session.user;
+    const postsBuffer = await Post.find({userID: userData.userID});
+
+    const consolidatedData = {
+        user: userData,
+        posts: postsBuffer
+    }
+
+    res.render("viewProfile", { data: consolidatedData });
 });
 
-app.get("/viewprofile1.html", (req, res) => {
-    res.sendFile(__dirname + "/CCAPDEV/viewprofile1.html")
+app.get("/viewprofile1", isAuthenticated, async(req, res) => {
+    const userData = req.session.user;
+    const postsBuffer = await Post.find({userID: userData.userID});
+
+    const consolidatedData = {
+        user: userData,
+        posts: postsBuffer
+    }
+
+    res.render("viewProfile1", { data: consolidatedData });
 });
 
-app.get("/viewprofile2.html", (req, res) => {
-    res.sendFile(__dirname + "/CCAPDEV/viewprofile2.html")
+app.get("/viewprofile2", isAuthenticated, (req, res) => {
+    const userData = req.session.user;
+
+    res.render("viewProfile2", {userData});
 });
 
 app.get("/editprofile.html", (req, res) => {
@@ -75,8 +162,10 @@ app.get("/editprofile.html", (req, res) => {
 });
 
 // View Specific Posts
-app.post("/viewPost/:objectid", async(req, res) => { // objectid is a parameter here
+app.post("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid is a parameter here
     const { objectid } = req.params;
+
+    const userData = req.session.user
 
     const requestedPost = await Post.findById(objectid).lean();
     const comments = await Comment.find();
@@ -87,14 +176,17 @@ app.post("/viewPost/:objectid", async(req, res) => { // objectid is a parameter 
         postTag: requestedPost.tag,
         postContent: requestedPost.content,
         comments: commentsRender,
-        postID: requestedPost._id
+        postID: requestedPost._id,
+        postUsername: requestedPost.username,
+        user: userData
     }
 
     res.render('Posts/post' + objectid, { data: consolidatedData });
 });
 
 // Create a Post
-app.post("/create-post", async(req, res) => {
+app.post("/create-post", isAuthenticated, async(req, res) => {
+    const userData = req.session.user;
     const title = req.body.newPostTitle;
     const content = req.body.newPostText;
     let objectID = "";
@@ -106,21 +198,44 @@ app.post("/create-post", async(req, res) => {
         fileContent = data.toString('utf8');
     })
 
+    function getRandomInt() {
+        return Math.floor(Math.random() * 3); // Generates 0, 1, or 2
+      }
+
+    let randomizedTag = "";
+
+    switch (getRandomInt()) {
+        case 0:
+            randomizedTag = "CCAPDEV";
+            break;
+        case 1:
+            randomizedTag = "CCPROG1";
+            break;
+        case 2:
+            randomizedTag = "CCINFOM";
+            break;
+    }
+
     await Post.create({
         title: title, // Title
-        tag: "CCAPDEV", // The post tag (CCAPDEV, CCINFOM, etc.)
+        tag: randomizedTag, // The post tag (CCAPDEV, CCINFOM, etc.)
         content: content, // Post content
-        userID: 1
+        userID: userData.userID,
+        username: userData.username
     })
         .then(result => {
             objectID = result._id.toString();
         })
+        /* .then works here because Post.create() returns a Promise, which is an asynch operation
+        .then is used to handle the resolved value of a promise
+        Post.create resolves to the created post object, so you can chain .then to it */
 
 
     // write to a new file with the objectID set and place it in Posts folder
     const fileName = "post" + objectID + ".hbs";
     const pathToFile = path.join(__dirname, "/views/Posts",fileName);
 
+    console.log("fileContent: \n\n" + fileContent)
     fs.appendFile(pathToFile, fileContent, function (err) {
         if (err) {
             throw err;

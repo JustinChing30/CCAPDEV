@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Profile</title>
+
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="/css/styles3.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=DM+Serif+Text:ital@0;1&family=Play:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <header>
+            <div class="header-top">
+                <button class="new-post-button"> New Post </button>
+                
+                <div class="search-container"> 
+                    <input type="text" id="search" placeholder="Search" class="search-textbox">
+
+                    <button class="secondary-button"> 🔍</button>
+                </div>
+
+                <div class="profile-image-div"> 
+                    <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGl0dGxlJTIwY2F0fGVufDB8fDB8fHww" class="sample-pic-header">
+                    <p >{{userData.username}}</p>
+                </div>
+            </div>
+        </header>
+
+        <div class="top-div">
+            <img src="https://images.unsplash.com/photo-1529778873920-4da4926a72c2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bGl0dGxlJTIwY2F0fGVufDB8fDB8fHww" class="sample-pic-profile"> </span>
+
+            <div class="action-divs">
+                <div class="top-action-div">
+                    <p class="profile-username">{{userData.username}}</p>
+                    <button class="edit-profile-button" onclick="window.location.href='editprofile.html'">Edit Profile</button>
+                </div>
+
+                <p class="bio-tag">📕 Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+
+                <a href="https://github.com/shampeyndadi?tab=repositories" class="github-tag">🔗 Github</a>
+            </div>
+        </div>
+
+        <div class="button-div"> 
+            <button class="posts-button" id="postsBtn" onclick="window.location.href='/viewProfile'">Posts</button>
+
+            <button class="comments-button" id="commentsBtn" onclick="window.location.href='/viewProfile1'">Comments</button>
+
+            <button class="likes-button" id="likesBtn" onclick="window.location.href='/viewProfile2'">Likes</button>
+        </div>
+
+        <hr class="horizontal-line">
+
+        <div class="div-comments">
+            <div class="comment-1">
+                <div class="header-comment1">
+                    <span class="comment-subject-tag1">CCPROG1</span>
+                    <p class="title-post1">&#x2022 Tips to survive CCPROG1 &#x2022 <span style="color: aquamarine">Justin332</span></p>
+                </div>
+                     
+                <p class="date-comment1">commented 2 mo. ago</p>
+
+                <p class="comment">1. listen to teacher 2. listen to teacher.</p>
+
+                <div class="actions">
+                    <i class="bi bi-star"></i>
+
+                    <i class="bi bi-chat"></i>
+
+                    <i class="bi bi-share"></i>
+
+                </div>          
+            </div>
+        </div>
+
+    </body>
+</html>

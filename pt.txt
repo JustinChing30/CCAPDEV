@@ -55,7 +55,7 @@
             
           </div>
         </a>
-          <p class="mb-0 ms-1">Justin332</p>
+          <p class="mb-0 ms-1">{{data.user.username}}</p>
         </div>
       </div>
 
@@ -76,7 +76,7 @@
                 />
               </a>
               </div>
-                <h5 class="comment-name">Justin332</h5>
+                <h5 class="comment-name">{{data.postUsername}}</h5>
               </div>
               <p class="p-comment">
                 {{data.postContent}}
