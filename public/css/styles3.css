@@ -3,16 +3,14 @@ body{
     padding: 0;
 }
 
-.header-top{
+.header-top {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding: 10px;
-    margin-bottom: 20px;
-    height: 50px;
-    width: 100%;
-    color: white;
+    justify-content: space-between;
+    padding: 10px 20px;
     background-color: #5a5a5a;
+    color: white;
+    width: 100%;
 }
 
 .profile-image-div{
@@ -337,4 +335,17 @@ body{
 
 .post-link {
     text-decoration: none;
+}
+
+.home {
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: auto;
+}
+
+.home-text {
+    text-decoration: none;
+    color: white;
+    font-family: Arial;
+    font-size: 25px;
 }

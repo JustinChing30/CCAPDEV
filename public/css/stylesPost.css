@@ -186,6 +186,12 @@ textarea {
     color: white;
 }
 
+.home2 {
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 25px;
+}
+
 .profile-dropdown {
     position: absolute;
     top: 50px;
