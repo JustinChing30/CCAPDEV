@@ -248,22 +248,27 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
 });
 
 // Create a Comment
-app.post("/createComment/:objectid", async(req, res) => {
+app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
+    const userData = req.session.user;
+
     const { objectid } = req.params;
     const content = req.body.newReplyText;
-    
+
     await Comment.create({
         content: content,
-        userID: 2,
-        username: "CommentMaker"
+        commenterID: userData.userID,
+        commenterName: userData.username,
+        postID: objectid
     })
+        .then(result => {
+            console.log(result);
+        })
     
-
-    console.log(objectid);
 
     const requestedPost = await Post.findById(objectid).lean();
     const comments = await Comment.find();
     const commentsRender = comments.map(i => i.toObject());
+
 
     const consolidatedData = {
         postTitle: requestedPost.title,
@@ -273,7 +278,7 @@ app.post("/createComment/:objectid", async(req, res) => {
         postID: requestedPost._id
     }
 
-    res.render('Posts/post' + objectid, { data: consolidatedData });
+    res.render('Posts/post' + objectid, { data: consolidatedData }); // stay in the current post
 })
 
 // Start the server
