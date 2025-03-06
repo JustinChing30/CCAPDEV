@@ -17,7 +17,8 @@ const fileUpload = require('express-fileupload')
 /* Initialize our post */
 const Post = require("./database/models/Post");
 const Comment = require("./database/models/Comment");
-const path = require('path') // our path directory
+const path = require('path'); // our path directory
+const User = require("./database/models/User");
 
 app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
@@ -111,6 +112,29 @@ app.get("/signUp", async(req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/signUp.html");
 });
 
+app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
+    const { contact, pass, name, user } = req.body;
+
+    // Validity checking of the inputs
+    let validAccount = true;
+
+    if (validAccount) {
+        // Create a user
+        const newUser = await User.create({
+            name: name,
+            username: user,
+            password: pass,
+            contact: contact,
+            bio: "",
+            profilePic: "" 
+        })
+
+        req.session.user = newUser.toObject();
+
+        res.redirect("/");
+    }
+})
+
 app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
     console.log(userData);
@@ -141,11 +165,14 @@ app.get("/viewprofile", isAuthenticated, async(req, res) => {
 
 app.get("/viewprofile1", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
-    const postsBuffer = await Post.find({userID: userData.userID});
+    const commentsBuffer = await Comment.find({commenterID: userData.userID})
+    .populate({
+        
+    })
 
     const consolidatedData = {
         user: userData,
-        posts: postsBuffer
+        posts: commentsBuffer
     }
 
     res.render("viewProfile1", { data: consolidatedData });
@@ -167,9 +194,9 @@ app.post("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objecti
 
     const userData = req.session.user
 
-    const requestedPost = await Post.findById(objectid).lean();
-    const comments = await Comment.find();
-    const commentsRender = comments.map(i => i.toObject());
+    const requestedPost = await Post.findById(objectid).lean(); // .lean() converts mongoose document into plain JS object
+    const comments = await Comment.find({postID: objectid}); // only pass comments associated with this post
+    const commentsRender = comments.map(i => i.toObject()); // convert all comments to JS objects
 
     const consolidatedData = {
         postTitle: requestedPost.title,

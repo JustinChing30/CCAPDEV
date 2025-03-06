@@ -4,8 +4,10 @@ const PostSchema = new mongoose.Schema({
     title: String, // Title
     tag: String, // The post tag (CCAPDEV, CCINFOM, etc.)
     content: String, // Post content
-    userID: Number, // Was used to link Users to Posts. like it only showed posts where userID of User = userID of Post
-    username: String // username of person that posted it
+    userID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User" // references the _id of the User
+    } 
     // NOTE: need to add here a list of the different users that have liked the post
 })
 

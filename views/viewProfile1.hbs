@@ -55,25 +55,27 @@
         <hr class="horizontal-line">
 
         <div class="div-comments">
-            <div class="comment-1">
-                <div class="header-comment1">
-                    <span class="comment-subject-tag1">CCPROG1</span>
-                    <p class="title-post1">&#x2022 Tips to survive CCPROG1 &#x2022 <span style="color: aquamarine">Justin332</span></p>
+            {{#each comments}}
+                <div class="comment-1">
+                    <div class="header-comment1">
+                        <span class="comment-subject-tag1">CCPROG1</span>
+                        <p class="title-post1">&#x2022 Tips to survive CCPROG1 &#x2022 <span style="color: aquamarine">Justin332</span></p>
+                    </div>
+                        
+                    <p class="date-comment1">commented 2 mo. ago</p>
+
+                    <p class="comment">{{comments.content}}</p>
+
+                    <div class="actions">
+                        <i class="bi bi-star"></i>
+
+                        <i class="bi bi-chat"></i>
+
+                        <i class="bi bi-share"></i>
+
+                    </div>          
                 </div>
-                     
-                <p class="date-comment1">commented 2 mo. ago</p>
-
-                <p class="comment">1. listen to teacher 2. listen to teacher.</p>
-
-                <div class="actions">
-                    <i class="bi bi-star"></i>
-
-                    <i class="bi bi-chat"></i>
-
-                    <i class="bi bi-share"></i>
-
-                </div>          
-            </div>
+            {{/each}}
         </div>
 
     </body>

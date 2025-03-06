@@ -18,14 +18,16 @@
 
             <main>
                 <div class="user-input">
-                    <input type="text" id="contact" placeholder="Mobile Number or Email" class="contact-textbox">
-                    <input type="text" id="pass" placeholder="Password" class="password-textbox">
-                    <input type="text" id="name" placeholder="Full Name" class="name-textbox">
-                    <input type="text" id="user" placeholder="Username" class="username-textbox">
-                    <p>By signing up, you agree to our <span class="tp">Terms & Privacy Policy.</span></p>
-                    <button class="sign-up">
-                        Sign up
-                    </button>
+                    <form action="/signUp" method="POST">
+                        <input type="text" id="contact" name="contact" placeholder="Mobile Number or Email" class="contact-textbox">
+                        <input type="text" id="pass" name="pass" placeholder="Password" class="password-textbox">
+                        <input type="text" id="name" name="name" placeholder="Full Name" class="name-textbox">
+                        <input type="text" id="user" name="user" placeholder="Username" class="username-textbox">
+                        <p>By signing up, you agree to our <span class="tp">Terms & Privacy Policy.</span></p>
+                        <button class="sign-up" type="submit">
+                            Sign up
+                        </button>
+                    </form>
                 </div>
             </main>
 
@@ -41,7 +43,7 @@
         </div>
 
         <div class="login-page">
-            <p class="account-question">Have an account? <a href="login.html" class="go-back">Log in</a></p>
+            <p class="account-question">Have an account? <a href="/login" class="go-back">Log in</a></p>
         </div>
     </body>
 </html>

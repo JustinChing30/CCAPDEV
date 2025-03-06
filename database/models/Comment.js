@@ -2,9 +2,14 @@ const mongoose = require('mongoose')
 
 const PostSchema = new mongoose.Schema({
     content: String, // Post content
-    commenterID: Number, // Was used to link Users to Posts. like it only showed posts where userID of User = userID of Post
-    commenterName: String,
-    postID: String
+    commenterID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User" // references the _id of the user that posted 
+    },
+    postID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post" // references the _id of the post
+    }
     // NOTE: need to add here a list of the different users that have liked the comment
 })
 
