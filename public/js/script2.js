@@ -1,5 +1,7 @@
 const newPostBtn = document.getElementById("newPost"); // Button to open new post overlay
 const newPostOverlay = document.getElementById("NewPostOverlay"); // Button to close new post overlay
+const profileButton = document.getElementById("profileDropdownBtn"); // Button to open dropdown
+const profileDropdown = document.getElementById("profileDropdown"); // The actual dropdown
 
 const newposttextarea = document.getElementById("newPostText");
 const newposttitlearea = document.getElementById("newPostTitle");
@@ -31,3 +33,4 @@ closeButtons.forEach((button) => {
     document.getElementById("new-post-title").value = '';
   });
 });
+
