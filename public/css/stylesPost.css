@@ -115,6 +115,10 @@
     color: #85b88b;
 }
 
+.like-button.liked {
+    color:#60ff6d;
+}
+
 .reply-button {
     border: 0px;
     background-color: transparent;

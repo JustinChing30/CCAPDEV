@@ -8,6 +8,8 @@ const newposttitlearea = document.getElementById("newPostTitle");
 
 const closeButtons = document.querySelectorAll(".close-button");
 
+const likeButtons = document.querySelectorAll(".like-button")
+
 // Open new post overlay
 newPostBtn.addEventListener("click", () => {
   newPostOverlay.style.display = "flex";
@@ -80,3 +82,31 @@ document.addEventListener("click", (e) => {
     profileDropdown.style.visibility = "hidden";
   }
 });
+
+// The like button toggle
+async function toggleLike(button) {
+  const postId = button.dataset.postId; // Get post id from button
+
+  const response = await fetch(`/like/${postId}`, { method: "POST" });
+
+  button.classList.toggle("liked"); // Toggle if worked
+
+}
+
+// this is supposed to be to like check if user already liked it
+likeButtons.forEach(button => {
+  button.addEventListener("click", async () => {
+    const postId = button.dataset.postId;
+
+    const response = await fetch(`/like/${postId}`, { method: "POST" });
+    const data = await response.json();
+
+    if (data.liked === true) {
+      icon.classList.add("like-button liked");
+    } 
+    else {
+      icon.classList.remove("like-button liked");
+    }
+
+  });
+})

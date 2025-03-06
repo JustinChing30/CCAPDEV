@@ -332,6 +332,35 @@ app.post("/createComment/:objectid", async(req, res) => {
     res.render('Posts/post' + objectid, { data: consolidatedData });
 })
 
+// Like a post
+app.post("/like/:postId", isAuthenticated, async (req, res) => {
+    const userData = req.session.user;
+
+    const postId = req.params.postId;
+    const userId = userData._id;
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        const hasLiked = post.likes.some((id) => id.equals(userId)); // check if logged user already liked that post
+
+        // Toggle like
+        if (hasLiked) {
+            await Post.findByIdAndUpdate(postId, { $pull: { likes: userId } });
+            return res.json({ liked: false });
+        } else {
+            await Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } });
+            return res.json({ liked: true });
+        }
+
+        await post.save();
+        res.status(200).json({ liked: !hasLiked });
+
+});
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
