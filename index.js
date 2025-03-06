@@ -41,11 +41,17 @@ app.use(cookieParser());
 // insert authentication here
 
 app.get("/", async(req, res) => {
-    const posts = await Post.find(); // array of mongodb objects
+    /* const posts = await Post.find(); // array of mongodb objects
     const postsRender = posts.map(i => i.toObject()); // make it into normal js objects
 
-    res.render('viewAllPosts',{posts: postsRender});
+    res.render('viewAllPosts',{posts: postsRender}); */
+
+    res.sendFile(__dirname + "/CCAPDEV/login.html");
 });
+
+app.get("/signUp", async(req, res) => {
+    res.sendFile(__dirname + "/CCAPDEV/signUp.html");
+})
 
 app.get("/viewallposts", (req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/viewAllPosts.html");
