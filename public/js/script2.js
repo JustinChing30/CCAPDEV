@@ -62,12 +62,12 @@ window.onclick = function(event) {
   }
 };
 
+// Open dropdown
 profileButton.addEventListener("click", (e) => {
-  e.stopPropagation();
-  if (profileDropdown.style.visibility === "visible") {
+  if (profileDropdown.style.visibility === "visible") { // If dropdown is visible, hide it when button clicked
     profileDropdown.style.opacity = "0";
     profileDropdown.style.visibility = "hidden";
-  } else {
+  } else { // If dropdown is NOT visible, show it when button clicked
     profileDropdown.style.opacity = "1";
     profileDropdown.style.visibility = "visible";
   }
