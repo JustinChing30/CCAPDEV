@@ -83,30 +83,42 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// The like button toggle
-async function toggleLike(button) {
-  const postId = button.dataset.postId; // Get post id from button
-
-  const response = await fetch(`/like/${postId}`, { method: "POST" });
-
-  button.classList.toggle("liked"); // Toggle if worked
-
-}
-
-// this is supposed to be to like check if user already liked it
-likeButtons.forEach(button => {
-  button.addEventListener("click", async () => {
-    const postId = button.dataset.postId;
-
-    const response = await fetch(`/like/${postId}`, { method: "POST" });
-    const data = await response.json();
-
-    if (data.liked === true) {
-      icon.classList.add("like-button liked");
-    } 
-    else {
-      icon.classList.remove("like-button liked");
-    }
-
+document.addEventListener("DOMContentLoaded", () => { // this only runs once when the page loads, so 
+  document.querySelectorAll(".like-button").forEach((button) => {
+    const isLiked = button.getAttribute("data-liked") === "true";
+    button.classList.toggle("liked", isLiked); // Apply the "liked" class if true
   });
+
+  document.body.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("like-button")) { // check if the element clicked in body is a like-button
+      const button = event.target;
+      console.log("fetched data: " + button.getAttribute("data-liked"));
+      const isLiked = button.getAttribute("data-liked") === "true";
+      const postId = button.getAttribute("data-post-id");
+      
+      toggleLike(button, postId);
+
+      // console.log("script2.js");
+      try {
+        const response = await fetch(`/like/${postId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ liked: !isLiked })
+        });
+
+        // console.log(response);
+    
+        const data = await response.json();
+
+        console.log(data);
+
+        console.log("Setting attributes...");
+        button.setAttribute("data-liked", !isLiked);
+  
+        button.classList.toggle("liked", !isLiked);
+      } catch (error) {
+        console.error("Error toggling like:", error);
+      }
+    }
+  })
 })

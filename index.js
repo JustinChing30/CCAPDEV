@@ -154,8 +154,15 @@ app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     console.log(userData);
 
     const posts = await Post.find() // array of mongodb objects
-    .populate("userID");
-    const postsRender = posts.map(i => i.toObject()); // make it into normal js objects
+    .populate("userID").lean();
+
+    const postsRender = posts.map(post => ({
+        ...post,
+        liked: userData._id ? post.likes.some(likeId => likeId.toString() === userData._id.toString()) : "false"
+    })); // make it into normal js objects
+    // add a trait liked to the object to check if the current user has liked this post
+
+    console.log(postsRender);
 
     const consolidatedData = {
         user: userData,
@@ -334,7 +341,7 @@ app.post("/createComment/:objectid", async(req, res) => {
 
 // Like a post
 app.post("/like/:postId", isAuthenticated, async (req, res) => {
-    console.log("Here!");
+    console.log("index.js");
     const userData = req.session.user;
 
     const postId = req.params.postId;
