@@ -365,8 +365,6 @@ app.post("/like/:postId", isAuthenticated, async (req, res) => {
         return res.json({ liked: true });
     }
 
-    await post.save();
-    res.status(200).json({ liked: !hasLiked });
 });
 
 // Start the server
