@@ -34,10 +34,9 @@ body{
     margin-left: 20px;
     border-radius: 30px;
     border: 2px solid white;
-
 }
 
-.sample-pic-header:hover {
+.spic-header:hover {
     box-shadow: 0 0 5px 1px #f1ffc0;
     cursor: pointer;
 }
@@ -209,8 +208,6 @@ body{
     padding: 5px;
     color: white;
 }
-
-
 
 .profilePost {
     display: flex;

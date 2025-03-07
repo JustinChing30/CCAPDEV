@@ -370,6 +370,47 @@ app.post("/like/:postId", isAuthenticated, async (req, res) => {
 
 });
 
+app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
+    const userData = req.session.user; 
+
+    if (!req.files || !req.files.profilePic){
+        return res.status(400).send("No image uploaded");
+    }
+
+    const profilePic = req.files.profilePic;
+    const imageName = `profile_${userData._id}${path.extname(profilePic.name)}`;
+    const imagePath = path.join(__dirname, 'public/images', imageName);
+
+    try {
+        // Ensure the profile pictures directory exists
+        if (!fs.existsSync(path.join(__dirname, "public/images"))) {
+            fs.mkdirSync(path.join(__dirname, "public/images"), { recursive: true });
+        }
+
+        // Remove old profile picture if it exists (and is not the default)
+        if (userData.profilePic && userData.profilePic !== "/default-avatar.png") {
+            const oldImagePath = path.join(__dirname, "public", userData.profilePic);
+            if (fs.existsSync(oldImagePath)) {
+                fs.unlinkSync(oldImagePath);
+            }
+        }
+
+        // Save the new image
+        await profilePic.mv(imagePath);
+
+        // Update the user's profile picture in the database
+        await User.findByIdAndUpdate(userData._id, { profilePic: `/images/${imageName}` });
+
+        // Update session user
+        req.session.user.profilePic = `/images/${imageName}`;
+
+        res.redirect("/editProfile"); // Redirect to the edit profile page
+    } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        res.status(500).send("Error uploading profile picture.");
+    }
+});
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
