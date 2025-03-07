@@ -97,8 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("fetched data: " + button.getAttribute("data-liked"));
       const isLiked = button.getAttribute("data-liked") === "true";
       const postId = button.getAttribute("data-post-id");
-      
-      toggleLike(button, postId);
 
       try {
         const response = await fetch(`/like/${postId}`, {
