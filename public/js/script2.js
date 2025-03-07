@@ -113,6 +113,10 @@ document.addEventListener("DOMContentLoaded", () => {
         button.setAttribute("data-liked", !isLiked);
   
         button.classList.toggle("liked", !isLiked);
+
+        const likeCount = button.nextElementSibling; // referring to the like-count span group right beside/below the like button
+        likeCount.textContent = data.likes; // changes like counter
+
       } catch (error) {
         console.error("Error toggling like:", error);
       }

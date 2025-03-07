@@ -354,16 +354,19 @@ app.post("/like/:postId", isAuthenticated, async (req, res) => {
     const hasLiked = post.likes.some((id) => id.equals(userId)); // check if logged user already liked that post
     // the .some() is an array method that returns true if the id is in the array of likes, i.e. the user has liked it
     // the (id) variable is like an index (kunwari int i = 0; i < likes.size; i++) that goes through each user that has liked the
-    // post and does the id.equals method to the userId 
+    // post and does the id.equals method to the userId
 
     // Toggle like
     if (hasLiked) {
         await Post.findByIdAndUpdate(postId, { $pull: { likes: userId } });
-        return res.json({ liked: false });
     } else {
         await Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } });
-        return res.json({ liked: true });
     }
+
+    const updatedPost = await Post.findById(postId); // gets the post
+    const updatedLikeCount = updatedPost.likes.length; // gets the updated length
+
+    return res.json({ liked: !hasLiked , likes: updatedLikeCount });
 
 });
 
