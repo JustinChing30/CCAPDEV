@@ -209,7 +209,6 @@ app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     }
 });
 
-// View Profile 2 (Basic Info)
 app.get("/viewProfile2", isAuthenticated, (req, res) => {
     const userData = req.session.user;
     res.render("viewProfile2", { userData });
