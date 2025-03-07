@@ -83,12 +83,14 @@ document.addEventListener("click", (e) => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => { // this only runs once when the page loads, so 
+document.addEventListener("DOMContentLoaded", () => {
+  // Method to get all the like buttons and adjust the list of classes of the like buttons
   document.querySelectorAll(".like-button").forEach((button) => {
     const isLiked = button.getAttribute("data-liked") === "true";
     button.classList.toggle("liked", isLiked); // Apply the "liked" class if true
   });
 
+  // Method for clicking the like button
   document.body.addEventListener("click", async (event) => {
     if (event.target.classList.contains("like-button")) { // check if the element clicked in body is a like-button
       const button = event.target;
@@ -98,19 +100,16 @@ document.addEventListener("DOMContentLoaded", () => { // this only runs once whe
       
       toggleLike(button, postId);
 
-      // console.log("script2.js");
       try {
         const response = await fetch(`/like/${postId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ liked: !isLiked })
         });
-
-        // console.log(response);
     
         const data = await response.json();
 
-        console.log(data);
+        console.log(data); // data here is either "true" or "false"
 
         console.log("Setting attributes...");
         button.setAttribute("data-liked", !isLiked);
