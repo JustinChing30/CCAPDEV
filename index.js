@@ -20,6 +20,10 @@ const Comment = require("./database/models/Comment");
 const User = require("./database/models/User");
 const path = require('path'); // our path directory
 
+hbs.registerHelper("equal", function (a, b) {
+    return a === b;
+});
+
 app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // we'll add a static directory named "public"
@@ -91,6 +95,7 @@ app.get("/login", (req, res) => {
         // console.log("else condition");
     }
 })
+
 
 app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
     const { username, password } = req.body;
@@ -382,12 +387,10 @@ app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
     const imagePath = path.join(__dirname, 'public/images', imageName);
 
     try {
-        // Ensure the profile pictures directory exists
         if (!fs.existsSync(path.join(__dirname, "public/images"))) {
             fs.mkdirSync(path.join(__dirname, "public/images"), { recursive: true });
         }
 
-        // Remove old profile picture if it exists (and is not the default)
         if (userData.profilePic && userData.profilePic !== "/default-avatar.png") {
             const oldImagePath = path.join(__dirname, "public", userData.profilePic);
             if (fs.existsSync(oldImagePath)) {
@@ -395,20 +398,29 @@ app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
             }
         }
 
-        // Save the new image
         await profilePic.mv(imagePath);
 
-        // Update the user's profile picture in the database
         await User.findByIdAndUpdate(userData._id, { profilePic: `/images/${imageName}` });
 
-        // Update session user
         req.session.user.profilePic = `/images/${imageName}`;
 
-        res.redirect("/editProfile"); // Redirect to the edit profile page
+        res.redirect("/editProfile");
     } catch (error) {
         console.error("Error uploading profile picture:", error);
         res.status(500).send("Error uploading profile picture.");
     }
+});
+
+app.post("/updateFields", isAuthenticated, async(req, res) => {
+    const userData = req.session.user; 
+
+    const {bio, github, gender} = req.body
+
+    const updatedUser = await User.findByIdAndUpdate(userData._id, {bio, github, gender}, {new: true});
+
+    req.session.user = updatedUser.toObject();
+    
+    res.redirect("/viewProfile");
 });
 
 // Start the server

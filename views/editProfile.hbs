@@ -47,34 +47,34 @@
                 <button class="change-photo" onclick="openModal()"> Change photo</button>
             </div>
 
+        <form action="/updateFields" method="POST">
             <div class="bio-div">
                 <p class="bio-tag">Bio</p>
                 
-                <input type="text" id="bio" placeholder="Bio" class="bio-textbox">
+                <input type="text" name="bio" id="bio" placeholder="Bio" class="bio-textbox" value="{{userData.bio}}">
             </div>
 
             <div class="github-div">
                 <p class="github-tag">Github</p>
 
-                <input type="text" id="github-link" placeholder="Github" class="github-textbox">
+                <input type="text" name="github" id="github-link" placeholder="Github" class="github-textbox" value="{{userData.github}}">
             </div>
 
             <div class="gender-div">
                 <p class="gender-tag">Gender</p>
 
                 <select name="gender" id="genders" class="drop-box">
-                    <option value="Female">Female</option>
-                    <option value="Male">Male</option>
-                    <option value="Prefer not to say">Prefer not to say</option>
+                    <option value="Female" {{#if (userData.gender)}}{{#if (eq userData.gender "Female")}}selected{{/if}}{{/if}}>Female</option>
+                    <option value="Male" {{#if (userData.gender)}}{{#if (eq userData.gender "Male")}}selected{{/if}}{{/if}}>Male</option>
+                    <option value="Prefer not to say" {{#if (userData.gender)}}{{#if (eq userData.gender "Prefer not to say")}}selected{{/if}}{{/if}}>Prefer not to say</option>
+
                 </select>
             </div>
 
             <div class="save-changes-div">
-                <a href="/viewProfile">
                 <button class="save-changes">Save changes</button>
-                </a>
             </div>
-        </div>
+        </form>
 
         <div id="changePhotoModal" class="modal">
             <div class="modal-content">
