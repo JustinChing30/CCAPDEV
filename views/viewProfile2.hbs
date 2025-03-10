@@ -61,52 +61,56 @@
         <hr class="horizontal-line">
 
         <div class="div-likes">
-            <div class="comment-1">
-                <div class="header-comment1">
-                    <span class="comment-subject-tag1">CCPROG1</span>
-                    <p class="title-post1">&#x2022 Tips to survive CCPROG1 &#x2022 <span style="color: aquamarine">Justin332</span></p>
+            <!-- For each posts-->
+            {{#each data.posts}}
+                <div class="sample-liked-post">
+                    <a class="post-link" href="/CCAPDEV/Posts/post1.html">
+                    <div class="header-liked-post">
+                        <h1 class="post-header">{{this.title}}</h1>
+                        <span class="subject-tag1">{{this.tag}}</span>
+                    </div>
+
+                    <div class="user-div">
+                        <img src="https://plus.unsplash.com/premium_photo-1722859221349-26353eae4744?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZG9nfGVufDB8fDB8fHww" class="icon"/>
+                        <p style="color: white;">{{this.userId.username}}</p>
+                    </div>
+                    <p class="post-tag">{{this.content}}</p>
+
+                    <div class="actions">
+                        <i class="bi bi-star-fill"></i>
+
+                        <i class="bi bi-chat"></i>
+
+                        <i class="bi bi-share"></i>
+
+                    </div>     
+                </a>
                 </div>
-                     
-                <p class="date-comment1">commented 2 mo. ago</p>
+            {{/each}}
 
-                <p class="comment">1. listen to teacher 2. listen to teacher</p>
+            <!-- Each comment -->
+            {{#each data.comments}}
+                <div class="comment-1">
+                    <div class="header-comment1">
+                        <span class="comment-subject-tag1">{{this.postID.tag}}</span>
+                        <p class="title-post1">&#x2022 {{this.postID.title}} &#x2022 <span style="color: aquamarine">{{this.postID.userID.username}}</span></p>
+                    </div>
+                        
+                    <p class="date-comment1">commented 2 mo. ago</p>
 
-                <div class="actions">
-                    <i class="bi bi-star-fill"></i>
+                    <p class="comment">{{this.content}}</p>
 
-                    <i class="bi bi-chat"></i>
+                    <div class="actions">
+                        <i class="bi bi-star-fill"></i>
 
-                    <i class="bi bi-share"></i>
+                        <i class="bi bi-chat"></i>
 
-                </div>          
-            </div>
+                        <i class="bi bi-share"></i>
 
-            <div class="sample-liked-post">
-                <a class="post-link" href="/CCAPDEV/Posts/post1.html">
-                <div class="header-liked-post">
-                    <h1 class="post-header">Important Question</h1>
-                    <span class="subject-tag1">CCAPDEV</span>
+                    </div>          
                 </div>
+            {{/each}}
 
-                <div class="user-div">
-                    <img src="https://plus.unsplash.com/premium_photo-1722859221349-26353eae4744?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZG9nfGVufDB8fDB8fHww" class="icon"/>
-                    <p style="color: white;">Justin332</p>
-                </div>
-                <p class="post-tag">Any tips on how to make a simple website for our CCAPDEV project? It's kinda hard to start from scratch. I'm not sure where to begin. I'm thinking of using Bootstrap, but I'm not sure if it's the best option. Any suggestions?
-
-                    Extra text.
-                </p>
-
-                <div class="actions">
-                    <i class="bi bi-star-fill"></i>
-
-                    <i class="bi bi-chat"></i>
-
-                    <i class="bi bi-share"></i>
-
-                </div>     
-            </a>
-            </div>
         </div>
         
     </body>

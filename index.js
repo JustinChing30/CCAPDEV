@@ -221,9 +221,30 @@ app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     }
 });
 
-app.get("/viewProfile2", isAuthenticated, (req, res) => {
+app.get("/viewProfile2", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
-    res.render("viewProfile2", { userData });
+
+    try {
+        const likedPosts = await Post.find({likes: userData._id})
+        .populate("userID").lean();
+        const likedComments = await Comment.find({likes: userData._id})
+        .populate({
+            path: "postID",
+            populate: { path: "userID", select: "username"}
+        }).lean();
+
+        const consolidatedData = {
+            user: userData,
+            posts: likedPosts,
+            comments: likedComments
+        }
+
+        res.render("viewProfile2", { data: consolidatedData })
+    }
+    catch (error) {
+        console.error("Error fetching comments:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 app.get("/editProfile", isAuthenticated, async(req, res) => {
