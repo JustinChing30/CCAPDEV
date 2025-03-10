@@ -162,6 +162,8 @@ app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     .populate("userID").lean(); // this .lean() is important to convert the posts to regular objects
     // BEFORE adding the liked: property to the object
 
+    console.log(posts);
+
     // While rendering the posts, automatically set the value of "liked", which rep. whether or not the current user has liked the post
     const postsRender = posts.map(post => ({
         ...post, 
@@ -260,7 +262,8 @@ app.post("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objecti
 
     const userData = req.session.user
 
-    const requestedPost = await Post.findById(objectid).lean();
+    const requestedPost = await Post.findById(objectid).
+    populate("userID").lean();
     const comments = await Comment.find({postID: objectid})
     .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
     // BEFORE adding the liked: property to the object
@@ -289,7 +292,7 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
     let fileContent = "";
 
     // Read template file
-    const pathToFileTemplate = path.join(__dirname, 'pt.txt');
+    const pathToFileTemplate = path.join(__dirname, 'postTemplateFile.txt');
     fs.readFile(pathToFileTemplate, function(err, data) {
         fileContent = data.toString('utf8');
     })
@@ -353,11 +356,11 @@ app.post("/createComment/:objectid", async(req, res) => {
         commenterID: userData._id,
         postID: objectid
     })
-    
 
-    console.log(objectid);
+    // console.log(objectid);
 
-    const requestedPost = await Post.findById(objectid).lean();
+    const requestedPost = await Post.findById(objectid).
+    populate("userID").lean();
     const comments = await Comment.find({postID: objectid})
     .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
     // BEFORE adding the liked: property to the object
