@@ -159,10 +159,12 @@ app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     // console.log(userData);
 
     const posts = await Post.find() // array of mongodb objects
-    .populate("userID").lean();
+    .populate("userID").lean(); // this .lean() is important to convert the posts to regular objects
+    // BEFORE adding the liked: property to the object
 
+    // While rendering the posts, automatically set the value of "liked", which rep. whether or not the current user has liked the post
     const postsRender = posts.map(post => ({
-        ...post,
+        ...post, 
         liked: post.likes.some(likeId => likeId.toString() === userData._id.toString())
     })); // make it into normal js objects
     // add a trait liked to the object to check if the current user has liked this post
@@ -239,8 +241,14 @@ app.post("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objecti
 
     const requestedPost = await Post.findById(objectid).lean();
     const comments = await Comment.find({postID: objectid})
-    .populate("commenterID");
-    const commentsRender = comments.map(i => i.toObject());
+    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
+    // BEFORE adding the liked: property to the object
+
+    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
+    const commentsRender = comments.map(comment => ({
+        ...comment,
+        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }));
 
     const consolidatedData = {
         post: requestedPost,
@@ -301,7 +309,7 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
     const fileName = "post" + objectID + ".hbs";
     const pathToFile = path.join(__dirname, "/views/Posts",fileName);
 
-    console.log("fileContent: \n\n" + fileContent)
+    // console.log("fileContent: \n\n" + fileContent)
     fs.appendFileSync(pathToFile, fileContent, function (err) {
         if (err) {
             throw err;
@@ -330,8 +338,14 @@ app.post("/createComment/:objectid", async(req, res) => {
 
     const requestedPost = await Post.findById(objectid).lean();
     const comments = await Comment.find({postID: objectid})
-    .populate("commenterID");
-    const commentsRender = comments.map(i => i.toObject());
+    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
+    // BEFORE adding the liked: property to the object
+    
+    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
+    const commentsRender = comments.map(comment => ({
+        ...comment,
+        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }));
 
     const consolidatedData = {
         post: requestedPost,
@@ -344,7 +358,6 @@ app.post("/createComment/:objectid", async(req, res) => {
 
 // Like a post
 app.post("/like/:postId", isAuthenticated, async (req, res) => {
-    console.log("index.js");
     const userData = req.session.user;
 
     const postId = req.params.postId;
@@ -370,6 +383,37 @@ app.post("/like/:postId", isAuthenticated, async (req, res) => {
 
     const updatedPost = await Post.findById(postId); // gets the post
     const updatedLikeCount = updatedPost.likes.length; // gets the updated length
+
+    return res.json({ liked: !hasLiked , likes: updatedLikeCount });
+});
+
+// Like a Comment
+app.post("/likeComment/:commentId", isAuthenticated, async (req, res) => {
+    const userData = req.session.user;
+
+    const commentId = req.params.commentId;
+    const userId = userData._id;
+
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+        return res.status(404).json({ message: "Post not found" });
+    }
+
+    const hasLiked = comment.likes.some((id) => id.equals(userId)); // check if logged user already liked that post
+    // the .some() is an array method that returns true if the id is in the array of likes, i.e. the user has liked it
+    // the (id) variable is like an index (kunwari int i = 0; i < likes.size; i++) that goes through each user that has liked the
+    // post and does the id.equals method to the userId
+
+    // Toggle like
+    if (hasLiked) {
+        await Comment.findByIdAndUpdate(commentId, { $pull: { likes: userId } });
+    } else {
+        await Comment.findByIdAndUpdate(commentId, { $addToSet: { likes: userId } });
+    }
+
+    const updatedComment = await Comment.findById(commentId); // gets the post
+    const updatedLikeCount = updatedComment.likes.length; // gets the updated length
 
     return res.json({ liked: !hasLiked , likes: updatedLikeCount });
 

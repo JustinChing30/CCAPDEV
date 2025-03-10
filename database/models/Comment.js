@@ -9,9 +9,9 @@ const PostSchema = new mongoose.Schema({
     postID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "post_schema" // references the _id of the post
-    }
-    // NOTE: need to add here a list of the different users that have liked the comment
-})
+    },
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "user_schema" }] // an array of likes
+}, { versionKey: false })
 
 const Comment = mongoose.model('comment_schema', PostSchema); // mongoose.model(<Collectionname>, <CollectionSchema>)
 

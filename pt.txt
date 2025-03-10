@@ -104,7 +104,9 @@
                 </div>
                 <p class="p-comment">{{this.content}}</p>
                 <div class="d-flex justify-content-end">
-                  <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                  <!--<button class="material-symbols-outlined like-button" type="submit">thumb_up</button>-->
+                  <button class="material-symbols-outlined like-button" data-comment-id="{{this._id}}" data-liked="{{this.liked}}">thumb_up</button>
+                  <span class="like-count">{{this.likes.length}}</span>
                   <button class="material-symbols-outlined reply-button" type="button">reply</button>
               </div>
               </div>
