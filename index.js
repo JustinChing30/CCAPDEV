@@ -137,7 +137,6 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
             password: pass,
             contact: contact,
             bio: "",
-            profilePic: "" 
         })
 
         req.session.user = newUser.toObject();
