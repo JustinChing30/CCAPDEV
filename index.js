@@ -45,15 +45,15 @@ app.use(
     })
 );
 
-// to get currently logged-in user id
+// to get currently logged-in user stuff
 app.use((req, res, next) => {
-
     if (req.session && req.session.user) {
-        res.locals.loggedInUser = req.session.user._id.toString();
+        res.locals.loggedInUser = req.session.user._id.toString(); // user id
+        res.locals.loggedInUserData = req.session.user; // user data
     } else {
         res.locals.loggedInUser = null;
+        res.locals.loggedInUserData = null;
     }
-
     next();
 });
 
