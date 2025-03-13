@@ -142,7 +142,7 @@ app.get("/signUp", async(req, res) => {
 });
 
 app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
-    const { contact, pass, name, user } = req.body;
+    const { contact, pass, name, user, nickname } = req.body;
 
     // Validity checking of the inputs
     let validAccount = true;
@@ -154,6 +154,7 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
             username: user,
             password: pass,
             contact: contact,
+            nickname: nickname, 
             bio: "",
         })
 
@@ -474,9 +475,9 @@ app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
             fs.mkdirSync(path.join(__dirname, "public/images"), { recursive: true });
         }
 
-        if (userData.profilePic && userData.profilePic !== "/default-avatar.png") {
+        if (userData.profilePic && userData.profilePic !== "/defaultImage.png") {
             const oldImagePath = path.join(__dirname, "public", userData.profilePic);
-            if (fs.existsSync(oldImagePath)) {
+            if (fs.existsSync(oldImagePath) && !oldImagePath.includes("defaultImage.png")) {
                 fs.unlinkSync(oldImagePath);
             }
         }

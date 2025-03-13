@@ -43,7 +43,8 @@
 .contact-textbox, 
 .password-textbox,
 .name-textbox,
-.username-textbox{
+.username-textbox, 
+.nickname-textbox{
     width: 90%;
     padding: 10px;
     font-size: 16px;

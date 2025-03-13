@@ -47,7 +47,9 @@
 
                 <p class="bio-tag">{{data.user.bio}}</p>
 
-                <a href="{{data.user.github}}" class="github-tag">🔗 Github</a>
+                {{#if data.user.github}}
+                    <a href="{{data.user.github}}" class="github-tag">🔗 Github</a>
+                {{/if}}
             </div>
         </div>
 
