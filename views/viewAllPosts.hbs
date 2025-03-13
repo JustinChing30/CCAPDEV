@@ -142,8 +142,19 @@
         <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
       </div>
       <form action="/create-post" method="POST">
-        <textarea placeholder="Title..." rows="1" id="newPostTitle" name="newPostTitle"></textarea>
-        <textarea placeholder="Write..." rows="15" id="newPostText" name="newPostText"></textarea>
+        <select name="newPostTag" id="newPostTag" required>
+          <option value="" disabled selected>Select a tag</option>
+          <option value="CCAPDEV">CCAPDEV</option>
+          <option value="CCINFOM">CCINFOM</option>
+          <option value="CCPROG1">CCPROG1</option>
+          <option value="CCPROG2">CCPROG2</option>
+          <option value="CCPROG3">CCPROG3</option>
+          <option value="CSALGCM">CSALGCM</option>
+          <option value="STALGCM">STALGCM</option>
+          <option value="CSARCH1">CSARCH1</option>
+        </select>
+        <textarea placeholder="Title..." rows="1" id="newPostTitle" name="newPostTitle" required></textarea>
+        <textarea placeholder="Write..." rows="15" id="newPostText" name="newPostText" required></textarea>
         <br>
         <div class="d-flex justify-content-end">
           <button class="btn btn-success" type="submit">Post</button>

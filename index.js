@@ -286,6 +286,7 @@ app.post("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objecti
 app.post("/create-post", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
     const title = req.body.newPostTitle;
+    const tag = req.body.newPostTag;
     const content = req.body.newPostText;
     let objectID = "";
     let fileContent = "";
@@ -296,27 +297,9 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
         fileContent = data.toString('utf8');
     })
 
-    function getRandomInt() {
-        return Math.floor(Math.random() * 3); // Generates 0, 1, or 2
-      }
-
-    let randomizedTag = "";
-
-    switch (getRandomInt()) {
-        case 0:
-            randomizedTag = "CCAPDEV";
-            break;
-        case 1:
-            randomizedTag = "CCPROG1";
-            break;
-        case 2:
-            randomizedTag = "CCINFOM";
-            break;
-    }
-
     await Post.create({
         title: title, // Title
-        tag: randomizedTag, // The post tag (CCAPDEV, CCINFOM, etc.)
+        tag: tag, // The post tag (CCAPDEV, CCINFOM, etc.)
         content: content, // Post content
         userID: userData._id,
     })
