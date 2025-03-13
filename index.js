@@ -507,6 +507,7 @@ app.post("/updateFields", isAuthenticated, async(req, res) => {
 });
 
 // Start the server
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log('Listening to port 3000');

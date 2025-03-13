@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     contact: String,
     bio: String,
     github: String, 
-    profilePic: {type: String, default: "images/defaultImage.png"},
+    profilePic: {type: String, default: "/images/defaultImage.png"},
     nickname: String
 })
 
