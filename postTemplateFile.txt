@@ -45,16 +45,16 @@
 
         <!-- Profile picture and username -->
         <div class="d-flex align-items-center">
-          <div
-            class="rounded-circle overflow-hidden pfp-topright"
-          >
-          <a href="/CCAPDEV/CCAPDEV/viewprofile.html">
-            <img
-              src="{{data.user.profilePic}}"
-            />
-            
+          <div class="rounded-circle overflow-hidden pfp-topright">
+            <button type="button" id="profileDropdownBtn">
+              <img src="{{data.user.profilePic}}" class="sample-pic-profile"> 
+            </button>
           </div>
-        </a>
+              <div id="profileDropdown" class="profile-dropdown">
+                <a href="/viewProfile">View Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+
           <p class="mb-0 ms-1">{{data.user.username}}</p>
         </div>
       </div>
@@ -135,13 +135,13 @@
 
     <!-- Overlay for new comment/reply -->
     <div class="overlay" id="ReplyOverlay">
-      <div class="actual-overlay">
+      <div class="actual-reply-overlay">
         <div class="d-flex position-relative mb-2">
           <h2 class="mx-auto">Reply to post</h2>
           <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
         <form action="/createComment/{{data.post._id}}" method="POST">
-          <textarea placeholder="Write..." rows="15" id="newReplyText" name="newReplyText">
+          <textarea placeholder="Write..." rows="15" id="new-reply-text">
           </textarea>
           <br>
           <div class="d-flex justify-content-end">

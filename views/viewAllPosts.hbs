@@ -48,17 +48,15 @@
 
         <!-- Profile picture and username -->
         <div class="d-flex align-items-center position-relative">
-          <div
-            class="rounded-circle overflow-hidden pfp-topright"
-          >
+          <div class="rounded-circle overflow-hidden pfp-topright">
           <button type="button" id="profileDropdownBtn">
             <img src="{{data.user.profilePic}}" class="sample-pic-profile"> 
           </button>
           </div>
               <div id="profileDropdown" class="profile-dropdown">
-              <a href="/viewProfile">View Profile</a>
-              <a href="/logout">Logout</a>
-          </div>
+                <a href="/viewProfile">View Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
           
           <p class="mb-0 ms-1">{{data.user.username}}</p>
         </div>
