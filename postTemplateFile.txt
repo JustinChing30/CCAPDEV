@@ -12,7 +12,7 @@
   <body>
       <div class="d-flex justify-content-between align-items-center header-area">
         <!-- Home button -->
-        <div class="d-flex" style="font-size: 25px;">
+        <div class="d-flex" style="font-size: 25px; font-family: Arial; font-weight: bold;">
           <a class="home" href="/">
             <span style="color: rgb(139, 235, 139);">
               Green
@@ -67,14 +67,14 @@
               <h3 class="mb-1"><b>{{data.post.title}}</b></h3>
               <span class="badge rounded-pill bg-success">{{data.post.tag}}</span>
               <div class="d-flex align-items-center">
-                <div
-                class="rounded-circle overflow-hidden pfp-comment"
-              >
-              <a href="/CCAPDEV/CCAPDEV/viewprofile.html">
-                <img
-                  src="{{data.post.userID.profilePic}}"
-                />
-              </a>
+                <div class="rounded-circle overflow-hidden pfp-comment">
+                    {{#if (equals data.post.userID._id ../loggedInUser)}}
+                      <a href="/viewProfile">
+                    {{else}}
+                      <a href="/viewUserProfile/{{data.post.userID._id}}">
+                    {{/if}}
+                      <img src="{{data.post.userID.profilePic}}"/>
+                    </a>
               </div>
                 <h5 class="comment-name">{{data.post.userID.username}}</h5>
               </div>
