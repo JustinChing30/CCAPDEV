@@ -115,7 +115,11 @@
                 <span class="badge rounded-pill bg-success">{{this.tag}}</span>
                 <div class="d-flex align-items-center">
                   <div class="rounded-circle overflow-hidden pfp-comment">
-                    <a href="/CCAPDEV/CCAPDEV/viewprofile.html">
+                    {{#if (equals this.userID._id ../loggedInUser)}}
+                      <a href="/viewProfile">
+                    {{else}}
+                      <a href="/viewUserProfile/{{this.userID._id}}">
+                    {{/if}}
                       <img src="{{this.userID.profilePic}}">
                     </a>
                   </div>

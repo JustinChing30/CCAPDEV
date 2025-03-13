@@ -4,6 +4,12 @@ const cookieParser = require("cookie-parser");
  
 const app = express();
 const hbs = require('hbs');
+
+// to compare post user to logged in user
+hbs.registerHelper("equals", function (a, b) {
+    return String(a) === String(b);
+});
+
 app.set('view engine','hbs');
 
 const fs = require('fs');
@@ -38,6 +44,18 @@ app.use(
         saveUninitialized: false,
     })
 );
+
+// to get currently logged-in user id
+app.use((req, res, next) => {
+
+    if (req.session && req.session.user) {
+        res.locals.loggedInUser = req.session.user._id.toString();
+    } else {
+        res.locals.loggedInUser = null;
+    }
+
+    next();
+});
 
 // Insert details on users here
 /* const users = [{
@@ -361,6 +379,22 @@ app.post("/createComment/:objectid", async(req, res) => {
 
     res.render('Posts/post' + objectid, { data: consolidatedData });
 })
+
+// profile viewing
+app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
+    const userID = req.params.userID;
+    const userData = await User.findById(userID);
+
+    const postsBuffer = await Post.find({ userID: userID });
+
+    const consolidatedData = {
+        user: userData,
+        posts: postsBuffer
+    };
+
+    res.render("viewProfile1NoEdit", { data: consolidatedData }); // Reuse the same template
+
+});
 
 // Like a post
 app.post("/like/:postId", isAuthenticated, async (req, res) => {
