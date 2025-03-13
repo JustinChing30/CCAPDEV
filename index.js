@@ -383,8 +383,8 @@ app.post("/createComment/:objectid", async(req, res) => {
 // profile viewing
 app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
     const userID = req.params.userID;
-    const userData = await User.findById(userID);
 
+    const userData = await User.findById(userID); // Find user cause userID is just a string
     const postsBuffer = await Post.find({ userID: userID });
 
     const consolidatedData = {
@@ -392,8 +392,7 @@ app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
         posts: postsBuffer
     };
 
-    res.render("viewProfile1NoEdit", { data: consolidatedData }); // Reuse the same template
-
+    res.render("viewProfileNoEdit", { data: consolidatedData });
 });
 
 // Like a post
