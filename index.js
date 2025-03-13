@@ -275,7 +275,7 @@ app.get("/editProfile", isAuthenticated, async(req, res) => {
 });
 
 // View Specific Posts
-app.post("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid is a parameter here
+app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid is a parameter here
     const { objectid } = req.params;
 
     const userData = req.session.user
