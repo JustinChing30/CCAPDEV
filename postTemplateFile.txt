@@ -65,7 +65,7 @@
               <div class="d-flex align-items-center">
                 <div class="rounded-circle overflow-hidden pfp-comment">
                     {{#if (equals data.post.userID._id ../loggedInUser)}}
-                      <a href="/viewProfile">
+                      <a href="/viewProfile"> </a>
                     {{else}}
                       <a href="/viewUserProfile/{{data.post.userID._id}}">
                     {{/if}}
@@ -89,12 +89,14 @@
             <div class="col-12 p-1 comments">
               <div class="p-3 rounded-3 comments-bg">
                 <div class="d-flex align-items-center">
-                  <div
-                  class="rounded-circle overflow-hidden pfp-comment"
-                >
-                  <img
-                    src="{{this.commenterID.profilePic}}"
-                  />
+                  <div class="rounded-circle overflow-hidden pfp-comment">
+                    {{#if (equals this.commenterID._id ../loggedInUser)}}
+                      <a href="/viewProfile">
+                    {{else}}
+                      <a href="/viewUserProfile/{{this.commenterID._id}}">
+                    {{/if}}
+                      <img src="{{this.commenterID.profilePic}}"/>
+                    </a>
                 </div>
                   <h5 class="comment-name">{{this.commenterID.username}}</h5>
                 </div>
@@ -110,24 +112,6 @@
           {{/each}}
         </div>
       </div>
-
-    <!-- Overlay for new post -->
-    <div class="overlay" id="NewPostOverlay">
-      <div class="actual-overlay">
-        <div class="d-flex position-relative mb-2">
-          <h2 class="mx-auto">Create a new post</h2>
-          <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
-        </div>
-        <textarea placeholder="Title..." rows="1" id="new-post-title">
-        </textarea>
-        <textarea placeholder="Write..." rows="15" id="new-post-text">
-        </textarea>
-        <br>
-        <div class="d-flex justify-content-end">
-          <button class="btn btn-success">Post</button>
-       </div>
-      </div>
-    </div>
 
     <!-- Overlay for new comment/reply -->
     <div class="overlay" id="ReplyOverlay">

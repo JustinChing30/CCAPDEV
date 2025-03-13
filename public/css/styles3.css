@@ -346,3 +346,10 @@ body{
     font-family: Arial;
     font-size: 25px;
 }
+
+.horizontal-line {
+    width: 80%;
+    margin: 20px auto;
+    border: none;
+    border-top: 2px solid gray;
+}
