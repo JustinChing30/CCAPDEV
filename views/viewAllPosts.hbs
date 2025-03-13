@@ -108,9 +108,10 @@
             <div class="col-12">
               <div class="border p-3 rounded-3 main-post">
                 <h3 class="mb-1">
-                  <form action="viewPost/{{this._id}}" method="POST">
+                  {{!-- <form action="viewPost/{{this._id}}" method="POST">
                     <button class="post-link-button" type="submit"><b>{{this.title}}</b></button> <!--<b></b> was originally right under this former anchor tag-->
-                  </form>
+                  </form> --}}
+                  <a href="viewPost/{{this._id}}" class="post-link">{{this.title}}</a>
                 </h3>
                 <span class="badge rounded-pill bg-success">{{this.tag}}</span>
                 <div class="d-flex align-items-center">
