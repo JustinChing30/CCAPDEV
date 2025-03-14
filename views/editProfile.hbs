@@ -90,17 +90,6 @@
                 <input type="text" name="github" id="github-link" placeholder="Github" class="github-textbox" value="{{userData.github}}">
             </div>
 
-            <div class="gender-div">
-                <p class="gender-tag">Gender</p>
-
-                <select name="gender" id="genders" class="drop-box">
-                    <option value="Female" {{#if (userData.gender)}}{{#if (eq userData.gender "Female")}}selected{{/if}}{{/if}}>Female</option>
-                    <option value="Male" {{#if (userData.gender)}}{{#if (eq userData.gender "Male")}}selected{{/if}}{{/if}}>Male</option>
-                    <option value="Prefer not to say" {{#if (userData.gender)}}{{#if (eq userData.gender "Prefer not to say")}}selected{{/if}}{{/if}}>Prefer not to say</option>
-
-                </select>
-            </div>
-
             <div class="save-changes-div">
                 <button class="save-changes">Save changes</button>
             </div>
