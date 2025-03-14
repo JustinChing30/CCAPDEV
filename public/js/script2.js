@@ -29,10 +29,10 @@ newPostOverlay.addEventListener("click", (e) => {
 // Add listener to every both post and reply overlay close button so they do the same thing
 closeButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    document.getElementById("NewPostOverlay").style.display = "none";
+    newPostOverlay.style.display = "none";
     
-    document.getElementById("new-post-text").value = '';
-    document.getElementById("new-post-title").value = '';
+    newposttextarea.value = '';
+    newposttitlearea.value = '';
   });
 });
 

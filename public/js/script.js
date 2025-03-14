@@ -1,37 +1,25 @@
-const newPostBtn = document.getElementById("newPost"); // Button to open new post overlay
-const newPostOverlay = document.getElementById("NewPostOverlay"); // Button to close new post overlay
-
-const newposttextarea = document.getElementById("new-post-text");
-const newposttitlearea = document.getElementById("new-post-title");
+const profileButton = document.getElementById("profileDropdownBtn"); // Button to open dropdown
+const profileDropdown = document.getElementById("profileDropdown"); // The actual dropdown
 
 const replyButtons = document.querySelectorAll(".reply-button");
 const replyOverlay = document.getElementById("ReplyOverlay");
-const newreplytextarea = document.getElementById("new-reply-text");
+const newreplytextarea = document.getElementById("newReplyText");
 
 const closeButtons = document.querySelectorAll(".close-button");
-
-// Open new post overlay
-newPostBtn.addEventListener("click", () => {
-  newPostOverlay.style.display = "flex";
-  newposttextarea.value = '';
-  newposttitlearea.value = '';
-});
-
-// Close new post overlay by clicking outside of the box
-newPostOverlay.addEventListener("click", (e) => {
-  if (e.target === newPostOverlay) {
-    newPostOverlay.style.display = "none";
-    newposttextarea.value = '';
-    newposttitlearea.value = '';
-  }
-});
 
 // Add listener to every single reply button
 replyButtons.forEach((button) => {
   button.addEventListener("click", () => {
     replyOverlay.style.display = "flex";
-    newposttextarea.value = '';
-    newposttitlearea.value = '';
+
+    newreplytextarea.value = '';
+
+    const username = button.getAttribute("data-username");
+
+    if (username) { // if username is not null
+      newreplytextarea.value = `@${username} `;
+    }
+
   });
 });
 
@@ -40,20 +28,35 @@ replyOverlay.addEventListener("click", (e) => {
   if (e.target === replyOverlay) {
     replyOverlay.style.display = "none";
     newreplytextarea.value = '';
-    newposttitlearea.value = '';
   }
 });
 
 // Add listener to every both post and reply overlay close button so they do the same thing
 closeButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    document.getElementById("NewPostOverlay").style.display = "none";
-    document.getElementById("ReplyOverlay").style.display = "none";
+    replyOverlay.style.display = "none";
     
-    document.getElementById("new-post-text").value = '';
-    document.getElementById("new-post-title").value = '';
-    document.getElementById("new-reply-text").value = '';
+    newreplytextarea.value = '';
   });
+});
+
+// Open dropdown
+profileButton.addEventListener("click", (e) => {
+  if (profileDropdown.style.visibility === "visible") { // If dropdown is visible, hide it when button clicked
+    profileDropdown.style.opacity = "0";
+    profileDropdown.style.visibility = "hidden";
+  } else { // If dropdown is NOT visible, show it when button clicked
+    profileDropdown.style.opacity = "1";
+    profileDropdown.style.visibility = "visible";
+  }
+});
+
+// Close dropdown when clicking outside of it
+document.addEventListener("click", (e) => {
+  if (!profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+    profileDropdown.style.opacity = "0";
+    profileDropdown.style.visibility = "hidden";
+  }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
