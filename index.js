@@ -12,12 +12,14 @@ hbs.registerHelper("equals", function (a, b) {
 
 app.set('view engine','hbs');
 
-const fs = require('fs');
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/apdevDB');
 
-/* For file uplods */
+/* For file operations */
+const fs = require('fs');
+
+/* For file uploads */
 const fileUpload = require('express-fileupload')
 
 /* Initialize our post */
@@ -28,7 +30,7 @@ const path = require('path'); // our path directory
 
 app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
-app.use(express.static('public')) // we'll add a static directory named "public"
+app.use(express.static('public')) // Allows static files to be gathered from the 'public' directory
 app.use(fileUpload()) // for fileuploads
 
 /***********End export *******************/
@@ -53,35 +55,9 @@ app.use((req, res, next) => {
     next();
 });
 
-// Insert details on users here
-/* const users = [{
-    username: "Nate",
-    password: "Admin",
-    nickname: "Nathaniel",
-    userID: 1
-},
-{
-    username: "Justin",
-    password: "Admin",
-    nickname: "Jastin",
-    userID: 2
-} ,
-{
-    username: "Jed",
-    password: "Admin",
-    nickname: "Jedidayah",
-    userID: 3
-},
-{
-    username: "Steven",
-    password: "Admin",
-    nickname: "Tikoy",
-    userID: 4
-}] */
-
 app.use(cookieParser());
 
-// insert authentication here
+// Authentication
 const isAuthenticated = (req, res, next) => {
     if (req.session.user) {
         next();
@@ -99,6 +75,8 @@ app.get("/", async(req, res) => {
     }
 });
 
+/* Login method that directs to the login page if not already logged in.
+Otherwise, it directs the user to viewAllPosts */
 app.get("/login", (req, res) => {
     if (req.session.user) {
         res.redirect("/viewAllPosts");
@@ -110,7 +88,7 @@ app.get("/login", (req, res) => {
     }
 })
 
-
+/* Submitting a request to login with the encoded details */
 app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
     const { username, password } = req.body;
     let accountFound = false;
@@ -133,15 +111,32 @@ app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
     }
 })
 
+/* Sign Up method that directs user to the sign up page */
 app.get("/signUp", async(req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/signUp.html");
 });
 
+/* Submitting a request to sign up with the encoded details */
 app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
     const { contact, pass, name, user, nickname } = req.body;
 
+    const currentUsers = await User.find().lean();
+
     // Validity checking of the inputs
     let validAccount = true;
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailRegex.test(contact) == false) {
+        validAccount = false;
+    }
+
+    // check if encoded email and username is already being used
+    currentUsers.forEach((existingUser) => {
+        if (existingUser.username == user || existingUser.contact == contact) {
+            validAccount = false;
+        }
+    })
+
 
     if (validAccount) {
         // Create a user
@@ -157,6 +152,9 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
         req.session.user = newUser.toObject();
 
         res.redirect("/");
+    }
+    else {
+        res.redirect("/signUp")
     }
 })
 
