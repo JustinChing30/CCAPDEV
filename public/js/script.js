@@ -26,12 +26,9 @@ replyOverlay.addEventListener("click", (e) => {
 // Add listener to every both post and reply overlay close button so they do the same thing
 closeButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    document.getElementById("NewPostOverlay").style.display = "none";
-    document.getElementById("ReplyOverlay").style.display = "none";
+    replyOverlay.style.display = "none";
     
-    document.getElementById("new-post-text").value = '';
-    document.getElementById("new-post-title").value = '';
-    document.getElementById("newReplyText").value = '';
+    newreplytextarea.value = '';
   });
 });
 
