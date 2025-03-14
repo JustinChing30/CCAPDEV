@@ -3,7 +3,7 @@ const profileDropdown = document.getElementById("profileDropdown"); // The actua
 
 const replyButtons = document.querySelectorAll(".reply-button");
 const replyOverlay = document.getElementById("ReplyOverlay");
-const newreplytextarea = document.getElementById("new-reply-text");
+const newreplytextarea = document.getElementById("newReplyText");
 
 const closeButtons = document.querySelectorAll(".close-button");
 
@@ -31,7 +31,7 @@ closeButtons.forEach((button) => {
     
     document.getElementById("new-post-text").value = '';
     document.getElementById("new-post-title").value = '';
-    document.getElementById("new-reply-text").value = '';
+    document.getElementById("newReplyText").value = '';
   });
 });
 

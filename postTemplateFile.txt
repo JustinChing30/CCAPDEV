@@ -121,7 +121,7 @@
           <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
         <form action="/createComment/{{data.post._id}}" method="POST">
-          <textarea placeholder="Write..." rows="15" id="new-reply-text">
+          <textarea placeholder="Write..." rows="15" id="newReplyText" name="newReplyText">
           </textarea>
           <br>
           <div class="d-flex justify-content-end">

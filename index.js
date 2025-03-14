@@ -347,7 +347,7 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
 });
 
 // Create a Comment
-app.post("/createComment/:objectid", async(req, res) => {
+app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
     const { objectid } = req.params;
     const content = req.body.newReplyText;
@@ -357,6 +357,12 @@ app.post("/createComment/:objectid", async(req, res) => {
         commenterID: userData._id,
         postID: objectid
     })
+        .then(comment => {
+            console.log("Created comment: " + comment);
+        })
+        .catch(eerror => {
+            console.error("Error creating comment:", error);
+        })
 
     // console.log(objectid);
 
