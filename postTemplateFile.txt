@@ -78,7 +78,8 @@
                 {{data.post.content}}
               </p>
               <div class="d-flex justify-content-end">
-                <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
+                <button class="material-symbols-outlined like-button" data-post-id="{{data.post._id}}" data-liked="{{data.post.liked}}">thumb_up</button>
+                <span class="like-count">{{data.post.likes.length}}</span>
                 <button class="material-symbols-outlined reply-button post" type="button">reply</button>
              </div>
             </div>
@@ -132,5 +133,6 @@
     </div>
 
     <script src="/js/script.js"></script>
+    <script src="/js/script2.js"></script>
   </body>
 </html>

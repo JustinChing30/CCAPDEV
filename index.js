@@ -281,6 +281,11 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
     const requestedPost = await Post.findById(objectid).
     populate("userID").lean();
 
+    const requestedPostRender = {
+        ...requestedPost,
+        liked: requestedPost.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }
+
     // Select the comments of the post being viewed
     const comments = await Comment.find({postID: objectid})
     .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
@@ -294,7 +299,7 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
     }));
 
     const consolidatedData = {
-        post: requestedPost,
+        post: requestedPostRender,
         comments: commentsRender,
         user: userData
     }

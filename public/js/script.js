@@ -61,7 +61,9 @@ document.addEventListener("click", (e) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Method to get all the like buttons and adjust the list of classes of the like buttons
+  
   document.querySelectorAll(".like-button").forEach((button) => {
+    console.log("How many buttons are being set?");
     const isLiked = button.getAttribute("data-liked") === "true";
     console.log(button.getAttribute("data-liked"));
     button.classList.toggle("liked", isLiked); // Apply the "liked" class if true
@@ -71,33 +73,64 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", async (event) => {
     if (event.target.classList.contains("like-button")) { // check if the element clicked in body is a like-button
       const button = event.target;
-      console.log("fetched data: " + button.getAttribute("data-liked"));
-      const isLiked = button.getAttribute("data-liked") === "true";
-      const commentId = button.getAttribute("data-comment-id");
-
-      console.log("commentId: " + commentId);
-
-      try {
-        const response = await fetch(`/likeComment/${commentId}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ liked: !isLiked })
-        });
-    
-        const data = await response.json();
-
-        console.log(data); // data here is either "true" or "false"
-
-        console.log("Setting attributes...");
-        button.setAttribute("data-liked", !isLiked);
+      
+      if (button.hasAttribute("data-comment-id")) {
+        const commentId = button.getAttribute("data-comment-id");
+        console.log("fetched data: " + button.getAttribute("data-liked"));
+        const isLiked = button.getAttribute("data-liked") === "true";
   
-        button.classList.toggle("liked", !isLiked);
+        console.log("commentId: " + commentId);
+  
+        try {
+          const response = await fetch(`/likeComment/${commentId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ liked: !isLiked })
+          });
+      
+          const data = await response.json();
+  
+          console.log(data); // data here is either "true" or "false"
+  
+          console.log("Setting attributes...");
+          button.setAttribute("data-liked", !isLiked);
+    
+          button.classList.toggle("liked", !isLiked);
+  
+          const likeCount = button.nextElementSibling; // referring to the like-count span group right beside/below the like button
+          likeCount.textContent = data.likes; // changes like counter
+  
+        } catch (error) {
+          console.error("Error toggling like:", error);
+        }
+      }
+      else { // For clicking the liked button in the main post
+        console.log("fetched data: " + button.getAttribute("data-liked"));
+        const isLiked = button.getAttribute("data-liked") === "true";
+        const postId = button.getAttribute("data-post-id");
 
-        const likeCount = button.nextElementSibling; // referring to the like-count span group right beside/below the like button
-        likeCount.textContent = data.likes; // changes like counter
+        try {
+          const response = await fetch(`/like/${postId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ liked: !isLiked })
+          });
+      
+          const data = await response.json();
 
-      } catch (error) {
-        console.error("Error toggling like:", error);
+          console.log(data); // data here is either "true" or "false"
+
+          console.log("Setting attributes...");
+          button.setAttribute("data-liked", !isLiked);
+    
+          button.classList.toggle("liked", !isLiked);
+
+          const likeCount = button.nextElementSibling; // referring to the like-count span group right beside/below the like button
+          likeCount.textContent = data.likes; // changes like counter
+
+        } catch (error) {
+          console.error("Error toggling like:", error);
+        }
       }
     }
   })
