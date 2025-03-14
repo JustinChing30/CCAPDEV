@@ -489,7 +489,6 @@ app.post("/like/:postId", isAuthenticated, async (req, res) => {
 
     // Gather details of the post to be liked
     const postId = req.params.postId;
-
     const post = await Post.findById(postId);
 
     if (!post) {
@@ -508,19 +507,21 @@ app.post("/like/:postId", isAuthenticated, async (req, res) => {
         await Post.findByIdAndUpdate(postId, { $addToSet: { likes: userId } });
     }
 
-    const updatedPost = await Post.findById(postId); // gets the post
-    const updatedLikeCount = updatedPost.likes.length; // gets the updated length
+    // Select the updated post and the new like count
+    const updatedPost = await Post.findById(postId); 
+    const updatedLikeCount = updatedPost.likes.length;
 
+    // Send a json request back to whatever page the user is on that the post has been liked
     return res.json({ liked: !hasLiked , likes: updatedLikeCount });
 });
 
-// Like a Comment
+/* Post method to like a specified comment. The commentId parameter here represents the comment to be liked. */
 app.post("/likeComment/:commentId", isAuthenticated, async (req, res) => {
     const userData = req.session.user;
-
-    const commentId = req.params.commentId;
     const userId = userData._id;
 
+    // Gather details of the comment to be liked
+    const commentId = req.params.commentId;
     const comment = await Comment.findById(commentId);
 
     if (!comment) {
@@ -539,13 +540,15 @@ app.post("/likeComment/:commentId", isAuthenticated, async (req, res) => {
         await Comment.findByIdAndUpdate(commentId, { $addToSet: { likes: userId } });
     }
 
-    const updatedComment = await Comment.findById(commentId); // gets the post
-    const updatedLikeCount = updatedComment.likes.length; // gets the updated length
+    // Select the updated post and the new like count    
+    const updatedComment = await Comment.findById(commentId); 
+    const updatedLikeCount = updatedComment.likes.length;
 
+    // Send a json request back to whatever page the user is on that the comment has been liked
     return res.json({ liked: !hasLiked , likes: updatedLikeCount });
-
 });
 
+/* Post method to change the current user's profile picture in edit profile */
 app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
     const userData = req.session.user; 
 
@@ -582,6 +585,7 @@ app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
     }
 });
 
+/* Post method to update the details of the current user in edit profile */
 app.post("/updateFields", isAuthenticated, async(req, res) => {
     const userData = req.session.user; 
 
@@ -594,7 +598,7 @@ app.post("/updateFields", isAuthenticated, async(req, res) => {
     res.redirect("/viewProfile");
 });
 
-// search post
+/*
 app.get("/viewAllPosts/search", isAuthenticated, async(req, res) => {
     const { mySearch } = req.query;
     
@@ -614,10 +618,9 @@ app.get("/viewAllPosts/search", isAuthenticated, async(req, res) => {
         console.error("Error fetching post data:", error);
         res.status(500).send("Internal Server Error");
     }
-});
+}); */
 
 // Start the server
-
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log('Listening to port 3000');
