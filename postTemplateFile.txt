@@ -64,8 +64,8 @@
               <span class="badge rounded-pill bg-success">{{data.post.tag}}</span>
               <div class="d-flex align-items-center">
                 <div class="rounded-circle overflow-hidden pfp-comment">
-                    {{#if (equals data.post.userID._id ../loggedInUser)}}
-                      <a href="/viewProfile"> </a>
+                    {{#if (equals data.post.userID._id @root.loggedInUser)}}
+                      <a href="/viewProfile">
                     {{else}}
                       <a href="/viewUserProfile/{{data.post.userID._id}}">
                     {{/if}}
