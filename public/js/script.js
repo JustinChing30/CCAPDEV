@@ -75,22 +75,23 @@ document.addEventListener("DOMContentLoaded", () => {
       // Check if the button being clicked is a comment like button
       if (button.hasAttribute("data-comment-id")) {
         const commentId = button.getAttribute("data-comment-id");
-        console.log("fetched data: " + button.getAttribute("data-liked"));
+        // console.log("fetched data: " + button.getAttribute("data-liked"));
         const isLiked = button.getAttribute("data-liked") === "true";
   
         console.log("commentId: " + commentId);
   
         try {
+          // Sends a request to the /likeComment/${commentId} method that contains the boolean value of liked in the clicked like button
           const response = await fetch(`/likeComment/${commentId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ liked: !isLiked })
           });
       
+          // This data represents the sent json request data from this post method (for reference: return res.json({ liked: !hasLiked , likes: updatedLikeCount });)
           const data = await response.json();
   
-          console.log(data); // data here is either "true" or "false"
-  
+          // Set the attributes of the button properly
           console.log("Setting attributes...");
           button.setAttribute("data-liked", !isLiked);
     
@@ -104,21 +105,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       else { // For clicking the liked button in the main post
-        console.log("fetched data: " + button.getAttribute("data-liked"));
+        // console.log("fetched data: " + button.getAttribute("data-liked"));
         const isLiked = button.getAttribute("data-liked") === "true";
         const postId = button.getAttribute("data-post-id");
 
         try {
+          // Sends a request to the /like/${postId} method that contains the boolean value of liked in the clicked like button
           const response = await fetch(`/like/${postId}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ liked: !isLiked })
           });
       
+          // This data represents the sent json request data from this post method (for reference: return res.json({ liked: !hasLiked , likes: updatedLikeCount });)
           const data = await response.json();
 
-          console.log(data); // data here is either "true" or "false"
-
+          // Set the attributes of the button properly
           console.log("Setting attributes...");
           button.setAttribute("data-liked", !isLiked);
     
