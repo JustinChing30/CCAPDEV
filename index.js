@@ -158,6 +158,7 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
     }
 })
 
+/* Logging out of the current user */
 app.get("/logout", (req, res) => {
     // Destroy the session and redirect to the login page
     req.session.destroy(() => {
@@ -166,15 +167,14 @@ app.get("/logout", (req, res) => {
     });
 })
 
+/* Get method to view all the posts currently on the forum */
 app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
-    // console.log(userData);
 
+    // Select all posts
     const posts = await Post.find() // array of mongodb objects
     .populate("userID").lean(); // this .lean() is important to convert the posts to regular objects
     // BEFORE adding the liked: property to the object
-
-    // console.log(posts);
 
     // While rendering the posts, automatically set the value of "liked", which rep. whether or not the current user has liked the post
     const postsRender = posts.map(post => ({
@@ -191,37 +191,37 @@ app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     res.render('viewAllPosts',{ data: consolidatedData }); 
 });
 
-// View Profile
+/* Get method to view one's own profile and the list of posts they have made */
 app.get("/viewProfile", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
 
     try {
-        // Convert userID to ObjectId
-        const postsBuffer = await Post.find({ userID: userData._id });
+        // Select all posts that were made by the current user
+        const posts = await Post.find({ userID: userData._id }).lean();
 
         const consolidatedData = {
             user: userData,
-            posts: postsBuffer
+            posts: posts
         };
 
         res.render("viewProfile", { data: consolidatedData });
-
     } catch (error) {
         console.error("Error fetching profile data:", error);
         res.status(500).send("Internal Server Error");
     }
 });
 
+/* Get method to view one's own profile and the list of comments they have made */
 app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
 
     try {
-        // console.log(mongoose.modelNames());
+        // Select all comments that were made by the current user
         const commentsBuffer = await Comment.find({commenterID: userData._id})
         .populate({
             path: "postID",
             populate: { path: "userID", select: "username"}
-        })
+        }).lean();
 
         const consolidatedData = {
             user: userData,
@@ -235,15 +235,20 @@ app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     }
 });
 
+/* Get method to view one's own profile and the list of posts and comments they have liked */
 app.get("/viewProfile2", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
 
     try {
+        // Select all posts that were liked by the user
         const likedPosts = await Post.find({likes: userData._id})
         .populate("userID").lean();
-
+        
+        // Select all comments that were liked by the user
         const likedComments = await Comment.find({likes: userData._id})
         .populate("postID").lean();
+        
+        // NOTE: the likes: userData._id checks if the current user's objectID is in the list of users that have liked the post/comment
 
         const consolidatedData = {
             user: userData,
@@ -259,11 +264,11 @@ app.get("/viewProfile2", isAuthenticated, async(req, res) => {
     }
 });
 
+/* Get method to edit one's own profile*/
 app.get("/editProfile", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
 
     res.render("editProfile", {userData});
-
 });
 
 // View Specific Posts
