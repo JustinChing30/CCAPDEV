@@ -89,7 +89,7 @@
             <!-- For each posts-->
             {{#each data.posts}}
                 <div class="sample-liked-post">
-                    <a class="post-link" href="/CCAPDEV/Posts/post1.html">
+                    <a class="post-link" type="submit" href="/viewPost/{{this._id}}">
                     <div class="header-liked-post">
                         <h1 class="post-header">{{this.title}}</h1>
                         <span class="subject-tag1">{{this.tag}}</span>
@@ -116,6 +116,7 @@
             <!-- Each comment -->
             {{#each data.comments}}
                 <div class="comment-1">
+                    <a class="post-link" type="submit" href="/viewPost/{{this.postID._id}}">
                     <div class="header-comment1">
                         <span class="comment-subject-tag1">{{this.postID.tag}}</span>
                         <p class="title-post1">&#x2022 {{this.postID.title}} &#x2022 <span style="color: aquamarine">{{this.postID.userID.username}}</span></p>
