@@ -61,9 +61,7 @@ document.addEventListener("click", (e) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   // Method to get all the like buttons and adjust the list of classes of the like buttons
-  
   document.querySelectorAll(".like-button").forEach((button) => {
-    console.log("How many buttons are being set?");
     const isLiked = button.getAttribute("data-liked") === "true";
     console.log(button.getAttribute("data-liked"));
     button.classList.toggle("liked", isLiked); // Apply the "liked" class if true
@@ -74,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.target.classList.contains("like-button")) { // check if the element clicked in body is a like-button
       const button = event.target;
       
+      // Check if the button being clicked is a comment like button
       if (button.hasAttribute("data-comment-id")) {
         const commentId = button.getAttribute("data-comment-id");
         console.log("fetched data: " + button.getAttribute("data-liked"));
