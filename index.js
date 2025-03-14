@@ -390,6 +390,7 @@ app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
 // profile viewing
 app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
     const userID = req.params.userID;
+    const currentUser = req.session.user;
 
     const userData = await User.findById(userID); // Find user cause userID is just a string
     const postsBuffer = await Post.find({ userID: userID });
@@ -398,6 +399,10 @@ app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
         user: userData,
         posts: postsBuffer
     };
+
+    if (userID === currentUser._id) {
+        res.redirect("/viewProfile");
+    }
 
     res.render("viewProfileNoEdit", { data: consolidatedData });
 });
