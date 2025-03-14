@@ -271,19 +271,23 @@ app.get("/editProfile", isAuthenticated, async(req, res) => {
     res.render("editProfile", {userData});
 });
 
-// View Specific Posts
+/* Get method to view a specific post. The :objectid is a parameter that directs the user to the clicked post */
 app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid is a parameter here
     const { objectid } = req.params;
 
     const userData = req.session.user
 
+    // Select the post being viewed
     const requestedPost = await Post.findById(objectid).
     populate("userID").lean();
+
+    // Select the comments of the post being viewed
     const comments = await Comment.find({postID: objectid})
     .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
     // BEFORE adding the liked: property to the object
 
-    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
+    /* While rendering the comments, automatically set the value of "liked", which rep. whether or not 
+    the current user has liked the comment */
     const commentsRender = comments.map(comment => ({
         ...comment,
         liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
@@ -298,34 +302,38 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
     res.render('Posts/post' + objectid, { data: consolidatedData });
 });
 
-// Create a Post
+/* Post method to create a post */
 app.post("/create-post", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
+
+    // Gather post details
     const title = req.body.newPostTitle;
     const tag = req.body.newPostTag;
     const content = req.body.newPostText;
+
+    // Details for file creation
     let objectID = "";
     let fileContent = "";
 
-    // Read template file
+    // Read post template file
     const pathToFileTemplate = path.join(__dirname, 'postTemplateFile.txt');
     fs.readFile(pathToFileTemplate, function(err, data) {
         fileContent = data.toString('utf8');
     })
 
+    // Create the post and add it to the post database
     await Post.create({
-        title: title, // Title
-        tag: tag, // The post tag (CCAPDEV, CCINFOM, etc.)
-        content: content, // Post content
+        title: title, 
+        tag: tag, 
+        content: content, 
         userID: userData._id,
     })
         .then(result => {
-            objectID = result._id.toString();
+            objectID = result._id.toString(); // save the objecid of the created post
         })
         /* .then works here because Post.create() returns a Promise, which is an asynch operation
         .then is used to handle the resolved value of a promise
         Post.create resolves to the created post object, so you can chain .then to it */
-
 
     // write to a new file with the objectID set and place it in Posts folder
     const fileName = "post" + objectID + ".hbs";
@@ -343,28 +351,32 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
     res.redirect("/"); // sends it back to view all posts
 });
 
-// Create a Comment
+/* Get method to create a comment on the specified post. The objectid parameter here represents the post being replied to */
 app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
     const { objectid } = req.params;
+
+    // Gather comment content
     const content = req.body.newReplyText;
     
+    // Create the comment and add it to the comment database
     await Comment.create({
         content: content,
         commenterID: userData._id,
         postID: objectid
     })
         .then(comment => {
-            console.log("Created comment: " + comment);
+            // console.log("Created comment: " + comment);
         })
-        .catch(eerror => {
+        .catch(error => {
             console.error("Error creating comment:", error);
         })
 
-    // console.log(objectid);
-
+    // Select the post being replied to
     const requestedPost = await Post.findById(objectid).
     populate("userID").lean();
+
+    // Select the list of comments replying to the post the user is looking to reply to
     const comments = await Comment.find({postID: objectid})
     .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
     // BEFORE adding the liked: property to the object
@@ -381,15 +393,20 @@ app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
         user: userData
     }
 
+    // Re-render the post, but with the new comment just created
     res.render('Posts/post' + objectid, { data: consolidatedData });
 })
 
-// profile viewing other users
+/* Get method to view someone else's profile and the list of posts they have made. The userID parameter here represents the objectid of
+the user that the current user wants to view */
 app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
     const userID = req.params.userID;
     const currentUser = req.session.user;
 
-    const userData = await User.findById(userID); // Find user cause userID is just a string
+    // Select the data of the user to be viewed
+    const userData = await User.findById(userID);
+
+    // Select the posts made by the user to be viewed
     const postsBuffer = await Post.find({ userID: userID });
 
     const consolidatedData = {
@@ -397,13 +414,17 @@ app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
         posts: postsBuffer
     };
 
+    // In case a user clicks their own profile from a post, redirect them to view their own profile
     if (userID === currentUser._id) {
         res.redirect("/viewProfile");
     }
 
+    // Otherwise, redirect the user to the specified person's profile
     res.render("viewProfileNoEdit", { data: consolidatedData });
 });
 
+/* Get method to view someone else's profile and the list of comments they have made. The userID parameter here represents the objectid of
+the user that the current user wants to view */
 app.get("/viewUserProfile1/:userID", isAuthenticated, async(req, res) => {
     const commenterID = req.params.userID;
 
@@ -429,6 +450,8 @@ app.get("/viewUserProfile1/:userID", isAuthenticated, async(req, res) => {
     }
 });
 
+/* Get method to view someone else's profile and the list of posts and comments they have liked. The userID parameter here represents 
+the objectid of the user that the current user wants to view */
 app.get("/viewUserProfile2/:userID", isAuthenticated, async(req, res) => {
     const userID = req.params.userID;
 
@@ -454,12 +477,13 @@ app.get("/viewUserProfile2/:userID", isAuthenticated, async(req, res) => {
     }
 });
 
-// Like a post
+/* Post method to like a specified post. The postId parameter here represents the post to be liked. */
 app.post("/like/:postId", isAuthenticated, async (req, res) => {
     const userData = req.session.user;
-
-    const postId = req.params.postId;
     const userId = userData._id;
+
+    // Gather details of the post to be liked
+    const postId = req.params.postId;
 
     const post = await Post.findById(postId);
 
