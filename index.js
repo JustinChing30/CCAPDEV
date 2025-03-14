@@ -589,6 +589,28 @@ app.post("/updateFields", isAuthenticated, async(req, res) => {
     res.redirect("/viewProfile");
 });
 
+// search post
+app.get("/viewAllPosts/search", isAuthenticated, async(req, res) => {
+    const { mySearch } = req.query;
+    
+
+    try {
+        
+        const postsBuffer = await Post.find({$text: {$search: mySearch}});
+
+        const consolidatedData = {
+            title: title,
+            posts: postsBuffer
+        };
+
+        res.render("viewAllPosts", { data: consolidatedData });
+
+    } catch (error) {
+        console.error("Error fetching post data:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 // Start the server
 
 const PORT = 3000;
