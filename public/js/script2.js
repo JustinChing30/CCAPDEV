@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const isLiked = button.getAttribute("data-liked") === "true";
     button.classList.toggle("liked", isLiked); // Apply the "liked" class if true
   });
+  
 
   // Method for clicking the like button
   document.body.addEventListener("click", async (event) => {
@@ -122,4 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   })
+  
 })
+
+document.addEventListener("DOMContentLoaded", function() {
+  const searchInput = document.getElementById("mySearch");
+  const searchBtn = document.getElementById("searchBtn");
+})
+    

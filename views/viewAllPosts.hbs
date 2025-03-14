@@ -29,23 +29,27 @@
           <button class="btn new-post-button" type="button" id="newPost">
             New Post
           </button>
-
+          <form class = "d-flex" action = "/viewAllPosts" method = "GET">
           <!-- Search bar -->
           <div class="input-group search-bar">
             <input
+              id = "mySearch"
               type="text"
               class="form-control form-control-search border-end-0"
               placeholder="Search"
             />
             <button
+              id = "searchBtn"
               class="btn btn-outline-secondary btn-search border-start-0"
-              type="button"
             >
               🔍
             </button>
+            
           </div>
+          </form>
         </div>
 
+        
         <!-- Profile picture and username -->
         <div class="d-flex align-items-center position-relative">
           <div
