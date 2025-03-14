@@ -79,7 +79,7 @@
               </p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" type="submit">thumb_up</button>
-                <button class="material-symbols-outlined reply-button" type="button">reply</button>
+                <button class="material-symbols-outlined reply-button post" type="button">reply</button>
              </div>
             </div>
           </div>
@@ -105,7 +105,7 @@
                   <!--<button class="material-symbols-outlined like-button" type="submit">thumb_up</button>-->
                   <button class="material-symbols-outlined like-button" data-comment-id="{{this._id}}" data-liked="{{this.liked}}">thumb_up</button>
                   <span class="like-count">{{this.likes.length}}</span>
-                  <button class="material-symbols-outlined reply-button" type="button">reply</button>
+                  <button class="material-symbols-outlined reply-button comment" type="button" data-username="{{this.commenterID.username}}">reply</button>
               </div>
               </div>
             </div>

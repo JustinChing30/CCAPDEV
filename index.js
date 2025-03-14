@@ -176,7 +176,7 @@ app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
     .populate("userID").lean(); // this .lean() is important to convert the posts to regular objects
     // BEFORE adding the liked: property to the object
 
-    console.log(posts);
+    // console.log(posts);
 
     // While rendering the posts, automatically set the value of "liked", which rep. whether or not the current user has liked the post
     const postsRender = posts.map(post => ({
@@ -218,7 +218,7 @@ app.get("/viewProfile1", isAuthenticated, async(req, res) => {
     const userData = req.session.user;
 
     try {
-        console.log(mongoose.modelNames());
+        // console.log(mongoose.modelNames());
         const commentsBuffer = await Comment.find({commenterID: userData._id})
         .populate({
             path: "postID",
@@ -243,11 +243,9 @@ app.get("/viewProfile2", isAuthenticated, async(req, res) => {
     try {
         const likedPosts = await Post.find({likes: userData._id})
         .populate("userID").lean();
+
         const likedComments = await Comment.find({likes: userData._id})
-        .populate({
-            path: "postID",
-            populate: { path: "userID", select: "username"}
-        }).lean();
+        .populate("postID").lean();
 
         const consolidatedData = {
             user: userData,
@@ -409,7 +407,7 @@ app.get("/viewUserProfile1/:userID", isAuthenticated, async(req, res) => {
     const userData = await User.findById(commenterID); // Find user cause userID is just a string
 
     try {
-        console.log(mongoose.modelNames());
+        // console.log(mongoose.modelNames());
         const commentsBuffer = await Comment.find({commenterID: commenterID})
         .populate({
             path: "postID",
@@ -437,10 +435,7 @@ app.get("/viewUserProfile2/:userID", isAuthenticated, async(req, res) => {
         const likedPosts = await Post.find({likes: userData._id})
         .populate("userID").lean();
         const likedComments = await Comment.find({likes: userData._id})
-        .populate({
-            path: "postID",
-            populate: { path: "userID", select: "username"}
-        }).lean();
+        .populate("postID").lean();
 
         const consolidatedData = {
             user: userData,

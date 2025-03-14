@@ -11,7 +11,15 @@ const closeButtons = document.querySelectorAll(".close-button");
 replyButtons.forEach((button) => {
   button.addEventListener("click", () => {
     replyOverlay.style.display = "flex";
+
     newreplytextarea.value = '';
+
+    const username = button.getAttribute("data-username");
+
+    if (username) { // if username is not null
+      newreplytextarea.value = `@${username} `;
+    }
+
   });
 });
 
