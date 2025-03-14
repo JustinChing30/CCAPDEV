@@ -46,7 +46,7 @@
             <div class="d-flex align-items-center position-relative">
             <div class="rounded-circle overflow-hidden pfp-topright">
             <button type="button" id="profileDropdownBtn">
-                <img src="{{data.user.profilePic}}" class="sample-pic-profile"> 
+                <img src="{{loggedInUserData.profilePic}}" class="sample-pic-profile"> 
             </button>
             </div>
                 <div id="profileDropdown" class="profile-dropdown">
@@ -54,7 +54,7 @@
                     <a href="/logout">Logout</a>
                 </div>
             
-            <p class="mb-0 ms-1">{{data.user.username}}</p>
+            <p class="mb-0 ms-1">{{loggedInUserData.username}}</p>
             </div>
         </div>
 
@@ -75,11 +75,11 @@
         </div>
 
         <div class="button-div"> 
-            <button class="posts-button" id="postsBtn" onclick="window.location.href='/viewProfileNoEdit'">Posts</button>
+            <button class="posts-button" id="postsBtn" onclick="window.location.href='/viewUserProfile/{{data.user._id}}'">Posts</button>
 
-            <button class="comments-button" id="commentsBtn" onclick="window.location.href='/viewProfile1NoEdit'">Comments</button>
+            <button class="comments-button" id="commentsBtn" onclick="window.location.href='/viewUserProfile1/{{data.user._id}}'">Comments</button>
 
-            <button class="likes-button" id="likesBtn" onclick="window.location.href='/viewProfile2NoEdit'">Likes</button>
+            <button class="likes-button" id="likesBtn" onclick="window.location.href='/viewUserProfile2/{{data.user._id}}'">Likes</button>
         </div>
 
         <hr class="horizontal-line">
@@ -108,5 +108,6 @@
             {{/each}}
         </div>
 
+    <script src="js/script4.js" defer></script>
     </body>
 </html>

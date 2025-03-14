@@ -26,10 +26,6 @@ const Comment = require("./database/models/Comment");
 const User = require("./database/models/User");
 const path = require('path'); // our path directory
 
-hbs.registerHelper("equal", function (a, b) {
-    return a === b;
-});
-
 app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // we'll add a static directory named "public"
@@ -387,7 +383,7 @@ app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
     res.render('Posts/post' + objectid, { data: consolidatedData });
 })
 
-// profile viewing
+// profile viewing other users
 app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
     const userID = req.params.userID;
 
@@ -400,6 +396,59 @@ app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
     };
 
     res.render("viewProfileNoEdit", { data: consolidatedData });
+});
+
+app.get("/viewUserProfile1/:userID", isAuthenticated, async(req, res) => {
+    const commenterID = req.params.userID;
+
+    const userData = await User.findById(commenterID); // Find user cause userID is just a string
+
+    try {
+        console.log(mongoose.modelNames());
+        const commentsBuffer = await Comment.find({commenterID: commenterID})
+        .populate({
+            path: "postID",
+            populate: { path: "userID", select: "username"}
+        })
+
+        const consolidatedData = {
+            user: userData,
+            comments: commentsBuffer
+        }
+
+        res.render("viewProfile1NoEdit", { data: consolidatedData });
+    } catch (error) {
+        console.error("Error fetching comments:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.get("/viewUserProfile2/:userID", isAuthenticated, async(req, res) => {
+    const userID = req.params.userID;
+
+    const userData = await User.findById(userID);
+
+    try {
+        const likedPosts = await Post.find({likes: userData._id})
+        .populate("userID").lean();
+        const likedComments = await Comment.find({likes: userData._id})
+        .populate({
+            path: "postID",
+            populate: { path: "userID", select: "username"}
+        }).lean();
+
+        const consolidatedData = {
+            user: userData,
+            posts: likedPosts,
+            comments: likedComments
+        }
+
+        res.render("viewProfile2NoEdit", { data: consolidatedData })
+    }
+    catch (error) {
+        console.error("Error fetching comments:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 // Like a post
