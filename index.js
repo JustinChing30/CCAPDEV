@@ -44,6 +44,8 @@ app.use(fileUpload()) // for fileuploads
 
 /***********End export *******************/
 
+console.log("Mongo URI:", process.env.MONGO_URI);
+
 app.use(
     session({
         secret: "secret-key",
