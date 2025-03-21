@@ -2,7 +2,8 @@ const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
- 
+
+
 const app = express();
 const hbs = require('hbs');
 
@@ -14,8 +15,15 @@ hbs.registerHelper("equals", function (a, b) {
 app.set('view engine','hbs');
 
 
+require("dotenv").config();
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/apdevDB');
+
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+.then(() => console.log("✅ Successfully connected to MongoDB Atlas"))
+.catch(err => console.error("❌ MongoDB connection error:", err));
 
 /* For file operations */
 const fs = require('fs');
@@ -41,8 +49,10 @@ app.use(
         secret: "secret-key",
         resave: false,
         saveUninitialized: false,
-        store: MongoStore.create({ mongoUrl: 'mongodb://localhost/apdevDB' }) // added to work w/ MongoStore
-    })
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URI,
+            ttl: 14 * 24 * 60 * 60, // Session expiration (optional)
+        }),})
 );
 
 // to get currently logged-in user stuff
