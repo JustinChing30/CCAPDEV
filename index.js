@@ -41,7 +41,7 @@ app.use(
         secret: "secret-key",
         resave: false,
         saveUninitialized: false,
-        store: MongoStore.create(options) // added to work w/ MongoStore
+        store: MongoStore.create({ mongoUrl: 'mongodb://localhost/apdevDB' }) // added to work w/ MongoStore
     })
 );
 
