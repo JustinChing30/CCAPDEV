@@ -18,12 +18,9 @@ app.set('view engine','hbs');
 require("dotenv").config();
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log("✅ Successfully connected to MongoDB Atlas"))
-.catch(err => console.error("❌ MongoDB connection error:", err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to atlas"))
+  .catch(err => console.error("Connection error:", err));
 
 /* For file operations */
 const fs = require('fs');
