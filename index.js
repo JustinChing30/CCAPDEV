@@ -75,11 +75,13 @@ passport.serializeUser(function(user, cb) {
 });
 
 // Called on every authenticated request & retrieves full user object from DB using the stored user ID in session
-passport.deserializeUser(function(id, cb) {
-    User.findById(id, function (err, user) {
-        if (err) { return cb(err); }
-        cb(null, user);
-    });
+passport.deserializeUser(async function(id, cb) {
+    try {
+        const user = await User.findById(id);  // Use await for asynchronous call
+        cb(null, user);  // Once user is found, pass the user object to callback
+    } catch (err) {
+        cb(err);  // Handle error if something goes wrong
+    }
 });
 
 app.use(
@@ -141,7 +143,7 @@ app.get("/login", (req, res) => {
 })
 
 /* Submitting a request to login with the encoded details */
-app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
+/* app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
     const { username, password } = req.body;
     let accountFound = false;
 
@@ -173,18 +175,57 @@ app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
     req.session.user = foundUser;
     res.cookie("sessionID", req.sessionID);
     res.redirect("/viewAllPosts");
-})
+}) */
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
     if (err) next(err);
 });
 
-app.get('/login-success', (req, res, next) => {
-    res.send('<p>You successfully logged in. --> <a href="/viewAllPosts">Go to viewAllPosts</a></p>');
+app.get('/login-success', async (req, res, next) => {
+    /* const { username, password } = req.body;
+    let accountFound = false;
+
+    const users = await User.find().lean(); // list of users
+
+    let foundUser = null;
+    let passwordCorrect = false;
+
+    // Check if the provided credentials are valid
+    for (let i = 0; i < users.length; i++) {
+        if (username === users[i].username) {
+            foundUser = users[i];
+
+            if (password == users[i].password){
+                passwordCorrect = true;
+                break;
+            }
+        }
+    } */
+
+    /* if (!foundUser) {
+        return res.redirect("/login?error=Username+not+found");
+    }
+
+    if (!passwordCorrect) {
+        return res.redirect("/login?error=Incorrect+password");
+    } */
+
+    const userId = req.session.passport.user;
+    console.log("Current user id: " + req.session.passport);
+    
+    try {
+        const user = await User.findById(userId);
+        req.session.user = user;
+        res.cookie("sessionID", req.sessionID);
+        res.redirect("/viewAllPosts");
+    } catch (error) {
+        console.error(error);
+        // Handle the error (for example, redirecting the user)
+    };
 });
 
 app.get('/login-failure', (req, res, next) => {
-    res.send('You entered the wrong password.');
+    return res.redirect("/login?error=Incorrect+password");
 });
 
 /* Sign Up method that directs user to the sign up page */
