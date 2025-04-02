@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
 })
 
-document.getElementById("filter-dropdown").addEventListener("click", async function(event){
+document.getElementById("filterDropdown").addEventListener("click", async function(event){
   const filteredPostsContainer = document.querySelector('.d-flex .flex-grow-1');
   const selected = event.target.textContent.trim();
 
@@ -134,7 +134,7 @@ document.getElementById("filter-dropdown").addEventListener("click", async funct
 
     const filter = await axios.get(`/filter?q=${encodeURIComponent(selected)}`);
 
-    const { filteredPost } = filter.data;
+    const { post } = filter.data;
 
     if (filteredPost.length === 0) {
       filteredPostsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>No posts found matching your filter</h4></div>';
@@ -142,7 +142,7 @@ document.getElementById("filter-dropdown").addEventListener("click", async funct
     }
     
     let filteredPostsHTML = '';
-      filteredPost.forEach(post => {
+      post.forEach(post => {
         filteredPostsHTML += `
           <div class="col-12">
             <div class="border p-3 rounded-3 main-post">
@@ -175,7 +175,7 @@ document.getElementById("filter-dropdown").addEventListener("click", async funct
 
   catch (error) {
     console.error('Error fetching filtered posts:', error);
-    postsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching filted posts. Please try again.</h4></div>';
+    filteredPostsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching filtered posts. Please try again.</h4></div>';
   } 
 })
 

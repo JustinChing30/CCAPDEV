@@ -641,6 +641,7 @@ app.get("/search", isAuthenticated, async(req, res) => {
       res.status(500).json({ error: "Error performing search" });
     }
   });
+  
 
   app.get("/filter", isAuthenticated, async(req, res) =>{
     try{
