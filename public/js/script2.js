@@ -126,8 +126,87 @@ document.addEventListener("DOMContentLoaded", () => {
   
 })
 
-document.addEventListener("DOMContentLoaded", function() {
-  const searchInput = document.getElementById("mySearch");
-  const searchBtn = document.getElementById("searchBtn");
-})
+
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('mySearch');
+  const searchBtn = document.getElementById('searchBtn');
+  const postsContainer = document.querySelector('.d-flex .flex-grow-1');
+  
+  // Function to perform search
+  const performSearch = async () => {
+    const searchTerm = searchInput.value.trim();
     
+    try {
+      // Show loading state
+      postsContainer.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-success" role="status"></div><p class="mt-3">Searching...</p></div>';
+      
+      // Make the AJAX request using Axios
+      let response;
+      
+      if (!searchTerm) {
+        response = await axios.get(`/search`);
+
+      }else{
+        response = await axios.get(`/search?q=${encodeURIComponent(searchTerm)}`);
+
+      }
+
+
+      const { posts } = response.data;
+      
+      // If no results found
+      if (posts.length === 0) {
+        postsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>No posts found matching your search</h4></div>';
+        return;
+      }
+      
+      // Generate HTML for the search results
+      let postsHTML = '';
+      posts.forEach(post => {
+        postsHTML += `
+          <div class="col-12">
+            <div class="border p-3 rounded-3 main-post">
+              <h3 class="mb-1">
+                <a href="viewPost/${post._id}" class="post-link">${post.title}</a>
+              </h3>
+              <span class="badge rounded-pill bg-success">${post.tag}</span>
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle overflow-hidden pfp-comment">
+                  <a href="/viewUserProfile/${post.userID._id}">
+                    <img src="${post.userID.profilePic}">
+                  </a>
+                </div>
+                <h5 class="comment-name">${post.userID.username}</h5>
+              </div>
+              <p class="p-comment">
+                ${post.content}
+              </p>
+              <div class="d-flex justify-content-end">
+                <button class="material-symbols-outlined like-button" data-post-id="${post._id}" data-liked="${post.liked}">thumb_up</button>
+                <span class="like-count">${post.likes.length}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      postsContainer.innerHTML = postsHTML;
+      
+    } catch (error) {
+      console.error('Error fetching search results:', error);
+      postsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching search results. Please try again.</h4></div>';
+    }
+  };
+  // Add event listeners for search
+  searchBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    performSearch();
+  });
+  
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch();
+    }
+  });
+});
