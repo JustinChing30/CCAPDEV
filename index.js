@@ -737,7 +737,9 @@ app.get("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
 
     // Gather details of the comment to be deleted
     const commentId = req.params.commentId;
-    const postId = await Comment.findById(commentId).select("postID");
+    const post = await Comment.findById(commentId).select("postID");
+    const postId = post.postID.toString();
+    console.log("Post ID: " + postId);
 
     /* if (!post) {
         return res.status(404).json({ message: "Post not found" });
