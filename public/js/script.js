@@ -1,3 +1,27 @@
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".moreOptionsButton").forEach(button => {
+      button.addEventListener("click", function (event) {
+          event.stopPropagation();
+
+          let dropdown = this.nextElementSibling;
+          let isVisible = dropdown.style.display === "block";
+
+          document.querySelectorAll(".options-dropdown, .options-dropdown-comment").forEach(menu => {
+              menu.style.display = "none";
+          });
+
+          dropdown.style.display = isVisible ? "none" : "block";
+      });
+  });
+
+  document.addEventListener("click", function () {
+      document.querySelectorAll(".options-dropdown, .options-dropdown-comment").forEach(menu => {
+          menu.style.display = "none";
+      });
+  });
+});
+
+
 const profileButton = document.getElementById("profileDropdownBtn"); // Button to open dropdown
 const profileDropdown = document.getElementById("profileDropdown"); // The actual dropdown
 
@@ -6,6 +30,9 @@ const replyOverlay = document.getElementById("ReplyOverlay");
 const newreplytextarea = document.getElementById("newReplyText");
 
 const closeButtons = document.querySelectorAll(".close-button");
+
+const moreOptionsButton = document.querySelectorAll(".moreOptionsButton") // Buttons to open triple dot dropdown
+const moreOptionsDropdownComment = document.querySelectorAll(".options-dropdown-comment") // All the actual overlays for triple dot dropdown
 
 // Add listener to every single reply button
 replyButtons.forEach((button) => {
