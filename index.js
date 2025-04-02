@@ -560,6 +560,68 @@ app.post("/likeComment/:commentId", isAuthenticated, async (req, res) => {
     return res.json({ liked: !hasLiked , likes: updatedLikeCount });
 });
 
+app.post("/delete/:postId", isAuthenticated, async (req, res) => {
+    const userData = req.session.user;
+    const userId = userData._id;
+
+    // Gather details of the post to be deleted
+    const postId = req.params.postId;
+    const post = await Post.findById(postId);
+
+    if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Delete the post
+    await Post.deleteOne({ _id: new mongoose.Types.ObjectId(postId) })
+
+    // Delete all comments associated with the post
+    const comments = await Comment.deleteMany({postID: new mongoose.Types.ObjectId(postId)})
+
+    // Send a json request back to whatever page the user is on that the post has been liked
+    return res.redirect("/viewAllPosts");
+})
+
+app.post("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
+    const userData = req.session.user;
+    const userId = userData._id;
+
+    // Gather details of the comment to be deleted
+    const commentId = req.params.commentId;
+    const postId = await Comment.findById(commentId).select("postID");
+
+    /* if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+    } */
+    
+    // Delete comment
+    await Comment.deleteOne({ _id: new mongoose.Types.ObjectId(commentId) })
+
+    // Select the post with the comment being deleted
+    const requestedPost = await Post.findById(postId).
+    populate("userID").lean();
+
+    // Select the list of comments replying to the post the user is looking to reply to
+    const comments = await Comment.find({postID: postId})
+    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
+    // BEFORE adding the liked: property to the object
+    
+    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
+    const commentsRender = comments.map(comment => ({
+        ...comment,
+        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }));
+
+    const consolidatedData = {
+        post: requestedPost,
+        comments: commentsRender,
+        user: userData
+    }
+
+    // Re-render the post, but without the comment just deleted
+    res.render('Posts/post' + postId, { data: consolidatedData });
+})
+
 /* Post method to change the current user's profile picture in edit profile */
 app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
     const userData = req.session.user; 
