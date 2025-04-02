@@ -614,16 +614,17 @@ app.get("/search", isAuthenticated, async(req, res) => {
     try {
       const searchQuery = req.query.q;
       const userData = req.session.user;
-      
+      let posts;
+
       if (!searchQuery) {
-        return res.json({ posts: [] });
-      }
-      
+        posts = await Post.find().populate("userID").lean();
+      }else{
+
       // Create a regex for case-insensitive search
-      const searchRegex = new RegExp(searchQuery || ".*", 'i');
+      const searchRegex = new RegExp(searchQuery, 'i');
       
       // Search in multiple fields: title, content, and tags
-      const posts = await Post.find({
+      posts = await Post.find({
         $or: [
           { title: searchRegex },
           { content: searchRegex },
@@ -632,7 +633,8 @@ app.get("/search", isAuthenticated, async(req, res) => {
       })
       .populate("userID")
       .lean();
-      
+    }
+       res.json({posts});
      
     } catch (error) {
       console.error("Search error:", error);

@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <span class="badge rounded-pill bg-success">${post.tag}</span>
               <div class="d-flex align-items-center">
                 <div class="rounded-circle overflow-hidden pfp-comment">
-                  <a href="${post.userID._id === window.loggedInUserId ? '/viewProfile' : '/viewUserProfile/' + post.userID._id}">
+                  <a href="/viewUserProfile/${post.userID._id}">
                     <img src="${post.userID.profilePic}">
                   </a>
                 </div>
@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
       postsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching search results. Please try again.</h4></div>';
     }
   };
-  
   // Add event listeners for search
   searchBtn.addEventListener('click', (e) => {
     e.preventDefault();
