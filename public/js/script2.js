@@ -136,7 +136,7 @@ document.getElementById("filterDropdown").addEventListener("click", async functi
 
     const { post } = filter.data;
 
-    if (filteredPost.length === 0) {
+    if (post.length === 0) {
       filteredPostsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>No posts found matching your filter</h4></div>';
       return;
     }
