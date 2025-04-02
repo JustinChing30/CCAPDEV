@@ -126,6 +126,58 @@ document.addEventListener("DOMContentLoaded", () => {
   
 })
 
+document.getElementById("filter-dropdown").addEventListener("click", async function(event){
+  const filteredPostsContainer = document.querySelector('.d-flex .flex-grow-1');
+  const selected = event.target.textContent.trim();
+
+  try{
+
+    const filter = await axios.get(`/filter?q=${encodeURIComponent(selected)}`);
+
+    const { filteredPost } = filter.data;
+
+    if (filteredPost.length === 0) {
+      filteredPostsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>No posts found matching your filter</h4></div>';
+      return;
+    }
+    
+    let filteredPostsHTML = '';
+      filteredPost.forEach(post => {
+        filteredPostsHTML += `
+          <div class="col-12">
+            <div class="border p-3 rounded-3 main-post">
+              <h3 class="mb-1">
+                <a href="viewPost/${post._id}" class="post-link">${post.title}</a>
+              </h3>
+              <span class="badge rounded-pill bg-success">${post.tag}</span>
+              <div class="d-flex align-items-center">
+                <div class="rounded-circle overflow-hidden pfp-comment">
+                  <a href="/viewUserProfile/${post.userID._id}">
+                    <img src="${post.userID.profilePic}">
+                  </a>
+                </div>
+                <h5 class="comment-name">${post.userID.username}</h5>
+              </div>
+              <p class="p-comment">
+                ${post.content}
+              </p>
+              <div class="d-flex justify-content-end">
+                <button class="material-symbols-outlined like-button" data-post-id="${post._id}" data-liked="${post.liked}">thumb_up</button>
+                <span class="like-count">${post.likes.length}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      filteredPostsContainer.innerHTML = filteredPostsHTML;
+  }
+
+  catch (error) {
+    console.error('Error fetching filtered posts:', error);
+    postsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching filted posts. Please try again.</h4></div>';
+  } 
+})
 
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('mySearch');

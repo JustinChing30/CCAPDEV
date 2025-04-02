@@ -642,6 +642,25 @@ app.get("/search", isAuthenticated, async(req, res) => {
     }
   });
 
+  app.get("/filter", isAuthenticated, async(req, res) =>{
+    try{
+        const filterQuery = req.query.q;
+
+        const filterRegex = new RegExp(filterQuery, 'i');
+
+        const post = await Post.find({tag : filterRegex}).populate("userID").lean();
+
+        res.json({post});
+
+    } catch(error){
+        console.error("Filter error:", error);
+      res.status(500).json({ error: "Error performing filter" });
+    }
+
+
+
+  })
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
