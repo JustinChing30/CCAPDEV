@@ -147,20 +147,32 @@ app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
 
     const users = await User.find().lean(); // list of users
 
+    let foundUser = null;
+    let passwordCorrect = false;
+
     // Check if the provided credentials are valid
     for (let i = 0; i < users.length; i++) {
-        if (username === users[i].username && password === users[i].password) {
-            accountFound = true;
-            req.session.user = users[i];
-            res.cookie("sessionId", req.sessionID);
+        if (username === users[i].username) {
+            foundUser = users[i];
 
-            res.redirect("/viewAllPosts");
+            if (password == users[i].password){
+                passwordCorrect = true;
+                break;
+            }
         }
     }
 
-    if (!accountFound) {
-        res.redirect("/");
+    if (!foundUser) {
+        return res.redirect("/login?error=Username+not+found");
     }
+
+    if (!passwordCorrect) {
+        return res.redirect("/login?error=Incorrect+password");
+    }
+
+    req.session.user = foundUser;
+    res.cookie("sessionID", req.sessionID);
+    res.redirect("/viewAllPosts");
 })
 
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
