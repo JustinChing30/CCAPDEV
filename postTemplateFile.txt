@@ -37,6 +37,11 @@
 
     <div class="d-flex">
       <div class="flex-grow-1">
+       <!-- Edit post button -->
+        <div class="d-flex align-items-center ms-auto">
+          <button class="btn edit-post-button" type="button" id="editPost">
+            Edit Post
+          </button>
         <!-- Post -->
         <div class="col-12">
           <div class="border p-3 rounded-3 main-post">
@@ -68,7 +73,7 @@
               </div>
               <h5 class="comment-name">{{data.post.userID.username}}</h5>
             </div>
-            <p class="p-comment">{{data.post.content}}</p>
+            <p class="p-postContent">{{data.post.content}}</p>
             <div class="d-flex justify-content-end">
               <button class="material-symbols-outlined like-button" data-post-id="{{data.post._id}}" data-liked="{{data.post.liked}}">thumb_up</button>
               <span class="like-count">{{data.post.likes.length}}</span>
@@ -109,7 +114,7 @@
 
                 </div>
               </div>
-              <p class="p-comment">{{this.content}}</p>
+              <p class="p-commentContent">{{this.content}}</p>
               <div class="d-flex justify-content-end">
                 <button class="material-symbols-outlined like-button" data-comment-id="{{this._id}}" data-liked="{{this.liked}}">thumb_up</button>
                 <span class="like-count">{{this.likes.length}}</span>
@@ -134,6 +139,34 @@
           <div class="d-flex justify-content-end">
             <button class="btn btn-success">Post</button>
           </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Overlay for edit post -->
+    <div class="overlay" id="EditPostOverlay">
+      <div class="actual-overlay">
+        <div class="d-flex position-relative mb-2">
+          <h2 class="mx-auto">Edit post</h2>
+          <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
+        </div>
+        <form action="/edit-post" method="POST">
+          <select name="editPostTag" id="editPostTag" required>
+            <option value="" disabled selected>Select a tag</option>
+            <option value="CCAPDEV">CCAPDEV</option>
+            <option value="CCINFOM">CCINFOM</option>
+            <option value="CCPROG1">CCPROG1</option>
+            <option value="CCPROG2">CCPROG2</option>
+            <option value="CCPROG3">CCPROG3</option>
+            <option value="CSALGCM">CSALGCM</option>
+            <option value="STALGCM">STALGCM</option>
+            <option value="CSARCH1">CSARCH1</option>
+          </select>
+          <textarea placeholder="Title..." rows="1" id="editPostTitle" name="editPostTitle" required></textarea>
+          <textarea placeholder="Write..." rows="15" id="editPostText" name="editPostText" required></textarea>
+          <br>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-success" type="submit">Edit</button>
         </form>
       </div>
     </div>
