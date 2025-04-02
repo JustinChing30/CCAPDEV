@@ -3,6 +3,9 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const axios = require("axios");
+var passport = require('passport')
+var crypto = require('crypto')
+var LocalStrategy = require('passport-local').Strategy;
 
 
 const app = express();
@@ -44,6 +47,41 @@ app.use(fileUpload()) // for fileuploads
 
 console.log("Mongo URI:", process.env.MONGO_URI);
 
+passport.use(new LocalStrategy(
+    function(username, password, cb) {
+        User.findOne({ username: username })
+            .then((user) => {
+
+                if (!user) { return cb(null, false) }
+                
+                // Function defined at bottom of app.js
+                const isValid = validPassword(password, user.hash, user.salt);
+                
+                // If the If validPassword = true, authentication was successful
+                if (isValid) {
+                    return cb(null, user); // pass the user object to Passport
+                } else {
+                    return cb(null, false);
+                }
+            })
+            .catch((err) => {   
+                cb(err);
+            });
+}));
+
+// Serialize user object and add it to req.session.passport object (this only saves the userID to req.session.passport)
+passport.serializeUser(function(user, cb) {
+    cb(null, user.id);
+});
+
+// Called on every authenticated request & retrieves full user object from DB using the stored user ID in session
+passport.deserializeUser(function(id, cb) {
+    User.findById(id, function (err, user) {
+        if (err) { return cb(err); }
+        cb(null, user);
+    });
+});
+
 app.use(
     session({
         secret: "secret-key",
@@ -67,6 +105,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(passport.initialize()); // middleware to check for existing req.session.passport data & grabbing userID to save in internal passport
+app.use(passport.session()); // grabs saved userID in internal passport and returns user object w/ deserializeUser
 app.use(cookieParser());
 
 // Authentication
@@ -560,7 +600,7 @@ app.post("/likeComment/:commentId", isAuthenticated, async (req, res) => {
     return res.json({ liked: !hasLiked , likes: updatedLikeCount });
 });
 
-app.post("/delete/:postId", isAuthenticated, async (req, res) => {
+app.get("/delete/:postId", isAuthenticated, async (req, res) => {
     const userData = req.session.user;
     const userId = userData._id;
 
@@ -582,7 +622,7 @@ app.post("/delete/:postId", isAuthenticated, async (req, res) => {
     return res.redirect("/viewAllPosts");
 })
 
-app.post("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
+app.get("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
     const userData = req.session.user;
     const userId = userData._id;
 
