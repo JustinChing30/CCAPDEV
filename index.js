@@ -16,6 +16,11 @@ hbs.registerHelper("equals", function (a, b) {
     return String(a) === String(b);
 });
 
+hbs.registerHelper('log', function(context) {
+    console.log(context);
+    return ''; // Return an empty string to prevent this from rendering in the HTML
+});
+
 app.set('view engine','hbs');
 
 
