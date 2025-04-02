@@ -3,6 +3,9 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cookieParser = require("cookie-parser");
 const axios = require("axios");
+var passport = require('passport')
+var crypto = require('crypto')
+var LocalStrategy = require('passport-local').Strategy;
 
 
 const app = express();
@@ -44,6 +47,41 @@ app.use(fileUpload()) // for fileuploads
 
 console.log("Mongo URI:", process.env.MONGO_URI);
 
+passport.use(new LocalStrategy(
+    function(username, password, cb) {
+        User.findOne({ username: username })
+            .then((user) => {
+
+                if (!user) { return cb(null, false) }
+                
+                // Function defined at bottom of app.js
+                const isValid = validPassword(password, user.hash, user.salt);
+                
+                // If the If validPassword = true, authentication was successful
+                if (isValid) {
+                    return cb(null, user); // pass the user object to Passport
+                } else {
+                    return cb(null, false);
+                }
+            })
+            .catch((err) => {   
+                cb(err);
+            });
+}));
+
+// Serialize user object and add it to req.session.passport object (this only saves the userID to req.session.passport)
+passport.serializeUser(function(user, cb) {
+    cb(null, user.id);
+});
+
+// Called on every authenticated request & retrieves full user object from DB using the stored user ID in session
+passport.deserializeUser(function(id, cb) {
+    User.findById(id, function (err, user) {
+        if (err) { return cb(err); }
+        cb(null, user);
+    });
+});
+
 app.use(
     session({
         secret: "secret-key",
@@ -67,6 +105,8 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(passport.initialize()); // middleware to check for existing req.session.passport data & grabbing userID to save in internal passport
+app.use(passport.session()); // grabs saved userID in internal passport and returns user object w/ deserializeUser
 app.use(cookieParser());
 
 // Authentication
@@ -139,16 +179,16 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(contact) == false) {
-        validAccount = false;
+        return res.redirect("/signUp?error=Invalid+email+format");
     }
 
     // check if encoded email and username is already being used
     currentUsers.forEach((existingUser) => {
         if (existingUser.username == user || existingUser.contact == contact) {
             validAccount = false;
+            
         }
     })
-
 
     if (validAccount) {
         // Create a user
@@ -166,7 +206,7 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
         res.redirect("/");
     }
     else {
-        res.redirect("/signUp")
+        res.redirect("/signUp?error=Email+or+Username+already+exists");
     }
 })
 
@@ -559,6 +599,68 @@ app.post("/likeComment/:commentId", isAuthenticated, async (req, res) => {
     // Send a json request back to whatever page the user is on that the comment has been liked
     return res.json({ liked: !hasLiked , likes: updatedLikeCount });
 });
+
+app.get("/delete/:postId", isAuthenticated, async (req, res) => {
+    const userData = req.session.user;
+    const userId = userData._id;
+
+    // Gather details of the post to be deleted
+    const postId = req.params.postId;
+    const post = await Post.findById(postId);
+
+    if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Delete the post
+    await Post.deleteOne({ _id: new mongoose.Types.ObjectId(postId) })
+
+    // Delete all comments associated with the post
+    const comments = await Comment.deleteMany({postID: new mongoose.Types.ObjectId(postId)})
+
+    // Send a json request back to whatever page the user is on that the post has been liked
+    return res.redirect("/viewAllPosts");
+})
+
+app.get("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
+    const userData = req.session.user;
+    const userId = userData._id;
+
+    // Gather details of the comment to be deleted
+    const commentId = req.params.commentId;
+    const postId = await Comment.findById(commentId).select("postID");
+
+    /* if (!post) {
+        return res.status(404).json({ message: "Post not found" });
+    } */
+    
+    // Delete comment
+    await Comment.deleteOne({ _id: new mongoose.Types.ObjectId(commentId) })
+
+    // Select the post with the comment being deleted
+    const requestedPost = await Post.findById(postId).
+    populate("userID").lean();
+
+    // Select the list of comments replying to the post the user is looking to reply to
+    const comments = await Comment.find({postID: postId})
+    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
+    // BEFORE adding the liked: property to the object
+    
+    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
+    const commentsRender = comments.map(comment => ({
+        ...comment,
+        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }));
+
+    const consolidatedData = {
+        post: requestedPost,
+        comments: commentsRender,
+        user: userData
+    }
+
+    // Re-render the post, but without the comment just deleted
+    res.render('Posts/post' + postId, { data: consolidatedData });
+})
 
 /* Post method to change the current user's profile picture in edit profile */
 app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
