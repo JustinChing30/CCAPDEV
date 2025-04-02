@@ -8,4 +8,4 @@ To run the project locally:
 2. Open the command prompt in the folder
 3. Type "npm init -y" in the command prompt.
 4. Type "node index.js" in the command prompt.
-5. Type "localhost:3000" in a browser.
+5. Type "localhost:3000" in any browser.
