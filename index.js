@@ -75,11 +75,13 @@ passport.serializeUser(function(user, cb) {
 });
 
 // Called on every authenticated request & retrieves full user object from DB using the stored user ID in session
-passport.deserializeUser(function(id, cb) {
-    User.findById(id, function (err, user) {
-        if (err) { return cb(err); }
-        cb(null, user);
-    });
+passport.deserializeUser(async function(id, cb) {
+    try {
+        const user = await User.findById(id);  // Use await for asynchronous call
+        cb(null, user);  // Once user is found, pass the user object to callback
+    } catch (err) {
+        cb(err);  // Handle error if something goes wrong
+    }
 });
 
 app.use(
@@ -141,27 +143,90 @@ app.get("/login", (req, res) => {
 })
 
 /* Submitting a request to login with the encoded details */
-app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
+/* app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
     const { username, password } = req.body;
     let accountFound = false;
 
     const users = await User.find().lean(); // list of users
 
+    let foundUser = null;
+    let passwordCorrect = false;
+
     // Check if the provided credentials are valid
     for (let i = 0; i < users.length; i++) {
-        if (username === users[i].username && password === users[i].password) {
-            accountFound = true;
-            req.session.user = users[i];
-            res.cookie("sessionId", req.sessionID);
+        if (username === users[i].username) {
+            foundUser = users[i];
 
-            res.redirect("/viewAllPosts");
+            if (password == users[i].password){
+                passwordCorrect = true;
+                break;
+            }
         }
     }
 
-    if (!accountFound) {
-        res.redirect("/");
+    if (!foundUser) {
+        return res.redirect("/login?error=Username+not+found");
     }
-})
+
+    if (!passwordCorrect) {
+        return res.redirect("/login?error=Incorrect+password");
+    }
+
+    req.session.user = foundUser;
+    res.cookie("sessionID", req.sessionID);
+    res.redirect("/viewAllPosts");
+}) */
+
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
+    if (err) next(err);
+});
+
+app.get('/login-success', async (req, res, next) => {
+    /* const { username, password } = req.body;
+    let accountFound = false;
+
+    const users = await User.find().lean(); // list of users
+
+    let foundUser = null;
+    let passwordCorrect = false;
+
+    // Check if the provided credentials are valid
+    for (let i = 0; i < users.length; i++) {
+        if (username === users[i].username) {
+            foundUser = users[i];
+
+            if (password == users[i].password){
+                passwordCorrect = true;
+                break;
+            }
+        }
+    } */
+
+    /* if (!foundUser) {
+        return res.redirect("/login?error=Username+not+found");
+    }
+
+    if (!passwordCorrect) {
+        return res.redirect("/login?error=Incorrect+password");
+    } */
+
+    const userId = req.session.passport.user;
+    console.log("Current user id: " + req.session.passport);
+    
+    try {
+        const user = await User.findById(userId);
+        req.session.user = user;
+        res.cookie("sessionID", req.sessionID);
+        res.redirect("/viewAllPosts");
+    } catch (error) {
+        console.error(error);
+        // Handle the error (for example, redirecting the user)
+    };
+});
+
+app.get('/login-failure', (req, res, next) => {
+    return res.redirect("/login?error=Incorrect+password");
+});
 
 /* Sign Up method that directs user to the sign up page */
 app.get("/signUp", async(req, res) => {
@@ -169,7 +234,7 @@ app.get("/signUp", async(req, res) => {
 });
 
 /* Submitting a request to sign up with the encoded details */
-app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
+app.post("/signUp", async(req, res, next) => {
     const { contact, pass, name, user, nickname } = req.body;
 
     const currentUsers = await User.find().lean();
@@ -179,23 +244,28 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(contact) == false) {
-        return res.redirect("/signUp?error=Invalid+email+format");
+        validAccount = false;
     }
 
     // check if encoded email and username is already being used
     currentUsers.forEach((existingUser) => {
         if (existingUser.username == user || existingUser.contact == contact) {
             validAccount = false;
-            
         }
     })
+
+    const saltHash = genPassword(pass);
+    
+    const salt = saltHash.salt;
+    const hash = saltHash.hash;
 
     if (validAccount) {
         // Create a user
         const newUser = await User.create({
             name: name,
             username: user,
-            password: pass,
+            hash: hash,
+            salt: salt,
             contact: contact,
             nickname: nickname, 
             bio: "",
@@ -213,11 +283,50 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
 /* Logging out of the current user */
 app.get("/logout", (req, res) => {
     // Destroy the session and redirect to the login page
-    req.session.destroy(() => {
-        res.clearCookie("sessionId");
-        res.redirect("/");
-    });
+    req.logout((err) => {
+        if (err) {
+            return res.status(500).send("Logout Error");
+        }
+        req.session.destroy(() => {
+            res.clearCookie("sessionId");
+            res.redirect("/");
+        });
+    })
 })
+
+/**
+ * 
+ * @param {*} password - The plain text password
+ * @param {*} hash - The hash stored in the database
+ * @param {*} salt - The salt stored in the database
+ * 
+ * This function uses the crypto library to decrypt the hash using the salt and then compares
+ * the decrypted hash/salt with the password that the user provided at login
+ */
+function validPassword(password, hash, salt) {
+    var hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+    return hash === hashVerify;
+}
+
+/**
+ * 
+ * @param {*} password - The password string that the user inputs to the password field in the register form
+ * 
+ * This function takes a plain text password and creates a salt and hash out of it.  Instead of storing the plaintext
+ * password in the database, the salt and hash are stored for security
+ * 
+ * ALTERNATIVE: It would also be acceptable to just use a hashing algorithm to make a hash of the plain text password.
+ * You would then store the hashed password in the database and then re-hash it to verify later (similar to what we do here)
+ */
+function genPassword(password) {
+    var salt = crypto.randomBytes(32).toString('hex');
+    var genHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
+    
+    return {
+      salt: salt,
+      hash: genHash
+    };
+}
 
 /* Get method to view all the posts currently on the forum */
 app.get("/viewAllPosts", isAuthenticated, async(req, res) => {
@@ -628,7 +737,9 @@ app.get("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
 
     // Gather details of the comment to be deleted
     const commentId = req.params.commentId;
-    const postId = await Comment.findById(commentId).select("postID");
+    const post = await Comment.findById(commentId).select("postID");
+    const postId = post.postID.toString();
+    console.log("Post ID: " + postId);
 
     /* if (!post) {
         return res.status(404).json({ message: "Post not found" });

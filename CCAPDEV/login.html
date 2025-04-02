@@ -44,4 +44,20 @@
             </div>
         </div>
     </body>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get("error");
+        if (error) {
+            const errorBox = document.createElement("p");
+            errorBox.textContent = decodeURIComponent(error);
+            errorBox.style.color = "red";
+            errorBox.style.textAlign = "center";
+            errorBox.style.marginBottom = "10px";
+    
+            const form = document.querySelector("form");
+            form.prepend(errorBox);
+        }
+    </script>
+    
 </html>
