@@ -53,7 +53,7 @@ app.use(fileUpload()) // for fileuploads
 console.log("Mongo URI:", process.env.MONGO_URI);
 
 passport.use(new LocalStrategy(
-    function(username, password, cb) {
+    function(username, password, cb) { // cb here stands for callbac
         User.findOne({ username: username })
             .then((user) => {
 
@@ -147,74 +147,12 @@ app.get("/login", (req, res) => {
     }
 })
 
-/* Submitting a request to login with the encoded details */
-/* app.post("/login", express.urlencoded({ extended: true }), async(req, res) => {
-    const { username, password } = req.body;
-    let accountFound = false;
-
-    const users = await User.find().lean(); // list of users
-
-    let foundUser = null;
-    let passwordCorrect = false;
-
-    // Check if the provided credentials are valid
-    for (let i = 0; i < users.length; i++) {
-        if (username === users[i].username) {
-            foundUser = users[i];
-
-            if (password == users[i].password){
-                passwordCorrect = true;
-                break;
-            }
-        }
-    }
-
-    if (!foundUser) {
-        return res.redirect("/login?error=Username+not+found");
-    }
-
-    if (!passwordCorrect) {
-        return res.redirect("/login?error=Incorrect+password");
-    }
-
-    req.session.user = foundUser;
-    res.cookie("sessionID", req.sessionID);
-    res.redirect("/viewAllPosts");
-}) */
-
+/* Method to direct the user to the viewAllPosts if login was successful or to the error screen if the login was unsuccessful */
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login-failure', successRedirect: 'login-success' }), (err, req, res, next) => {
     if (err) next(err);
 });
 
 app.get('/login-success', async (req, res, next) => {
-    /* const { username, password } = req.body;
-    let accountFound = false;
-
-    const users = await User.find().lean(); // list of users
-
-    let foundUser = null;
-    let passwordCorrect = false;
-
-    // Check if the provided credentials are valid
-    for (let i = 0; i < users.length; i++) {
-        if (username === users[i].username) {
-            foundUser = users[i];
-
-            if (password == users[i].password){
-                passwordCorrect = true;
-                break;
-            }
-        }
-    } */
-
-    /* if (!foundUser) {
-        return res.redirect("/login?error=Username+not+found");
-    }
-
-    if (!passwordCorrect) {
-        return res.redirect("/login?error=Incorrect+password");
-    } */
-
     const userId = req.session.passport.user;
     console.log("Current user id: " + req.session.passport);
     
@@ -230,7 +168,7 @@ app.get('/login-success', async (req, res, next) => {
 });
 
 app.get('/login-failure', (req, res, next) => {
-    return res.redirect("/login?error=Incorrect+password");
+    return res.redirect("/login?error=Incorrect+username+or+password");
 });
 
 /* Sign Up method that directs user to the sign up page */
