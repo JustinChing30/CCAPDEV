@@ -50,7 +50,7 @@
                   <h3 class="mb-1"><b>{{data.post.title}}</b></h3>
 
                   <div class="position-relative">
-                      <button class="material-symbols-outlined moreOptionsButton">more_vert</button>
+                      <button class="material-symbols-outlined moreOptionsButton" data-user-id="{{data.post.userID._id}}">more_vert</button>
                       <div class="options-dropdown">
                           <a href="/delete/{{data.post._id}}">Delete</a>
                       </div>
@@ -100,7 +100,7 @@
                       <h5 class="comment-name">{{this.commenterID.username}}</h5>
 
                       <div class="position-relative">
-                          <button class="material-symbols-outlined moreOptionsButton">more_vert</button>
+                          <button class="material-symbols-outlined moreOptionsButton" data-user-id="{{this.commenterID._id}}">more_vert</button>
                           <div class="options-dropdown-comment">
                               <a href="/deleteComment/{{this._id}}">Delete</a>
                           </div>

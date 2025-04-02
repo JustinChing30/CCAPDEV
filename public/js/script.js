@@ -19,6 +19,16 @@ document.addEventListener("DOMContentLoaded", function () {
           menu.style.display = "none";
       });
   });
+
+  const currentUserId = "{{loggedInUser}}"
+
+  document.querySelectorAll(".moreOptionsButton").forEach(button => {
+      const commentOwnerId = button.getAttribute("data-user-id");
+
+      if (commentOwnerId !== currentUserId) {
+          button.style.display = "none";
+      }
+  });
 });
 
 
