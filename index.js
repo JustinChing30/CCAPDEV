@@ -611,35 +611,32 @@ app.post("/updateFields", isAuthenticated, async(req, res) => {
 });
 
 app.get("/search", isAuthenticated, async(req, res) => {
-  try {
-    const searchQuery = req.query.q;
-    const userData = req.session.user;
-    
-    if (!searchQuery) {
-      return res.json({ posts: [] });
+    try {
+      const searchQuery = req.query.q;
+      
+      if (!searchQuery) {
+        return res.json({ posts: [] });
+      }
+      
+      //regex for case-insensitive search
+      const searchRegex = new RegExp(searchQuery, 'i');
+      
+      // Search in multiple fields: title, content, and tags
+      const posts = await Post.find({
+        $or: [
+          { title: searchRegex },
+          { content: searchRegex },
+          { tag: searchRegex }
+        ]
+      })
+      .populate("userID")
+      .lean();
+
+    } catch (error) {
+      console.error("Search error:", error);
+      res.status(500).json({ error: "Error performing search" });
     }
-    
-    // Create a regex for case-insensitive search
-    const searchRegex = new RegExp(searchQuery, 'i');
-    
-    // Search in multiple fields: title, content, and tags
-    const posts = await Post.find({
-      $or: [
-        { title: searchRegex },
-        { content: searchRegex },
-        { tag: searchRegex }
-      ]
-    })
-    .populate("userID")
-    .lean();
-    
-    
-    res.json({ posts: postsRender });
-  } catch (error) {
-    console.error("Search error:", error);
-    res.status(500).json({ error: "Error performing search" });
-  }
-});
+  });
 
 // Start the server
 const PORT = 3000;

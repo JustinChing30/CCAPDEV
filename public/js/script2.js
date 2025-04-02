@@ -137,18 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const performSearch = async () => {
     const searchTerm = searchInput.value.trim();
     
+    if (!searchTerm) {
+      return;
+    }
+    
     try {
       // Show loading state
       postsContainer.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-success" role="status"></div><p class="mt-3">Searching...</p></div>';
-      let response;
+      
       // Make the AJAX request using Axios
-      if (!searchTerm) {
-         response = await axios.get(`/search`);
-      }
-      else {
-         response = await axios.get(`/search?q=${encodeURIComponent(searchTerm)}`);
-
-      }
+      const response = await axios.get(`/search?q=${encodeURIComponent(searchTerm)}`);
       const { posts } = response.data;
       
       // If no results found
@@ -188,13 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       postsContainer.innerHTML = postsHTML;
-         
+      
     } catch (error) {
       console.error('Error fetching search results:', error);
       postsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching search results. Please try again.</h4></div>';
     }
   };
-
   
   // Add event listeners for search
   searchBtn.addEventListener('click', (e) => {
