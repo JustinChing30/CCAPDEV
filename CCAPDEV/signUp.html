@@ -37,4 +37,19 @@
             <p class="account-question">Have an account? <a href="/login" class="go-back">Log in</a></p>
         </div>
     </body>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get("error");
+    
+        if (error) {
+            const errorMessage = document.createElement("p");
+            errorMessage.textContent = decodeURIComponent(error);
+            errorMessage.style.color = "red";
+            errorMessage.style.textAlign = "center";
+            errorMessage.style.marginBottom = "15px";
+    
+            const form = document.querySelector(".user-input form");
+            form.prepend(errorMessage);
+        }
+    </script>    
 </html>

@@ -179,16 +179,16 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (emailRegex.test(contact) == false) {
-        validAccount = false;
+        return res.redirect("/signUp?error=Invalid+email+format");
     }
 
     // check if encoded email and username is already being used
     currentUsers.forEach((existingUser) => {
         if (existingUser.username == user || existingUser.contact == contact) {
             validAccount = false;
+            
         }
     })
-
 
     if (validAccount) {
         // Create a user
@@ -206,7 +206,7 @@ app.post("/signUp", express.urlencoded({ extended: true }), async(req, res) => {
         res.redirect("/");
     }
     else {
-        res.redirect("/signUp")
+        res.redirect("/signUp?error=Email+or+Username+already+exists");
     }
 })
 
