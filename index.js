@@ -422,6 +422,13 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
 
 /* Post method to create a post */
 app.post("/create-post", isAuthenticated, async(req, res) => {
+    const testPath = path.join(__dirname, "views/test.txt");
+    try {
+        fs.writeFileSync(testPath, "Hello, Render!");
+        console.log("Test file written successfully.");
+    } catch (err) {
+        console.log("Error writing test file:", err);
+    }
     const userData = req.session.user;
 
     // Gather post details
