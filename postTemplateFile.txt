@@ -103,7 +103,7 @@
                         <button class="material-symbols-outlined moreOptionsButton">more_vert</button>
                         <div class="options-dropdown-comment">
                           <a href="/deleteComment/{{this._id}}">Delete</a>
-                          <button class="btn edit-post-button" type="button" id="editPost">Edit</button> <!-- How should we do this? -->
+                          <button class="btn edit-comment-button" type="button" id="editReply" data-comment-id="{{this._id}}">Edit</button> <!-- How should we do this? -->
                         </div>
                       {{else}}
                       {{/if}}
@@ -111,7 +111,7 @@
 
                   </div>
                 </div>
-                <p class="p-commentContent">{{this.content}}</p>
+                <p class="p-commentContent" data-comment-id="{{this._id}}">{{this.content}}</p>
                 <div class="d-flex justify-content-end">
                   <button class="material-symbols-outlined like-button" data-comment-id="{{this._id}}" data-liked="{{this.liked}}">thumb_up</button>
                   <span class="like-count">{{this.likes.length}}</span>
