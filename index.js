@@ -43,8 +43,8 @@ const Comment = require("./database/models/Comment");
 const User = require("./database/models/User");
 const path = require('path'); // our path directory
 
-app.set('views', path.join(__dirname, 'tmp'));  // Change 'tmp' to your desired path
-
+/* app.set('views', path.join(__dirname, 'tmp'));  // Change 'tmp' to your desired path
+ */
 app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // Allows static files to be gathered from the 'public' directory
@@ -419,7 +419,7 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
 
     console.log(consolidatedData);
 
-    res.render(path.join("/tmp", objectid), { data: consolidatedData });
+    res.render("postTemplate", { data: consolidatedData });
 });
 
 /* Post method to create a post */
@@ -431,13 +431,13 @@ app.post("/create-post", isAuthenticated, async (req, res) => {
     const tag = req.body.newPostTag;
     const content = req.body.newPostText;
 
-    // Details for file creation
+   /*  // Details for file creation
     let objectID = "";
     let fileContent = "";
 
     // Read post template file
     const pathToFileTemplate = path.join(__dirname, 'postTemplateFile.txt');
-    fileContent = fs.readFileSync(pathToFileTemplate, "utf8");
+    fileContent = fs.readFileSync(pathToFileTemplate, "utf8"); */
 
     // Create the post and add it to the post database
     await Post.create({
@@ -449,10 +449,10 @@ app.post("/create-post", isAuthenticated, async (req, res) => {
         objectID = result._id.toString(); // save the objectid of the created post
     });
 
-    // Write to a new file with the objectID set and place it in /tmp
+    /* // Write to a new file with the objectID set and place it in /tmp
     const fileName = "post" + objectID + ".hbs";
     const pathToFile = path.join("/tmp", fileName);  // Write to /tmp instead
-    fs.appendFileSync(pathToFile, fileContent);
+    fs.appendFileSync(pathToFile, fileContent); */
 
     res.redirect("/"); // Redirect back to view all posts
 });
