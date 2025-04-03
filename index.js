@@ -417,18 +417,11 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
 
     console.log(consolidatedData);
 
-    res.render('Posts/post' + objectid, { data: consolidatedData });
+    res.render(path.join("/tmp", objectID), { data: consolidatedData });
 });
 
 /* Post method to create a post */
-app.post("/create-post", isAuthenticated, async(req, res) => {
-    const testPath = path.join(__dirname, "views/test.txt");
-    try {
-        fs.writeFileSync(testPath, "Hello, Render!");
-        console.log("Test file written successfully.");
-    } catch (err) {
-        console.log("Error writing test file:", err);
-    }
+app.post("/create-post", isAuthenticated, async (req, res) => {
     const userData = req.session.user;
 
     // Gather post details
@@ -442,9 +435,7 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
 
     // Read post template file
     const pathToFileTemplate = path.join(__dirname, 'postTemplateFile.txt');
-    fs.readFile(pathToFileTemplate, function(err, data) {
-        fileContent = data.toString('utf8');
-    })
+    fileContent = fs.readFileSync(pathToFileTemplate, "utf8");
 
     // Create the post and add it to the post database
     await Post.create({
@@ -452,29 +443,16 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
         tag: tag, 
         content: content, 
         userID: userData._id,
-    })
-        .then(result => {
-            objectID = result._id.toString(); // save the objecid of the created post
-        })
-        /* .then works here because Post.create() returns a Promise, which is an asynch operation
-        .then is used to handle the resolved value of a promise
-        Post.create resolves to the created post object, so you can chain .then to it */
+    }).then(result => {
+        objectID = result._id.toString(); // save the objectid of the created post
+    });
 
-    // write to a new file with the objectID set and place it in Posts folder
+    // Write to a new file with the objectID set and place it in /tmp
     const fileName = "post" + objectID + ".hbs";
-    const pathToFile = path.join(__dirname, "/views/Posts",fileName);
-    console.log("filename: " + pathToFile);
-    console.log("creating path to file: " + pathToFile);
-    // console.log("fileContent: \n\n" + fileContent)
-    fs.appendFileSync(pathToFile, fileContent, function (err) {
-        if (err) {
-            throw err;
-        }
+    const pathToFile = path.join("/tmp", fileName);  // Write to /tmp instead
+    fs.appendFileSync(pathToFile, fileContent);
 
-        console.log("File created!");
-    })
-
-    res.redirect("/"); // sends it back to view all posts
+    res.redirect("/"); // Redirect back to view all posts
 });
 
 /* Get method to create a comment on the specified post. The objectid parameter here represents the post being replied to */
