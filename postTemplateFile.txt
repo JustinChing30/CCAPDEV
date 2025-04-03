@@ -133,7 +133,7 @@
           <textarea placeholder="Write..." rows="15" id="editReplyText" name="editReplyText"></textarea>
           <br>
           <div class="d-flex justify-content-end">
-            <button class="btn btn-success">Post</button>
+            <button class="btn btn-success">Edit</button>
           </div>
         </form>
       </div>
