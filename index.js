@@ -417,7 +417,7 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
 
     console.log(consolidatedData);
 
-    res.render(path.join("/tmp", objectID), { data: consolidatedData });
+    res.render(path.join("/tmp", objectid), { data: consolidatedData });
 });
 
 /* Post method to create a post */
