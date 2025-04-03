@@ -39,7 +39,7 @@ const editPostOverlay = document.getElementById("EditPostOverlay"); // Button to
 
 const editposttextarea = document.getElementById("editPostText");
 const editposttitlearea = document.getElementById("editPostTitle");
-const editpostdropdownbox = document.getElementById("editPostTag")
+const editpostdropdownbox = document.getElementById("editPostTag");
 
 // Open edit post overlay
 editPostBtn.addEventListener("click", () => {
@@ -54,7 +54,7 @@ editPostBtn.addEventListener("click", () => {
   const h3TitleText = h3Title.textContent.trim();
 
   const tagValue = document.querySelector('.badge') //               <span class="badge rounded-pill bg-success">{{data.post.tag}}</span>
-  tagValueText = tagValue.textContent.trim();
+  var tagValueText = tagValue.textContent.trim();
 
   editposttextarea.value = pContentText; // content: <p class="p-comment">{{data.post.content}}</p>
   editposttitlearea.value = h3TitleText; // title:                   <h3 class="mb-1"><b>{{data.post.title}}</b></h3>
@@ -63,7 +63,7 @@ editPostBtn.addEventListener("click", () => {
 
 // Close edit post overlay by clicking outside of the box
 editPostOverlay.addEventListener("click", (e) => {
-  if (e.target === newPostOverlay) {
+  if (e.target === editPostOverlay) {
     editPostOverlay.style.display = "none";
     editposttextarea.value = '';
     editposttitlearea.value = '';
@@ -98,8 +98,11 @@ replyOverlay.addEventListener("click", (e) => {
 closeButtons.forEach((button) => {
   button.addEventListener("click", () => {
     replyOverlay.style.display = "none";
+    editPostOverlay.style.display = "none";
     
     newreplytextarea.value = '';
+    editposttitlearea.value = '';
+    editposttextarea.value = '';
   });
 });
 
