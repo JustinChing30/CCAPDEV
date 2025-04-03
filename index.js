@@ -575,6 +575,57 @@ app.post("/edit-post/:postID", isAuthenticated, async (req, res) => {
     res.render('Posts/post' + postID, { data: consolidatedData });
 })
 
+app.post("/edit-comment/:commentID", isAuthenticated, async (req, res) => {
+    const { commentID } = req.params;
+
+    const userData = req.session.user
+
+    // Gather edited post details
+    // console.log("Request body:", JSON.stringify(req.body, null, 2));
+
+    const newContent = req.body.editCommentContent;
+
+    console.log("New content: ", newCommentContent);
+
+    // Select the comment and edit it
+    const editedComment = await Comment.findByIdAndUpdate(
+        commentID, 
+        { content: newContent },
+        { new: true } // Returns the updated comment
+    );
+
+    const editedCommentData = editedComment._doc
+
+    const postID = editedCommentData._id;
+
+    // Select the post containing the edited reply
+    const requestedPost = await Post.findById(postID).
+    populate("userID").lean();
+
+
+    // Select the list of comments replying to the requested post
+    const comments = await Comment.find({postID: postID})
+    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
+    // BEFORE adding the liked: property to the object
+
+    console.log(comments);
+    
+    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
+    const commentsRender = comments.map(comment => ({
+        ...comment,
+        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }));
+
+    const consolidatedData = {
+        post: requestedPost,
+        comments: commentsRender,
+        user: userData
+    }
+
+    // Re-render the post, but with the new comment just created
+    res.render('Posts/post' + postID, { data: consolidatedData });
+})
+
 /* Get method to view someone else's profile and the list of posts they have made. The userID parameter here represents the objectid of
 the user that the current user wants to view */
 app.get("/viewUserProfile/:userID", isAuthenticated, async (req, res) => {
