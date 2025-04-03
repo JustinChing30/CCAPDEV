@@ -421,7 +421,7 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
 });
 
 /* Post method to create a post */
-app.post("/create-post", isAuthenticated, async(req, res) => {
+app.post("/create-post", isAuthenticated, async (req, res) => {
     const userData = req.session.user;
 
     // Gather post details
@@ -429,45 +429,45 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
     const tag = req.body.newPostTag;
     const content = req.body.newPostText;
 
-    // Details for file creation
-    let objectID = "";
-    let fileContent = "";
-
-    // Read post template file
+    // Path to post template
     const pathToFileTemplate = path.join(__dirname, 'postTemplateFile.txt');
-    fs.readFile(pathToFileTemplate, function(err, data) {
-        fileContent = data.toString('utf8');
-    })
 
-    // Create the post and add it to the post database
-    await Post.create({
-        title: title, 
-        tag: tag, 
-        content: content, 
-        userID: userData._id,
-    })
-        .then(result => {
-            objectID = result._id.toString(); // save the objecid of the created post
-        })
-        /* .then works here because Post.create() returns a Promise, which is an asynch operation
-        .then is used to handle the resolved value of a promise
-        Post.create resolves to the created post object, so you can chain .then to it */
+    // Create the post in the database first
+    let objectID = "";
+    try {
+        const newPost = await Post.create({
+            title: title,
+            tag: tag,
+            content: content,
+            userID: userData._id,
+        });
 
-    // write to a new file with the objectID set and place it in Posts folder
-    const fileName = "post" + objectID + ".hbs";
-    const pathToFile = path.join(__dirname, "/views/Posts",fileName);
-    console.log("filename: " + fileName);
-    console.log("creating path to file: " + pathToFile);
-    // console.log("fileContent: \n\n" + fileContent)
-    fs.appendFileSync(pathToFile, fileContent, function (err) {
+        objectID = newPost._id.toString(); // Save the objectID of the created post
+    } catch (error) {
+        console.error("Error creating post:", error);
+        return res.status(500).send("Error creating post.");
+    }
+
+    // Read post template file BEFORE writing
+    fs.readFile(pathToFileTemplate, "utf8", (err, fileContent) => {
         if (err) {
-            throw err;
+            console.error("Error reading template:", err);
+            return res.status(500).send("Error reading template.");
         }
 
-        console.log("File created!");
-    })
+        // Construct the file path in /tmp
+        const fileName = `post${objectID}.hbs`;
+        const pathToFile = path.join("/tmp", fileName);
+        console.log("Filename:", fileName);
+        console.log("Creating path to file:", pathToFile);
 
-    res.redirect("/"); // sends it back to view all posts
+        // Write file inside /tmp
+        fs.writeFileSync(pathToFile, fileContent, "utf8");
+
+        console.log("File created successfully at:", pathToFile);
+
+        res.redirect("/"); // Redirect after successful creation
+    });
 });
 
 /* Get method to create a comment on the specified post. The objectid parameter here represents the post being replied to */
