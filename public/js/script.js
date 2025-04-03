@@ -119,9 +119,9 @@ editReplyButtons.forEach((button) => {
 
 // Close reply overlay by clicking outside of the box
 editReplyOverlay.addEventListener("click", (e) => {
-  if (e.target === replyOverlay) {
-    replyOverlay.style.display = "none";
-    newreplytextarea.value = '';
+  if (e.target === editReplyOverlay) {
+    editReplyOverlay.style.display = "none";
+    editreplytextarea.value = '';
   }
 });
 
@@ -130,10 +130,12 @@ closeButtons.forEach((button) => {
   button.addEventListener("click", () => {
     replyOverlay.style.display = "none";
     editPostOverlay.style.display = "none";
+    editReplyOverlay.style.display = "none";
     
     newreplytextarea.value = '';
     editposttitlearea.value = '';
     editposttextarea.value = '';
+    editreplytextarea.value = '';
   });
 });
 
