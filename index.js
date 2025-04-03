@@ -456,7 +456,8 @@ app.post("/create-post", isAuthenticated, async(req, res) => {
     // write to a new file with the objectID set and place it in Posts folder
     const fileName = "post" + objectID + ".hbs";
     const pathToFile = path.join(__dirname, "/views/Posts",fileName);
-
+    console.log("filename: " + fileName);
+    console.log("creating path to file: " + pathToFile);
     // console.log("fileContent: \n\n" + fileContent)
     fs.appendFileSync(pathToFile, fileContent, function (err) {
         if (err) {
