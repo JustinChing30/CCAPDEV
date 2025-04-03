@@ -808,9 +808,9 @@ app.get("/search", isAuthenticated, async(req, res) => {
 
         const filterRegex = new RegExp(filterQuery, 'i');
 
-        const post = await Post.find({tag : filterRegex}).populate("userID").lean();
+        const filteredPost = await Post.find({tag : filterRegex}).populate("userID").lean();
 
-        res.json({post});
+        res.json({filteredPost});
 
     } catch(error){
         console.error("Filter error:", error);
