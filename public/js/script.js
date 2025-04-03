@@ -40,6 +40,7 @@ const editPostOverlay = document.getElementById("EditPostOverlay"); // Button to
 const editReplyButtons = document.querySelectorAll(".edit-comment-button");
 const editReplyOverlay = document.getElementById("EditReplyOverlay");
 const editreplytextarea = document.getElementById("editReplyText");
+const editReplyForm = document.getElementById("editCommentForm");
 
 const editposttextarea = document.getElementById("editPostText");
 const editposttitlearea = document.getElementById("editPostTitle");
@@ -87,14 +88,46 @@ editReplyButtons.forEach((button) => {
     console.log("commentContentText: " + commentContentText);
 
     editreplytextarea.value = commentContentText; // make this into current reply content
+
+    // Set the data-comment-id of editReplyForm to the id
+    editReplyForm.setAttribute("data-comment-id", commentID)
   });
 });
+
+editReplyForm.addEventListener("submit", function(event) {
+  // Grab text
+  const newCommentContent = editreplytextarea.value;
+  const commentID = editReplyForm.getAttribute("data-comment-id");
+
+  // Send request to index.js for them to edit the comment app.post("/edit-comment/:commentID"
+
+  // Send a POST request to the server with the new comment content and comment ID
+  fetch(`/edit-comment/${commentID}`, {
+    method: "POST", // HTTP method
+    headers: {
+        "Content-Type": "application/json" // Sending JSON data
+    },
+    body: JSON.stringify({
+        content: newCommentContent, // New content for the comment
+    })
+  })
+  .then(response => response.json()) // Parse the response as JSON
+  .then(data => {
+      // Handle the response from the server (e.g., show a success message)
+      console.log("Server response:", data);
+  })
+  .catch(error => {
+      // Handle any errors that occur during the fetch request
+      console.error("Error:", error);
+  });
+})
 
 // Close reply overlay by clicking outside of the box
 editReplyOverlay.addEventListener("click", (e) => {
   if (e.target === editReplyOverlay) {
     editReplyOverlay.style.display = "none";
     editreplytextarea.value = '';
+    editReplyForm.setAttribute("data-comment-id", "")
   }
 });
 
@@ -109,6 +142,7 @@ closeButtons.forEach((button) => {
     editposttitlearea.value = '';
     editposttextarea.value = '';
     editreplytextarea.value = '';
+    editReplyForm.setAttribute("data-comment-id", "")
   });
 });
 

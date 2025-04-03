@@ -378,12 +378,15 @@ app.get("/editProfile", isAuthenticated, async(req, res) => {
 /* Get method to view a specific post. The :objectid is a parameter that directs the user to the clicked post */
 app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid is a parameter here
     const { objectid } = req.params;
+    console.log(objectid);
+
 
     const userData = req.session.user
 
     // Select the post being viewed
     const requestedPost = await Post.findById(objectid).
     populate("userID").lean();
+
 
     const requestedPostRender = {
         ...requestedPost,
@@ -524,11 +527,11 @@ app.post("/edit-comment/:commentID", isAuthenticated, async (req, res) => {
     const { commentID } = req.params;
 
     // Gather edited post details
-    // console.log("Request body:", JSON.stringify(req.body, null, 2));
+    console.log("Request body:", JSON.stringify(req.body, null, 2));
 
-    const newContent = req.body.editCommentContent;
+    const newContent = req.body.content;
 
-    console.log("New content: ", newCommentContent);
+    console.log("New content: ", newContent);
 
     // Select the comment and edit it
     const editedComment = await Comment.findByIdAndUpdate(
@@ -537,12 +540,9 @@ app.post("/edit-comment/:commentID", isAuthenticated, async (req, res) => {
         { new: true } // Returns the updated comment
     );
 
-    const editedCommentData = editedComment._doc
-
-    const postID = editedCommentData._id;
+    const postID = editedComment.postID;
 
     res.redirect(`/viewPost/${postID}`);
-
 })
 
 /* Get method to view someone else's profile and the list of posts they have made. The userID parameter here represents the objectid of
