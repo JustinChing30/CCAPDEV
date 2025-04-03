@@ -150,7 +150,7 @@
           <h2 class="mx-auto">Edit post</h2>
           <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
-        <form action="/edit-post" method="POST">
+        <form action="/edit-post/{{data.post._id}}" method="POST">
           <select name="editPostTag" id="editPostTag" required>
             <option value="" disabled selected>Select a tag</option>
             <option value="CCAPDEV">CCAPDEV</option>

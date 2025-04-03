@@ -402,11 +402,17 @@ app.get("/viewPost/:objectid", isAuthenticated, async(req, res) => { // objectid
         liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
     }));
 
+    // console.log("commentsRender:" + commentsRender);
+
     const consolidatedData = {
         post: requestedPostRender,
         comments: commentsRender,
         user: userData
     }
+
+    console.log("Comment length: " + commentsRender.length);
+
+    console.log(consolidatedData);
 
     res.render('Posts/post' + objectid, { data: consolidatedData });
 });
@@ -504,6 +510,69 @@ app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
 
     // Re-render the post, but with the new comment just created
     res.render('Posts/post' + objectid, { data: consolidatedData });
+})
+
+app.post("/edit-post/:postID", isAuthenticated, async (req, res) => {
+    const { postID } = req.params;
+
+    const userData = req.session.user
+
+    // Gather edited post details
+    console.log("Request body:", JSON.stringify(req.body, null, 2));
+
+    const newTitle = req.body.editPostTitle;
+    const newTag = req.body.editPostTag;
+    const newContent = req.body.editPostText;
+
+    // console.log("postID: " + postID);
+
+    console.log("New title:", newTitle, "New tag:", newTag, "New content:", newContent);
+
+    // Select the post and edit it
+    const editedPost = await Post.findByIdAndUpdate(
+        postID, 
+        { 
+            title: newTitle, // Use an object with key-value pairs
+            tag: newTag,
+            content: newContent 
+        },
+        { 
+            new: true, // Return the updated document
+            runValidators: true // Ensure schema validation
+        }
+    ).
+    populate("userID");
+
+    const editedPostData = editedPost._doc
+
+    console.log("Edited post: " + editedPostData);
+
+    const editedPostRender = {
+        ...editedPostData,
+        liked: editedPostData.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }
+
+    // Select the comments of the post being viewed
+    const comments = await Comment.find({postID: postID})
+    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
+    // BEFORE adding the liked: property to the object
+
+    /* While rendering the comments, automatically set the value of "liked", which rep. whether or not 
+    the current user has liked the comment */
+    const commentsRender = comments.map(comment => ({
+        ...comment,
+        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
+    }));
+
+    const consolidatedData = {
+        post: editedPostRender,
+        comments: commentsRender,
+        user: userData
+    }
+
+    console.log(consolidatedData);
+
+    res.render('Posts/post' + postID, { data: consolidatedData });
 })
 
 /* Get method to view someone else's profile and the list of posts they have made. The userID parameter here represents the objectid of
