@@ -108,7 +108,8 @@ editReplyButtons.forEach((button) => {
     editReplyOverlay.style.display = "flex";
 
     // get current reply content
-    const commentPElement = document.querySelector(`[data-comment-id="${commentID}"]`);    
+    const commentPElement = document.querySelector(`.p-commentContent[data-comment-id="${commentID}"]`);    
+    console.log("commentPElement: " + commentPElement);
     const commentContentText = commentPElement.textContent
 
     console.log("commentContentText: " + commentContentText);
