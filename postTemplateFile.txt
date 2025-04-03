@@ -122,6 +122,23 @@
       </div>
     </div>
 
+    <!-- Overlay for edit comment/reply -->
+    <div class="overlay" id="EditReplyOverlay">
+      <div class="actual-reply-overlay">
+        <div class="d-flex position-relative mb-2">
+          <h2 class="mx-auto">Edit reply</h2>
+          <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
+        </div>
+        <form action="/edit-reply/{{data.post._id}}" method="POST">
+          <textarea placeholder="Write..." rows="15" id="editReplyText" name="editReplyText"></textarea>
+          <br>
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-success">Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Overlay for new comment/reply -->
     <div class="overlay" id="ReplyOverlay">
       <div class="actual-reply-overlay">
@@ -163,23 +180,6 @@
           <br>
           <div class="d-flex justify-content-end">
             <button class="btn btn-success" type="submit">Edit</button>
-        </form>
-      </div>
-    </div>
-
-    <!-- Overlay for edit comment/reply -->
-    <div class="overlay" id="EditReplyOverlay">
-      <div class="actual-reply-overlay">
-        <div class="d-flex position-relative mb-2">
-          <h2 class="mx-auto">Edit reply</h2>
-          <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
-        </div>
-        <form action="/edit-reply/{{data.post._id}}" method="POST">
-          <textarea placeholder="Write..." rows="15" id="editReplyText" name="editReplyText"></textarea>
-          <br>
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-success">Post</button>
-          </div>
         </form>
       </div>
     </div>
