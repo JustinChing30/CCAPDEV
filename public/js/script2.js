@@ -175,7 +175,7 @@ document.getElementById("filter-dropdown").addEventListener("click", async funct
 
   catch (error) {
     console.error('Error fetching filtered posts:', error);
-    postsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching filted posts. Please try again.</h4></div>';
+    filteredPostsContainer.innerHTML = '<div class="col-12 text-center p-5"><h4>Error fetching filted posts. Please try again.</h4></div>';
   } 
 })
 
