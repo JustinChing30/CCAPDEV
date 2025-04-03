@@ -48,8 +48,8 @@
 
                   <button class="material-symbols-outlined moreOptionsButton">more_vert</button>
                   <div class="options-dropdown">
-                    <a href="/delete/{{data.post._id}}">Delete</a>
                     <button class="btn edit-post-button" type="button" id="editPost">Edit</button>
+                    <a href="/delete/{{data.post._id}}">Delete</a>
                   </div>
                 {{else}}
                 {{/if}}
@@ -102,8 +102,8 @@
 
                         <button class="material-symbols-outlined moreOptionsButton">more_vert</button>
                         <div class="options-dropdown-comment">
-                          <a href="/deleteComment/{{this._id}}">Delete</a>
                           <button class="btn edit-comment-button" type="button" id="editReply" data-comment-id="{{this._id}}">Edit</button> <!-- How should we do this? -->
+                          <a href="/deleteComment/{{this._id}}">Delete</a>
                         </div>
                       {{else}}
                       {{/if}}
@@ -133,7 +133,7 @@
           <textarea placeholder="Write..." rows="15" id="editReplyText" name="editReplyText"></textarea>
           <br>
           <div class="d-flex justify-content-end">
-            <button class="btn btn-success">Edit</button>
+            <button class="btn btn-success">Post</button>
           </div>
         </form>
       </div>
