@@ -21,7 +21,6 @@ hbs.registerHelper('log', function(context) {
     return ''; // Return an empty string to prevent this from rendering in the HTML
 });
 
-app.set('views', path.join(__dirname, 'tmp'));  // Change 'tmp' to your desired path
 app.set('view engine','hbs');
 
 
@@ -43,6 +42,8 @@ const Post = require("./database/models/Post");
 const Comment = require("./database/models/Comment");
 const User = require("./database/models/User");
 const path = require('path'); // our path directory
+
+app.set('views', path.join(__dirname, 'tmp'));  // Change 'tmp' to your desired path
 
 app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
