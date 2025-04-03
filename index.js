@@ -21,6 +21,7 @@ hbs.registerHelper('log', function(context) {
     return ''; // Return an empty string to prevent this from rendering in the HTML
 });
 
+app.set('views', path.join(__dirname, 'tmp'));  // Change 'tmp' to your desired path
 app.set('view engine','hbs');
 
 
