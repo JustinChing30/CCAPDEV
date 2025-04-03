@@ -115,7 +115,7 @@
                 <div class="d-flex justify-content-end">
                   <button class="material-symbols-outlined like-button" data-comment-id="{{this._id}}" data-liked="{{this.liked}}">thumb_up</button>
                   <span class="like-count">{{this.likes.length}}</span>
-                  <button class="material-symbols-outlined reply-button comment" type="button" data-username="{{this.commenterID.username}}">reply</button>
+                  <button class="material-symbols-outlined edit-reply-button" type="button" data-username="{{this.commenterID.username}}" data-comment-id="{{this._id}}">edit reply</button>
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@
           <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
         <form action="/edit-reply/{{data.post._id}}" method="POST">
-          <textarea placeholder="Write..." rows="15" id="newReplyText" name="newReplyText"></textarea>
+          <textarea placeholder="Write..." rows="15" id="editReplyText" name="editReplyText"></textarea>
           <br>
           <div class="d-flex justify-content-end">
             <button class="btn btn-success">Post</button>
