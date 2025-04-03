@@ -37,6 +37,10 @@ const moreOptionsDropdownComment = document.querySelectorAll(".options-dropdown-
 const editPostBtn = document.getElementById("editPost"); // Button to open new post overlay
 const editPostOverlay = document.getElementById("EditPostOverlay"); // Button to close new post overlay
 
+const editReplyButtons = document.querySelectorAll(".edit-comment-button");
+const editReplyOverlay = document.getElementById("EditReplyOverlay");
+const editreplytextarea = document.getElementById("editReplyText");
+
 const editposttextarea = document.getElementById("editPostText");
 const editposttitlearea = document.getElementById("editPostTitle");
 const editpostdropdownbox = document.getElementById("editPostTag");
@@ -88,6 +92,33 @@ replyButtons.forEach((button) => {
 
 // Close reply overlay by clicking outside of the box
 replyOverlay.addEventListener("click", (e) => {
+  if (e.target === replyOverlay) {
+    replyOverlay.style.display = "none";
+    newreplytextarea.value = '';
+  }
+});
+
+// Add listener to every single edit reply button
+editReplyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    console.log("Here!");
+    const commentID = button.getAttribute("data-comment-id");
+
+    console.log(editReplyOverlay);
+    editReplyOverlay.style.display = "flex";
+
+    // get current reply content
+    const commentPElement = document.querySelector(`[data-comment-id="${commentID}"]`);    
+    const commentContentText = commentPElement.textContent
+
+    console.log("commentContentText: " + commentContentText);
+
+    editreplytextarea.value = commentContentText; // make this into current reply content
+  });
+});
+
+// Close reply overlay by clicking outside of the box
+editReplyOverlay.addEventListener("click", (e) => {
   if (e.target === replyOverlay) {
     replyOverlay.style.display = "none";
     newreplytextarea.value = '';
