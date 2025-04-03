@@ -45,38 +45,10 @@ const editposttextarea = document.getElementById("editPostText");
 const editposttitlearea = document.getElementById("editPostTitle");
 const editpostdropdownbox = document.getElementById("editPostTag");
 
-// Open edit post overlay
-editPostBtn.addEventListener("click", () => {
-  console.log("Here!");
-  editPostOverlay.style.display = "flex";
-  
-  // get current text and title of post
-  const pContent = document.querySelector('.p-postContent');
-  const pContentText = pContent.textContent.trim();
-
-  const h3Title = document.querySelector('.mb-1')
-  const h3TitleText = h3Title.textContent.trim();
-
-  const tagValue = document.querySelector('.badge') //               <span class="badge rounded-pill bg-success">{{data.post.tag}}</span>
-  var tagValueText = tagValue.textContent.trim();
-
-  editposttextarea.value = pContentText; // content: <p class="p-comment">{{data.post.content}}</p>
-  editposttitlearea.value = h3TitleText; // title:                   <h3 class="mb-1"><b>{{data.post.title}}</b></h3>
-  editpostdropdownbox.value = tagValueText;
-});
-
-// Close edit post overlay by clicking outside of the box
-editPostOverlay.addEventListener("click", (e) => {
-  if (e.target === editPostOverlay) {
-    editPostOverlay.style.display = "none";
-    editposttextarea.value = '';
-    editposttitlearea.value = '';
-  }
-});
-
 // Add listener to every single reply button
 replyButtons.forEach((button) => {
   button.addEventListener("click", () => {
+    console.log("Reply Button clicked");
     replyOverlay.style.display = "flex";
 
     newreplytextarea.value = '';
@@ -236,3 +208,32 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 })
+
+// Open edit post overlay
+editPostBtn.addEventListener("click", () => {
+  console.log("Here!");
+  editPostOverlay.style.display = "flex";
+  
+  // get current text and title of post
+  const pContent = document.querySelector('.p-postContent');
+  const pContentText = pContent.textContent.trim();
+
+  const h3Title = document.querySelector('.mb-1')
+  const h3TitleText = h3Title.textContent.trim();
+
+  const tagValue = document.querySelector('.badge') //               <span class="badge rounded-pill bg-success">{{data.post.tag}}</span>
+  var tagValueText = tagValue.textContent.trim();
+
+  editposttextarea.value = pContentText; // content: <p class="p-comment">{{data.post.content}}</p>
+  editposttitlearea.value = h3TitleText; // title:                   <h3 class="mb-1"><b>{{data.post.title}}</b></h3>
+  editpostdropdownbox.value = tagValueText;
+});
+
+// Close edit post overlay by clicking outside of the box
+editPostOverlay.addEventListener("click", (e) => {
+  if (e.target === editPostOverlay) {
+    editPostOverlay.style.display = "none";
+    editposttextarea.value = '';
+    editposttitlearea.value = '';
+  }
+});
