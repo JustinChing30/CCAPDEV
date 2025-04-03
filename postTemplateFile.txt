@@ -129,7 +129,7 @@
           <h2 class="mx-auto">Edit reply</h2>
           <button class="btn btn-danger position-absolute end-0 close-button">Close</button>
         </div>
-        <form id="editCommentForm" action="/edit-reply" method="POST">
+        <form id="editCommentForm" data-comment-id="">
           <textarea placeholder="Write..." rows="15" id="editReplyText" name="editReplyText"></textarea>
           <br>
           <div class="d-flex justify-content-end">
