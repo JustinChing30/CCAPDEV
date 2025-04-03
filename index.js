@@ -480,42 +480,12 @@ app.post("/createComment/:objectid", isAuthenticated, async(req, res) => {
         commenterID: userData._id,
         postID: objectid
     })
-        .then(comment => {
-            // console.log("Created comment: " + comment);
-        })
-        .catch(error => {
-            console.error("Error creating comment:", error);
-        })
 
-    // Select the post being replied to
-    const requestedPost = await Post.findById(objectid).
-    populate("userID").lean();
-
-    // Select the list of comments replying to the post the user is looking to reply to
-    const comments = await Comment.find({postID: objectid})
-    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
-    // BEFORE adding the liked: property to the object
-    
-    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
-    const commentsRender = comments.map(comment => ({
-        ...comment,
-        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
-    }));
-
-    const consolidatedData = {
-        post: requestedPost,
-        comments: commentsRender,
-        user: userData
-    }
-
-    // Re-render the post, but with the new comment just created
-    res.render('Posts/post' + objectid, { data: consolidatedData });
+    res.redirect(`/viewPost/${objectid}`);
 })
 
 app.post("/edit-post/:postID", isAuthenticated, async (req, res) => {
     const { postID } = req.params;
-
-    const userData = req.session.user
 
     // Gather edited post details
     console.log("Request body:", JSON.stringify(req.body, null, 2));
@@ -547,38 +517,11 @@ app.post("/edit-post/:postID", isAuthenticated, async (req, res) => {
 
     console.log("Edited post: " + editedPostData);
 
-    const editedPostRender = {
-        ...editedPostData,
-        liked: editedPostData.likes.some(likeId => likeId.toString() === userData._id.toString())
-    }
-
-    // Select the comments of the post being viewed
-    const comments = await Comment.find({postID: postID})
-    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
-    // BEFORE adding the liked: property to the object
-
-    /* While rendering the comments, automatically set the value of "liked", which rep. whether or not 
-    the current user has liked the comment */
-    const commentsRender = comments.map(comment => ({
-        ...comment,
-        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
-    }));
-
-    const consolidatedData = {
-        post: editedPostRender,
-        comments: commentsRender,
-        user: userData
-    }
-
-    console.log(consolidatedData);
-
-    res.render('Posts/post' + postID, { data: consolidatedData });
+    res.redirect(`/viewPost/${postID}`);
 })
 
 app.post("/edit-comment/:commentID", isAuthenticated, async (req, res) => {
     const { commentID } = req.params;
-
-    const userData = req.session.user
 
     // Gather edited post details
     // console.log("Request body:", JSON.stringify(req.body, null, 2));
@@ -598,32 +541,8 @@ app.post("/edit-comment/:commentID", isAuthenticated, async (req, res) => {
 
     const postID = editedCommentData._id;
 
-    // Select the post containing the edited reply
-    const requestedPost = await Post.findById(postID).
-    populate("userID").lean();
+    res.redirect(`/viewPost/${postID}`);
 
-
-    // Select the list of comments replying to the requested post
-    const comments = await Comment.find({postID: postID})
-    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
-    // BEFORE adding the liked: property to the object
-
-    console.log(comments);
-    
-    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
-    const commentsRender = comments.map(comment => ({
-        ...comment,
-        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
-    }));
-
-    const consolidatedData = {
-        post: requestedPost,
-        comments: commentsRender,
-        user: userData
-    }
-
-    // Re-render the post, but with the new comment just created
-    res.render('Posts/post' + postID, { data: consolidatedData });
 })
 
 /* Get method to view someone else's profile and the list of posts they have made. The userID parameter here represents the objectid of
@@ -788,15 +707,13 @@ app.get("/delete/:postId", isAuthenticated, async (req, res) => {
     await Post.deleteOne({ _id: new mongoose.Types.ObjectId(postId) })
 
     // Delete all comments associated with the post
-    const comments = await Comment.deleteMany({postID: new mongoose.Types.ObjectId(postId)})
+    await Comment.deleteMany({postID: new mongoose.Types.ObjectId(postId)})
 
     // Send a json request back to whatever page the user is on that the post has been liked
     return res.redirect("/viewAllPosts");
 })
 
 app.get("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
-    const userData = req.session.user;
-    const userId = userData._id;
 
     // Gather details of the comment to be deleted
     const commentId = req.params.commentId;
@@ -811,29 +728,7 @@ app.get("/deleteComment/:commentId", isAuthenticated, async (req, res) => {
     // Delete comment
     await Comment.deleteOne({ _id: new mongoose.Types.ObjectId(commentId) })
 
-    // Select the post with the comment being deleted
-    const requestedPost = await Post.findById(postId).
-    populate("userID").lean();
-
-    // Select the list of comments replying to the post the user is looking to reply to
-    const comments = await Comment.find({postID: postId})
-    .populate("commenterID").lean(); // this .lean() is important to convert the posts to regular objects
-    // BEFORE adding the liked: property to the object
-    
-    // While rendering the comments, automatically set the value of "liked", which rep. whether or not the current user has liked the comment
-    const commentsRender = comments.map(comment => ({
-        ...comment,
-        liked: comment.likes.some(likeId => likeId.toString() === userData._id.toString())
-    }));
-
-    const consolidatedData = {
-        post: requestedPost,
-        comments: commentsRender,
-        user: userData
-    }
-
-    // Re-render the post, but without the comment just deleted
-    res.render('Posts/post' + postId, { data: consolidatedData });
+    res.redirect(`/viewPost/${postId}`);
 })
 
 /* Post method to change the current user's profile picture in edit profile */
