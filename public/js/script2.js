@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <div class="d-flex align-items-center">
                 <div class="rounded-circle overflow-hidden pfp-comment">
                   <a href="/viewUserProfile/${post.userID._id}">
-                    <img src="${post.userID.profilePic}">
+                    <img src="/temp-images${post.userID.profilePic}">
                   </a>
                 </div>
                 <h5 class="comment-name">${post.userID.username}</h5>
