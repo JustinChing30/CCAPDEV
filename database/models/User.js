@@ -15,3 +15,5 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.model('user_schema', UserSchema)
 
 module.exports = User
+
+// LATEST COMMIT 04/07 9:41PM

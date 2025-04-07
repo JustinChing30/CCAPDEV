@@ -16,3 +16,5 @@ const PostSchema = new mongoose.Schema({
 const Comment = mongoose.model('comment_schema', PostSchema); // mongoose.model(<Collectionname>, <CollectionSchema>)
 
 module.exports = Comment;
+
+// LATEST COMMIT 04/07 9:41PM

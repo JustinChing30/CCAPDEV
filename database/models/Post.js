@@ -14,3 +14,5 @@ const PostSchema = new mongoose.Schema({
 const Post = mongoose.model('post_schema', PostSchema) // mongoose.model(<Collectionname>, <CollectionSchema>)
 
 module.exports = Post
+
+// LATEST COMMIT 04/07 9:41PM

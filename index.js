@@ -7,6 +7,7 @@ var passport = require('passport')
 var crypto = require('crypto')
 var LocalStrategy = require('passport-local').Strategy;
 
+// LATEST COMMIT 04/07 9:41PM
 
 const app = express();
 const hbs = require('hbs');
