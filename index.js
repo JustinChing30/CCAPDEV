@@ -24,7 +24,6 @@ hbs.registerHelper('log', function(context) {
 
 app.set('view engine','hbs');
 
-
 require("dotenv").config();
 const mongoose = require('mongoose');
 
@@ -50,7 +49,7 @@ app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // Allows static files to be gathered from the 'public' directory
 app.use(fileUpload()) // for fileuploads
-app.use('/temp-images/images', express.static('/tmp/images'));
+app.use('/temp-images/images', express.static('/tmp/images')); // acts as a link to the tmp folder, where the images are being uploaded
 
 /***********End export *******************/
 
@@ -211,6 +210,14 @@ app.post("/signUp", async(req, res, next) => {
     let validAccount = true;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    /* /^       [^\s@]+         @           [^\s@]+             \.              [^\s@]+ $/
+       Start    Kleene Plus     @ symbol    Kleene Plus         . symbol        Kleene Plus
+    of string   closure on                  closure on          (\ needs)       closure on
+                any character               any character       to be here      any character
+                EXCEPT space                EXCEPT space        since . means   EXCEPT space
+                (\s)                        (\s)                any char        (\s)
+                and  @                      and  @                              and  @ */
+
     if (emailRegex.test(contact) == false) {
         validAccount = false;
     }
@@ -262,12 +269,8 @@ app.get("/logout", (req, res) => {
     })
 })
 
-/**
- * 
- * @param {*} password - The plain text password
- * @param {*} hash - The hash stored in the database
- * @param {*} salt - The salt stored in the database
- * 
+
+ /* 
  * This function uses the crypto library to decrypt the hash using the salt and then compares
  * the decrypted hash/salt with the password that the user provided at login
  */
@@ -276,16 +279,8 @@ function validPassword(password, hash, salt) {
     return hash === hashVerify;
 }
 
-/**
- * 
- * @param {*} password - The password string that the user inputs to the password field in the register form
- * 
- * This function takes a plain text password and creates a salt and hash out of it.  Instead of storing the plaintext
- * password in the database, the salt and hash are stored for security
- * 
- * ALTERNATIVE: It would also be acceptable to just use a hashing algorithm to make a hash of the plain text password.
- * You would then store the hashed password in the database and then re-hash it to verify later (similar to what we do here)
- */
+ /* This function takes a plain text password and creates a salt and hash out of it.  Instead of storing the plaintext
+ * password in the database, the salt and hash are stored for security */
 function genPassword(password) {
     var salt = crypto.randomBytes(32).toString('hex');
     var genHash = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex');
@@ -537,18 +532,18 @@ app.post("/edit-post/:postID", isAuthenticated, async (req, res) => {
 app.post("/edit-comment/:commentID", isAuthenticated, async (req, res) => {
     const { commentID } = req.params;
 
+    //console.log("Request body:", JSON.stringify(req.body, null, 2));
+    
     // Gather edited post details
-    console.log("Request body:", JSON.stringify(req.body, null, 2));
-
     const newContent = req.body.content;
 
-    console.log("New content: ", newContent);
+    // console.log("New content: ", newContent);
 
     // Select the comment and edit it
     const editedComment = await Comment.findByIdAndUpdate(
         commentID, 
         { content: newContent },
-        { new: true } // Returns the updated comment
+        { new: true } // Returns the updated comment (standard practice)
     );
 
     const postID = editedComment.postID;
@@ -755,7 +750,7 @@ app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
     const imagePath = path.join('/tmp/images', imageName);
 
     try {
-        if (!fs.existsSync(imageDestination)) {
+        if (!fs.existsSync(imageDestination)) { // const imageDestination = '/tmp/images';
             fs.mkdirSync(imageDestination, { recursive: true });
         }
 
@@ -763,15 +758,15 @@ app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
         if (userData.profilePic && userData.profilePic !== "/defaultImage.png") {
             const oldImagePath = path.join("/tmp", userData.profilePic);
             if (fs.existsSync(oldImagePath) && !oldImagePath.includes("defaultImage.png")) {
-                fs.unlinkSync(oldImagePath);
+                fs.unlinkSync(oldImagePath); // delete the previously set profile pic
             }
         }
 
-        await profilePic.mv(imagePath);
+        await profilePic.mv(imagePath); // move newly uploaded image to /tmp/images
 
-        await User.findByIdAndUpdate(userData._id, { profilePic: `/images/${imageName}` });
+        await User.findByIdAndUpdate(userData._id, { profilePic: `/images/${imageName}` }); // update pfp name in DB
 
-        req.session.user.profilePic = `/images/${imageName}`;
+        req.session.user.profilePic = `/images/${imageName}`; // update pfp name in session
 
         res.redirect("/editProfile");
     } catch (error) {
