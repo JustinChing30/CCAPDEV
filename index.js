@@ -50,7 +50,7 @@ app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // Allows static files to be gathered from the 'public' directory
 app.use(fileUpload()) // for fileuploads
-app.use('/temp-images', express.static('/tmp/images'));
+app.use('/temp-images/images', express.static('/tmp/images'));
 
 /***********End export *******************/
 
