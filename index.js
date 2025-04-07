@@ -50,6 +50,7 @@ app.use(express.json()) // use json
 app.use(express.urlencoded( {extended: true})); // files consist of more than strings
 app.use(express.static('public')) // Allows static files to be gathered from the 'public' directory
 app.use(fileUpload()) // for fileuploads
+app.use('/temp-images', express.static('/tmp/images'));
 
 /***********End export *******************/
 
@@ -127,6 +128,23 @@ const isAuthenticated = (req, res, next) => {
         res.redirect("/login");
     }
 };
+
+// On start up, create a folder images in /tmp and add the defaultImage file
+const imageDestination = '/tmp/images';
+const defaultImageFilePath = path.join(imageDestination, 'defaultImage.png')
+
+// Create /tmp/images directory if it doesn't exist
+if (!fs.existsSync(tmpImagesDir)) {
+    fs.mkdirSync(tmpImagesDir, { recursive: true });
+    console.log('✅ Created /tmp/images folder');
+} else {
+    console.log('/tmp/images folder already exists');
+}
+
+// Create a placeholder file (or any default image/file)
+const imageSource = path.join(__dirname, '/public/images/defaultImage.png')
+fs.copyFileSync(imageSource, imageDestination);
+console.log('Added default image at ' + defaultImageFilePath);
 
 app.get("/", async(req, res) => {
     if (req.session.user) { // if they are logged into an account
@@ -734,15 +752,16 @@ app.post("/changeProfileImage", isAuthenticated, async (req, res) => {
 
     const profilePic = req.files.profilePic;
     const imageName = `profile_${userData._id}${path.extname(profilePic.name)}`;
-    const imagePath = path.join(__dirname, 'public/images', imageName);
+    const imagePath = path.join('/tmp/images', imageName);
 
     try {
-        if (!fs.existsSync(path.join(__dirname, "public/images"))) {
-            fs.mkdirSync(path.join(__dirname, "public/images"), { recursive: true });
+        if (!fs.existsSync(imageDestination)) {
+            fs.mkdirSync(imageDestination, { recursive: true });
         }
 
+        // If there is an uploaded profilePic & it is not the same as the default image, change the pfp
         if (userData.profilePic && userData.profilePic !== "/defaultImage.png") {
-            const oldImagePath = path.join(__dirname, "public", userData.profilePic);
+            const oldImagePath = path.join("/tmp", userData.profilePic);
             if (fs.existsSync(oldImagePath) && !oldImagePath.includes("defaultImage.png")) {
                 fs.unlinkSync(oldImagePath);
             }
