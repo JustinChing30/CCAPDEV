@@ -79,15 +79,21 @@
 }
 
 .forgot-password{
+    color:#b6b6b6;
+}
+
+.forgot-password:hover{
+    color:green;
     cursor: pointer;
 }
+
 
 .create-account{
     color:#b6b6b6;
 }
 
 .create-account:hover{
-    color:#464646;
+    color:green;
     cursor: pointer;
 }
 

@@ -178,6 +178,10 @@ app.get("/signUp", async(req, res) => {
     res.sendFile(__dirname + "/CCAPDEV/signUp.html");
 });
 
+app.get("/about", async(req, res) =>{
+    res.sendFile(__dirname + "/CCAPDEV/about.html");
+})
+
 /* Submitting a request to sign up with the encoded details */
 app.post("/signUp", async(req, res, next) => {
     const { contact, pass, name, user, nickname } = req.body;
