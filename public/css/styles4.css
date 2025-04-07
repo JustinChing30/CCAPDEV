@@ -1,0 +1,83 @@
+.AboutPage{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center; 
+    width: 70%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.ModulesPage{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center; 
+    width: 70%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.question, .Modules{
+    color: white;
+    font-size: 35px;
+    font-family: "DM Serif Text";
+}
+
+.about, .ModulesUsed, .headerTag{
+    color: white;
+    font-size: 27px;
+    font-family: "DM Serif Text";
+    text-align: justify;
+}
+
+.buttonTag{
+    border-radius: 20px;
+    padding: 14px;
+    width: 80px;
+    font-family: "DM Serif Text";
+    background-color: white;
+    border: 0;
+}
+
+.buttonTag:hover{
+    border-radius: 20px;
+    padding: 14px;
+    width: 80px;
+    font-family: "DM Serif Text";
+    background-color: white;
+    border: 0;
+    cursor: pointer;
+    background-color: #4ade80;
+}
+
+.authors{
+    color: #4ade80;
+    font-family: "DM Serif Text";
+    font-size: 15px;
+}
+
+body{
+    background: radial-gradient(circle, rgba(185,241,120,1) 0%, rgba(22,26,29,1) 0%);
+}
+
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    border-bottom: 1px solid #4ade80;
+    padding: 1rem 2rem;
+
+}
+
+footer{
+    display: flex;
+    justify-content: space-between;
+    position: sticky;
+    padding: 1rem 2rem;
+}
