@@ -134,8 +134,8 @@ const imageDestination = '/tmp/images';
 const defaultImageFilePath = path.join(imageDestination, 'defaultImage.png')
 
 // Create /tmp/images directory if it doesn't exist
-if (!fs.existsSync(tmpImagesDir)) {
-    fs.mkdirSync(tmpImagesDir, { recursive: true });
+if (!fs.existsSync(imageDestination)) {
+    fs.mkdirSync(imageDestination, { recursive: true });
     console.log('✅ Created /tmp/images folder');
 } else {
     console.log('/tmp/images folder already exists');
