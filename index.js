@@ -143,7 +143,7 @@ if (!fs.existsSync(imageDestination)) {
 
 // Create a placeholder file (or any default image/file)
 const imageSource = path.join(__dirname, '/public/images/defaultImage.png')
-fs.copyFileSync(imageSource, imageDestination);
+fs.copyFileSync(imageSource, defaultImageFilePath);
 console.log('Added default image at ' + defaultImageFilePath);
 
 app.get("/", async(req, res) => {
